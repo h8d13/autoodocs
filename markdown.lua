@@ -1276,12 +1276,14 @@ local function run_command_line(arg)
             f:close()
         else
             header = [[
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=CHARSET" />
+    <meta charset="CHARSET" />
     <title>TITLE</title>
     <link rel="stylesheet" type="text/css" href="STYLESHEET" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 </head>
 <body>
 ]]
@@ -1303,7 +1305,7 @@ local function run_command_line(arg)
             end
             header = header:gsub("CHARSET", options.charset)
         end
-        local footer = "</body></html>"
+        local footer = "<script>hljs.highlightAll();</script>\n</body></html>"
         if options.footer then
             local f = io.open(options.footer) or error("Could not open file: " .. options.footer)
             footer = f:read("*a")
