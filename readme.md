@@ -1,7 +1,8 @@
 # barehands
 
 > Assumes SSH access
-> Assumes you `mkdir`
+
+> Assumes you `mkdir` 
 
 Create a `bare` repo on the "server"
 
@@ -14,9 +15,12 @@ Then `clone` it locally
 Add to `hooks`:
 
 post-receive
+
 ```shell
 #!/bin/bash
 git --work-tree=/home/$USER/projects --git-dir=/home/$USER/Barehands/barehands.git checkout -f
 ```
+
+And run `chmod +x post-receive`
 
 You now should alread have a push / sync setup where you can see files update live after push.

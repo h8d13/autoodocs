@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>barehands</title>
+    <link rel="stylesheet" type="text/css" href="default.css" />
+</head>
+<body>
+
+<h1>barehands</h1>
+
+<blockquote>
+    <p>Assumes SSH access
+    Assumes you <code>mkdir</code></p>
+</blockquote>
+
+<p>Create a <code>bare</code> repo on the "server"</p>
+
+<p><code>git init --bare user.git</code></p>
+
+<p>Then <code>clone</code> it locally</p>
+
+<p><code>git clone user@&lt;ip&gt;:~/git-repos/user.git</code></p>
+
+<p>Add to <code>hooks</code>:</p>
+
+<p>post-receive</p>
+
+<pre><code class="language-shell">#!/bin/bash
+git --work-tree=/home/$USER/projects --git-dir=/home/$USER/Barehands/barehands.git checkout -f
+</code></pre>
+
+<p>ANd run <code>chmod +x post-receive</code></p>
+
+<p>You now should alread have a push / sync setup where you can see files update live after push.</p>
+
+</body></html>
