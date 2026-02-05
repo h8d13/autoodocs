@@ -9,5 +9,5 @@ print(f'Serving on http://localhost:{PORT}')
 try:
     http.server.HTTPServer(('', PORT), http.server.SimpleHTTPRequestHandler).serve_forever()
 except KeyboardInterrupt:
-    logging.log("Caught keyboard interrupt... Exiting.")
+    logging.info("Caught keyboard interrupt... Exiting.")
     raise SystemExit(0)
