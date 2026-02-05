@@ -115,3 +115,48 @@ th {
 /* Strong and emphasis */
 strong { font-weight: 600; }
 em { font-style: italic; }
+
+/* Callouts */
+.callout {
+    border-left: 4px solid;
+    margin: 1em 0;
+    padding: 0.5em 1em;
+    border-radius: 4px;
+}
+
+.callout-title {
+    font-weight: 600;
+    margin-bottom: 0.25em;
+}
+
+.callout p { margin: 0.25em 0; }
+
+.callout-note {
+    border-color: #0969da;
+    background: #ddf4ff;
+}
+.callout-note .callout-title { color: #0969da; }
+
+.callout-tip {
+    border-color: #1a7f37;
+    background: #dafbe1;
+}
+.callout-tip .callout-title { color: #1a7f37; }
+
+.callout-important {
+    border-color: #8250df;
+    background: #fbefff;
+}
+.callout-important .callout-title { color: #8250df; }
+
+.callout-warning {
+    border-color: #9a6700;
+    background: #fff8c5;
+}
+.callout-warning .callout-title { color: #9a6700; }
+
+.callout-caution {
+    border-color: #cf222e;
+    background: #ffebe9;
+}
+.callout-caution .callout-title { color: #cf222e; }

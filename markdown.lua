@@ -642,6 +642,18 @@ local function blockquotes(lines)
         for i = 2,#lines do
             raw = raw .. "\n" .. lines[i].text
         end
+
+        -- Check for GitHub-style callouts [!NOTE], [!TIP], [!IMPORTANT], [!WARNING], [!CAUTION]
+        local callout_type = raw:match("^%[!(%u+)%]")
+        if callout_type then
+            raw = raw:gsub("^%[!%u+%]%s*", "") -- remove the callout marker
+            local bt = block_transform(raw)
+            if not bt:find("<pre>") then bt = indent(bt) end
+            local ctype = callout_type:lower()
+            return '<div class="callout callout-' .. ctype .. '">\n    <div class="callout-title">' ..
+                callout_type .. '</div>\n    ' .. bt .. "\n</div>"
+        end
+
         local bt = block_transform(raw)
         if not bt:find("<pre>") then bt = indent(bt) end
         return "<blockquote>\n    " .. bt ..

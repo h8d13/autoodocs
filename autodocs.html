@@ -241,10 +241,10 @@ end
 <h2>Defines (@def)</h2>
 
 <h3><a id="def-1"></a>1. ~/barehands/autodocs.lua:10</h3>
-<blockquote>
-    <p>[!IMPORTANT]
-    Defines with 9 line of subject</p>
-</blockquote>
+<div class="callout callout-important">
+    <div class="callout-title">IMPORTANT</div>
+    <p>Defines with 9 line of subject</p>
+</div>
 
 <p>And a important callout style</p>
 
@@ -288,10 +288,10 @@ local open   = io.open
 </code></pre>
 
 <h3><a id="def-3"></a>3. ~/barehands/autodocs.lua:43</h3>
-<blockquote>
-    <p>[!NOTE]
-    Shell-escape a string for safe interpolation into <code>io.popen</code></p>
-</blockquote>
+<div class="callout callout-note">
+    <div class="callout-title">NOTE</div>
+    <p>Shell-escape a string for safe interpolation into <code>io.popen</code></p>
+</div>
 
 <p>prevents breakage from paths containing <code>"</code>, <code>$()</code>, or backticks</p>
 
@@ -379,10 +379,10 @@ local total_input = 0
 <p><a id="def-11"></a><strong>11. ~/barehands/autodocs.lua:308</strong>
 <em>↳ <a href="#run-7">@run 7.</a></em></p>
 
-<blockquote>
-    <p>[!NOTE]
-    Bulk-read file first so <code>get_lang</code> reuses the buffer</p>
-</blockquote>
+<div class="callout callout-note">
+    <div class="callout-title">NOTE</div>
+    <p>Bulk-read file first so <code>get_lang</code> reuses the buffer</p>
+</div>
 
 <p>avoids a second <code>open</code>+<code>read</code> just for shebang detection</p>
 
@@ -526,10 +526,10 @@ end
 <p><a id="run-7-1"></a><strong>7.1 ~/barehands/autodocs.lua:333</strong>
 <em>↳ <a href="#run-7">@run 7.</a></em></p>
 
-<blockquote>
-    <p>[!NOTE]
-    Emit a documentation record or defer for subject capture</p>
-</blockquote>
+<div class="callout callout-note">
+    <div class="callout-title">NOTE</div>
+    <p>Emit a documentation record or defer for subject capture</p>
+</div>
 
 <p><code>lang</code> is passed through as-is, empty string means no fence label</p>
 
