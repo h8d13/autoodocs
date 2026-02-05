@@ -52,5 +52,5 @@ logging.info(f'Serving on http://localhost:{PORT}')
 try:
     http.server.HTTPServer(('', PORT), LoggingHandler).serve_forever()
 except KeyboardInterrupt:
-    logging.info("Bye!")
+    logging.info("Caught keyboard interrupt... Exiting.")
     raise SystemExit(0)
