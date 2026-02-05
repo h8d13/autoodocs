@@ -10,8 +10,9 @@
 <h1>barehands</h1>
 
 <blockquote>
-    <p>Assumes SSH access
-    Assumes you <code>mkdir</code></p>
+    <p>Assumes SSH access</p>
+    
+    <p>Assumes you <code>mkdir</code> </p>
 </blockquote>
 
 <p>Create a <code>bare</code> repo on the "server"</p>
@@ -30,7 +31,7 @@
 git --work-tree=/home/$USER/projects --git-dir=/home/$USER/Barehands/barehands.git checkout -f
 </code></pre>
 
-<p>ANd run <code>chmod +x post-receive</code></p>
+<p>And run <code>chmod +x post-receive</code></p>
 
 <p>You now should alread have a push / sync setup where you can see files update live after push.</p>
 
