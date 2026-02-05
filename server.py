@@ -2,9 +2,11 @@
 import http.server
 import logging
 
+logging.basicConfig(level=logging.INFO)
+
 PORT = 8080
 
-print(f'Serving on http://localhost:{PORT}')
+logging.info(f'Serving on http://localhost:{PORT}')
 
 try:
     http.server.HTTPServer(('', PORT), http.server.SimpleHTTPRequestHandler).serve_forever()
