@@ -26,11 +26,22 @@ local function slugify(path)
     return s:lower()
 end
 
--- @run:4 Convert @src:filepath#anchor to clickable markdown links
+-- @def:1 Line-to-anchor mapping built during grouping
+M.line_map = {}
+
+-- @run:11 Convert @src:filepath:line to clickable markdown links
 local function link_sources(text)
-    return gsub(text, "@src:([^%s#]+)#?([^%s]*)", function(path, anchor)
+    return gsub(text, "@src:([^%s:]+):?(%d*)", function(path, line)
         local slug = slugify(path)
-        local display = anchor ~= "" and (path .. "#" .. anchor) or path
+        local anchor = ""
+        if line ~= "" and M.line_map[slug] then
+            local ln = tonumber(line)
+            for _, entry in ipairs(M.line_map[slug]) do
+                if entry.line <= ln then anchor = entry.anchor
+                else break end
+            end
+        end
+        local display = line ~= "" and (path .. ":" .. line) or path
         local href = anchor ~= "" and fmt("%s.html#%s", slug, anchor) or (slug .. ".html")
         return fmt("[%s](%s)", display, href)
     end)
@@ -163,6 +174,7 @@ function M.group_records(records)
     local by_file = {}
     local file_order = {}
     local file_seen = {}
+    M.line_map = {}
 
     for _, r in ipairs(records) do
         if not file_seen[r.file] then
@@ -177,6 +189,8 @@ function M.group_records(records)
         local entries = by_file[file]
         local mi = {CHK=0, DEF=0, RUN=0, ERR=0}
         local scope = {}
+        local slug = slugify(file)
+        M.line_map[slug] = {}
 
         for _, r in ipairs(entries) do
             if r.indent > 0 then
@@ -202,6 +216,12 @@ function M.group_records(records)
                 r.idx = fmt("%d.", mi[t])
                 r.anchor = fmt("%s-%d", TAG_SEC[t], mi[t])
                 r.depth = 0
+            end
+
+            -- Build line-to-anchor mapping
+            local ln = tonumber(match(r.loc, ":(%d+)$"))
+            if ln then
+                M.line_map[slug][#M.line_map[slug] + 1] = {line = ln, anchor = r.anchor}
             end
         end
     end

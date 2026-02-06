@@ -103,7 +103,7 @@ local US = "\031"
 
 `~/Desktop/autoodocs/autodocs.lua:57`
 
-see [lib/parser.lua#run-6](parser-lua.html#run-6) for file processing
+see [lib/parser.lua:195](parser-lua.html#run-4) for file processing
 
 ```lua
 local records = {}
