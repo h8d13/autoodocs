@@ -9,7 +9,7 @@
 `~/Desktop/autoodocs/autodocs.lua:2`
 
 
-<a id="chk-2"></a>**2. ~/Desktop/autoodocs/autodocs.lua:102**
+<a id="chk-2"></a>**2. ~/Desktop/autoodocs/autodocs.lua:103**
 *↳ [@run 2.](#run-2)*
 
 Verify tagged files were discovered
@@ -21,7 +21,7 @@ Verify tagged files were discovered
     end
 ```
 
-<a id="chk-3"></a>**3. ~/Desktop/autoodocs/autodocs.lua:113**
+<a id="chk-3"></a>**3. ~/Desktop/autoodocs/autodocs.lua:114**
 *↳ [@run 2.](#run-2)*
 
 Verify extraction produced results
@@ -103,6 +103,8 @@ local US = "\031"
 
 `~/Desktop/autoodocs/autodocs.lua:57`
 
+see [lib/parser.lua:195](parser-lua.html) for file processing
+
 ```lua
 local records = {}
 local total_input = 0
@@ -112,24 +114,24 @@ local total_input = 0
 
 ### <a id="run-1"></a>Write file if content changed
 
-`~/Desktop/autoodocs/autodocs.lua:61`
+`~/Desktop/autoodocs/autodocs.lua:62`
 
 
 ### <a id="run-2"></a>Main function
 
-`~/Desktop/autoodocs/autodocs.lua:77`
+`~/Desktop/autoodocs/autodocs.lua:78`
 
 ```lua
 local function main()
 ```
 
-<a id="run-2-1"></a>**2.1 ~/Desktop/autoodocs/autodocs.lua:79**
+<a id="run-2-1"></a>**2.1 ~/Desktop/autoodocs/autodocs.lua:80**
 *↳ [@run 2.](#run-2)*
 
 Create output directory
 
 
-<a id="run-2-2"></a>**2.2 ~/Desktop/autoodocs/autodocs.lua:82**
+<a id="run-2-2"></a>**2.2 ~/Desktop/autoodocs/autodocs.lua:83**
 *↳ [@run 2.](#run-2)*
 
 Discover files containing documentation tags
@@ -156,7 +158,7 @@ Discover files containing documentation tags
     pipe:close()
 ```
 
-<a id="run-2-3"></a>**2.3 ~/Desktop/autoodocs/autodocs.lua:108**
+<a id="run-2-3"></a>**2.3 ~/Desktop/autoodocs/autodocs.lua:109**
 *↳ [@run 2.](#run-2)*
 
 Process all discovered files into intermediate `records`
@@ -167,7 +169,7 @@ Process all discovered files into intermediate `records`
     end
 ```
 
-<a id="run-2-4"></a>**2.4 ~/Desktop/autoodocs/autodocs.lua:119**
+<a id="run-2-4"></a>**2.4 ~/Desktop/autoodocs/autodocs.lua:120**
 *↳ [@run 2.](#run-2)*
 
 Group and index records by file
@@ -176,19 +178,19 @@ Group and index records by file
     local by_file, file_order = render.group_records(records)
 ```
 
-<a id="run-2-5"></a>**2.5 ~/Desktop/autoodocs/autodocs.lua:122**
+<a id="run-2-5"></a>**2.5 ~/Desktop/autoodocs/autodocs.lua:123**
 *↳ [@run 2.](#run-2)*
 
 Write index page
 
 
-<a id="run-2-6"></a>**2.6 ~/Desktop/autoodocs/autodocs.lua:129**
+<a id="run-2-6"></a>**2.6 ~/Desktop/autoodocs/autodocs.lua:130**
 *↳ [@run 2.](#run-2)*
 
 Write individual file pages
 
 
-<a id="run-2-7"></a>**2.7 ~/Desktop/autoodocs/autodocs.lua:143**
+<a id="run-2-7"></a>**2.7 ~/Desktop/autoodocs/autodocs.lua:144**
 *↳ [@run 2.](#run-2)*
 
 Output stats if requested
@@ -200,7 +202,7 @@ Output stats if requested
 
 ### <a id="run-3"></a>Entry point
 
-`~/Desktop/autoodocs/autodocs.lua:149`
+`~/Desktop/autoodocs/autodocs.lua:150`
 
 ```lua
 main()

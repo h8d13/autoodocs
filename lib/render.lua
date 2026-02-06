@@ -26,6 +26,15 @@ local function slugify(path)
     return s:lower()
 end
 
+-- @run:4 Convert @src:filepath:line to clickable markdown links
+local function link_sources(text)
+    return gsub(text, "@src:([^%s:]+):?(%d*)", function(path, line)
+        local slug = slugify(path)
+        local display = line ~= "" and (path .. ":" .. line) or path
+        return fmt("[%s](%s.html)", display, slug)
+    end)
+end
+
 -- @run Render a single entry
 local function render_entry(w, r)
     if r.parent then
@@ -47,7 +56,7 @@ local function render_entry(w, r)
     if r.adm then
         local first_text = true
         for tline in gmatch(r.text, "[^\031]+") do
-            local tr = trim(tline)
+            local tr = link_sources(trim(tline))
             if tr ~= "" then
                 if skip_first then
                     skip_first = false
@@ -62,7 +71,7 @@ local function render_entry(w, r)
     else
         local first_text = true
         for tline in gmatch(r.text, "[^\031]+") do
-            local tr = trim(tline)
+            local tr = link_sources(trim(tline))
             if tr ~= "" then
                 if skip_first then
                     skip_first = false

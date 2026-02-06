@@ -55,6 +55,7 @@ local HOME = match(SCAN_DIR, "^(/[^/]+/[^/]+)")
 local US = "\031"
 
 -- @def:2 Global state for collected records and line count
+-- see @src:lib/parser.lua:195 for file processing
 local records = {}
 local total_input = 0
 
