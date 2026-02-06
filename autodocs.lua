@@ -139,6 +139,11 @@ local function main()
     end
 
     io.stderr:write(fmt("autodocs: %d files documented\n", #file_order))
+
+    -- @run:2 Output stats if requested
+    if STATS then
+        os.execute(fmt("awk -f stats.awk %s/*.md", OUT_DIR))
+    end
 end
 
 -- @run:1 Entry point

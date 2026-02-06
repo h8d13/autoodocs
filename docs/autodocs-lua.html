@@ -212,9 +212,18 @@ local total_input = 0
 <p>Write individual file pages</p>
 
 
+<p><a id="run-2-7"></a><strong>2.7 ~/Desktop/autoodocs/autodocs.lua:143</strong>
+<em>↳ <a href="#run-2">@run 2.</a></em></p>
+
+<p>Output stats if requested</p>
+
+<pre><code class="language-lua">    if STATS then
+        os.execute(fmt("awk -f stats.awk %s/*.md", OUT_DIR))
+</code></pre>
+
 <h3><a id="run-3"></a>Entry point</h3>
 
-<p><code>~/Desktop/autoodocs/autodocs.lua:144</code></p>
+<p><code>~/Desktop/autoodocs/autodocs.lua:149</code></p>
 
 <pre><code class="language-lua">main()
 </code></pre>

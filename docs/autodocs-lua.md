@@ -188,9 +188,19 @@ Write index page
 Write individual file pages
 
 
+<a id="run-2-7"></a>**2.7 ~/Desktop/autoodocs/autodocs.lua:143**
+*↳ [@run 2.](#run-2)*
+
+Output stats if requested
+
+```lua
+    if STATS then
+        os.execute(fmt("awk -f stats.awk %s/*.md", OUT_DIR))
+```
+
 ### <a id="run-3"></a>Entry point
 
-`~/Desktop/autoodocs/autodocs.lua:144`
+`~/Desktop/autoodocs/autodocs.lua:149`
 
 ```lua
 main()
