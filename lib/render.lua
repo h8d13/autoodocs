@@ -205,6 +205,19 @@ function M.render_index(file_order, scan_dir)
     end
     w("-->\n")
 
+    -- Detect repo URL from git remote
+    local pipe = io.popen("git remote get-url origin 2>/dev/null")
+    if pipe then
+        local url = pipe:read("*l")
+        pipe:close()
+        if url then
+            -- Convert SSH to HTTPS format
+            url = gsub(url, "^git@([^:]+):", "https://%1/")
+            url = gsub(url, "%.git$", "")
+            w(fmt("<!-- REPO:%s -->\n", url))
+        end
+    end
+
     return concat(out)
 end
 

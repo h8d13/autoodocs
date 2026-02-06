@@ -7,7 +7,7 @@ A lightweight documentation generator that extracts tagged comments from source 
 ## Features
 
 - Extracts `@gen`, `@def`, `@chk`, `@run`, `@err` tagged comments
-- Respects `.gitignore` and `.somefolder` ignores
+- Respects `.gitignore` and `.somefolder/` ignores
 - Skips the whole comment block until next code line
 - Cross-references with `@src:file:line` auto-resolving anchors
 - Subject line counts with `:N` syntax
@@ -65,3 +65,4 @@ Or directly from root `/` or without a specific branch.
 [render.lua](render-lua.html)
 [<]
 -->
+<!-- REPO:https://github.com/h8d13/autoodocs -->

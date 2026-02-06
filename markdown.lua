@@ -1293,7 +1293,7 @@ local function run_command_line(arg)
 <body>
 <div class="container">
 <nav class="sidebar">
-<h2>Contents <a href="index.html" class="sidebar-home" title="Home">⌂</a></h2>
+<h2>Contents <a href="index.html" class="sidebar-home" title="Home">⌂</a><a href="REPO_URL" class="sidebar-repo" title="Source">⌘</a></h2>
 <ul id="toc"></ul>
 </nav>
 <main class="content">
@@ -1349,6 +1349,15 @@ local function run_command_line(arg)
 
         -- Replace TOC placeholder
         header = header:gsub('<ul id="toc"></ul>', '<ul id="toc">\n' .. toc_html .. '\n</ul>')
+
+        -- Extract repo URL from comment and replace placeholder
+        local repo_url = s:match("<!%-%- REPO:(%S+) %-%->")
+        if repo_url then
+            header = header:gsub("REPO_URL", repo_url)
+        else
+            -- Hide repo icon if no URL
+            header = header:gsub('<a href="REPO_URL" class="sidebar%-repo" title="Source">⌘</a>', '')
+        end
 
         local footer = [[</main>
 </div>

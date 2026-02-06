@@ -48,10 +48,12 @@ body {
     color: #555;
 }
 
-.sidebar h2 .sidebar-home {
+.sidebar h2 .sidebar-home,
+.sidebar h2 .sidebar-repo {
     float: right;
     position: relative;
     top: -0.2em;
+    margin-left: 0.3em;
 }
 
 .sidebar ul {
