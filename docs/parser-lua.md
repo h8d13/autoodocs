@@ -14,7 +14,7 @@ pattern pre-filters then literal find confirms exact match
 
 ```lua
 function M.get_tag(line)
-    if not find(line, "@[gdcre][ehu][nfknr]", 1) then return nil end
+    if not find(line, "@[gdcre][ehur][nfkr]", 1) then return nil end
     if     find(line, "@gen", 1, true) then return "GEN"
     elseif find(line, "@def", 1, true) then return "DEF"
     elseif find(line, "@chk", 1, true) then return "CHK"

@@ -21,6 +21,7 @@
 <li class="toc-sub"><a href="#run-1">Write file if content changed</a></li>
 <li class="toc-sub"><a href="#run-2">Main function</a></li>
 <li class="toc-sub"><a href="#run-3">Entry point</a></li>
+<li><a href="#err">Errors</a></li>
 </ul>
 </nav>
 <main class="content">
@@ -240,6 +241,30 @@ end
 <p><code>~/Desktop/autoodocs/autoodocs.lua:173</code></p>
 
 <pre><code class="language-lua">main()
+</code></pre>
+
+<h2><a id="err"></a>Errors</h2>
+
+<p><a id="err-1"></a><strong>1. ~/Desktop/autoodocs/autoodocs.lua:118</strong>
+<em>↳ <a href="#run-2">@run 2.</a></em></p>
+
+<p>No tagged files found</p>
+
+<pre><code class="language-lua">    if #files == 0 then
+        io.stderr:write(fmt("autoodocs: no tags found under %s\n", SCAN_DIR))
+        return
+    end
+</code></pre>
+
+<p><a id="err-2"></a><strong>2. ~/Desktop/autoodocs/autoodocs.lua:129</strong>
+<em>↳ <a href="#run-2">@run 2.</a></em></p>
+
+<p>No extractable documentation</p>
+
+<pre><code class="language-lua">    if #records == 0 then
+        io.stderr:write(fmt("autoodocs: tags found but no extractable docs under %s\n", SCAN_DIR))
+        return
+    end
 </code></pre>
 
 

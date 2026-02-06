@@ -199,3 +199,35 @@ end
 `~/Desktop/autoodocs/markdown.lua:1270`
 
 
+## <a id="err"></a>Errors
+
+<a id="err-1"></a>**1. ~/Desktop/autoodocs/markdown.lua:1277**
+*↳ [@run 10.](#run-10)*
+
+Header file not found
+
+
+<a id="err-1-1"></a>**1.1 ~/Desktop/autoodocs/markdown.lua:1304**
+*↳ [@err 1.](#err-1)*
+
+Stylesheet file not found for inline inclusion
+
+
+<a id="err-2"></a>**2. ~/Desktop/autoodocs/markdown.lua:1391**
+*↳ [@run 10.](#run-10)*
+
+Footer file not found
+
+
+<a id="err-3"></a>**3. ~/Desktop/autoodocs/markdown.lua:1454**
+*↳ [@run 10.](#run-10)*
+
+Test file not found
+
+
+<a id="err-4"></a>**4. ~/Desktop/autoodocs/markdown.lua:1464**
+*↳ [@run 10.](#run-10)*
+
+Input or output file cannot be opened
+
+

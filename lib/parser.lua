@@ -28,7 +28,7 @@ M.ADMONITIONS = {n="NOTE", t="TIP", i="IMPORTANT", w="WARNING", c="CAUTION"}
 -- @chk:9 Detect and classify tag in one pass, returns nil if no tag
 -- pattern pre-filters then literal find confirms exact match
 function M.get_tag(line)
-    if not find(line, "@[gdcre][ehu][nfknr]", 1) then return nil end
+    if not find(line, "@[gdcre][ehur][nfkr]", 1) then return nil end
     if     find(line, "@gen", 1, true) then return "GEN"
     elseif find(line, "@def", 1, true) then return "DEF"
     elseif find(line, "@chk", 1, true) then return "CHK"
