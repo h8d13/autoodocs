@@ -113,7 +113,7 @@ function M.detect_style(line)
     return "none"
 end
 
--- @run:9 Strip comment delimiters and extract inner text
+-- @run Strip comment delimiters and extract inner text
 -- for all styles including block continuations
 function M.strip_comment(line, style)
     -- @chk shell type comments
@@ -190,7 +190,7 @@ function M.strip_comment(line, style)
     return line
 end
 
--- @run:9 Walk one file as a line-by-line state machine
+-- @run Walk one file as a line-by-line state machine
 -- extracting tagged comments into `records` table
 function M.process_file(filepath, records, HOME, US)
     -- @def:4!n Bulk-read file first so `get_lang` reuses the buffer
