@@ -13,15 +13,7 @@
 
 <h2>Checks (@chk)</h2>
 
-<h3><a id="chk-1"></a>1. ~/Desktop/autoodocs/readme.html:534</h3>
-<p>shell type comments</p>
-
-
-<h3><a id="chk-2"></a>2. ~/Desktop/autoodocs/readme.html:539</h3>
-<p>double-slash comments</p>
-
-
-<h3><a id="chk-3"></a>3. ~/Desktop/autoodocs/lib/parser.lua:24</h3>
+<h3><a id="chk-1"></a>1. ~/Desktop/autoodocs/lib/parser.lua:24</h3>
 <p>Test whether a line contains any documentation tag</p>
 
 <blockquote>
@@ -35,7 +27,7 @@
 end
 </code></pre>
 
-<h3><a id="chk-4"></a>4. ~/Desktop/autoodocs/lib/parser.lua:32</h3>
+<h3><a id="chk-2"></a>2. ~/Desktop/autoodocs/lib/parser.lua:32</h3>
 <p>Classify a tagged line into <code>DEF</code>, <code>CHK</code>, <code>RUN</code>, or <code>ERR</code></p>
 
 <pre><code class="language-lua">function M.get_tag(line)
@@ -47,7 +39,7 @@ end
 end
 </code></pre>
 
-<h3><a id="chk-5"></a>5. ~/Desktop/autoodocs/lib/parser.lua:41</h3>
+<h3><a id="chk-3"></a>3. ~/Desktop/autoodocs/lib/parser.lua:41</h3>
 <p>Extract the subject line count from <code>@tag:N</code> syntax</p>
 
 <blockquote>
@@ -61,7 +53,7 @@ end
 end
 </code></pre>
 
-<h3><a id="chk-6"></a>6. ~/Desktop/autoodocs/lib/parser.lua:61</h3>
+<h3><a id="chk-4"></a>4. ~/Desktop/autoodocs/lib/parser.lua:61</h3>
 <p>Extract <code>!x</code> admonition suffix from tag syntax</p>
 
 <pre><code class="language-lua">function M.get_admonition(text)
@@ -70,7 +62,7 @@ end
 end
 </code></pre>
 
-<h3><a id="chk-7"></a>7. ~/Desktop/autoodocs/lib/parser.lua:92</h3>
+<h3><a id="chk-5"></a>5. ~/Desktop/autoodocs/lib/parser.lua:92</h3>
 <p>Detect comment style via byte-level prefix check</p>
 
 <blockquote>
@@ -100,49 +92,49 @@ end
 end
 </code></pre>
 
-<p><a id="chk-8"></a><strong>8. ~/Desktop/autoodocs/lib/parser.lua:129</strong>
+<p><a id="chk-6"></a><strong>6. ~/Desktop/autoodocs/lib/parser.lua:129</strong>
 <em>↳ <a href="#run-3">@run 3.</a></em></p>
 
 <p>double-dash comments</p>
 
 
-<p><a id="chk-9"></a><strong>9. ~/Desktop/autoodocs/lib/parser.lua:134</strong>
+<p><a id="chk-7"></a><strong>7. ~/Desktop/autoodocs/lib/parser.lua:134</strong>
 <em>↳ <a href="#run-3">@run 3.</a></em></p>
 
 <p>C-style block opening</p>
 
 
-<p><a id="chk-10"></a><strong>10. ~/Desktop/autoodocs/lib/parser.lua:141</strong>
+<p><a id="chk-8"></a><strong>8. ~/Desktop/autoodocs/lib/parser.lua:141</strong>
 <em>↳ <a href="#run-3">@run 3.</a></em></p>
 
 <p>HTML comment opening</p>
 
 
-<p><a id="chk-11"></a><strong>11. ~/Desktop/autoodocs/lib/parser.lua:148</strong>
+<p><a id="chk-9"></a><strong>9. ~/Desktop/autoodocs/lib/parser.lua:148</strong>
 <em>↳ <a href="#run-3">@run 3.</a></em></p>
 
 <p>block comment continuation lines</p>
 
 
-<p><a id="chk-12"></a><strong>12. ~/Desktop/autoodocs/lib/parser.lua:159</strong>
+<p><a id="chk-10"></a><strong>10. ~/Desktop/autoodocs/lib/parser.lua:159</strong>
 <em>↳ <a href="#run-3">@run 3.</a></em></p>
 
 <p>html closing</p>
 
 
-<p><a id="chk-13"></a><strong>13. ~/Desktop/autoodocs/lib/parser.lua:165</strong>
+<p><a id="chk-11"></a><strong>11. ~/Desktop/autoodocs/lib/parser.lua:165</strong>
 <em>↳ <a href="#run-3">@run 3.</a></em></p>
 
 <p>triple-quote docstring styles</p>
 
 
-<p><a id="chk-14"></a><strong>14. ~/Desktop/autoodocs/lib/parser.lua:172</strong>
+<p><a id="chk-12"></a><strong>12. ~/Desktop/autoodocs/lib/parser.lua:172</strong>
 <em>↳ <a href="#run-3">@run 3.</a></em></p>
 
 <p>single-quote docstring style</p>
 
 
-<p><a id="chk-15"></a><strong>15. ~/Desktop/autoodocs/lib/parser.lua:179</strong>
+<p><a id="chk-13"></a><strong>13. ~/Desktop/autoodocs/lib/parser.lua:179</strong>
 <em>↳ <a href="#run-3">@run 3.</a></em></p>
 
 <p>docstring continuation lines</p>
@@ -152,25 +144,25 @@ end
 </blockquote>
 
 
-<p><a id="chk-16"></a><strong>16. ~/Desktop/autoodocs/lib/parser.lua:319</strong>
+<p><a id="chk-14"></a><strong>14. ~/Desktop/autoodocs/lib/parser.lua:319</strong>
 <em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
 
 <p>Scan untagged block comment for tags</p>
 
 
-<p><a id="chk-17"></a><strong>17. ~/Desktop/autoodocs/lib/parser.lua:338</strong>
+<p><a id="chk-15"></a><strong>15. ~/Desktop/autoodocs/lib/parser.lua:338</strong>
 <em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
 
 <p>Scan untagged HTML comment for tags</p>
 
 
-<p><a id="chk-18"></a><strong>18. ~/Desktop/autoodocs/lib/parser.lua:371</strong>
+<p><a id="chk-16"></a><strong>16. ~/Desktop/autoodocs/lib/parser.lua:371</strong>
 <em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
 
 <p>Scan untagged docstring for tags</p>
 
 
-<p><a id="chk-19"></a><strong>19. ~/Desktop/autoodocs/lib/parser.lua:396</strong>
+<p><a id="chk-17"></a><strong>17. ~/Desktop/autoodocs/lib/parser.lua:396</strong>
 <em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
 
 <p>Detect comment style of current line</p>
@@ -178,31 +170,31 @@ end
 <pre><code class="language-lua">        local style = M.detect_style(line)
 </code></pre>
 
-<p><a id="chk-20"></a><strong>20. ~/Desktop/autoodocs/lib/parser.lua:438</strong>
+<p><a id="chk-18"></a><strong>18. ~/Desktop/autoodocs/lib/parser.lua:438</strong>
 <em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
 
 <p>Untagged block comment start - scan for tags</p>
 
 
-<p><a id="chk-21"></a><strong>21. ~/Desktop/autoodocs/lib/parser.lua:441</strong>
+<p><a id="chk-19"></a><strong>19. ~/Desktop/autoodocs/lib/parser.lua:441</strong>
 <em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
 
 <p>Untagged HTML comment start</p>
 
 
-<p><a id="chk-22"></a><strong>22. ~/Desktop/autoodocs/lib/parser.lua:444</strong>
+<p><a id="chk-20"></a><strong>20. ~/Desktop/autoodocs/lib/parser.lua:444</strong>
 <em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
 
 <p>Untagged double-quote docstring start</p>
 
 
-<p><a id="chk-23"></a><strong>23. ~/Desktop/autoodocs/lib/parser.lua:448</strong>
+<p><a id="chk-21"></a><strong>21. ~/Desktop/autoodocs/lib/parser.lua:448</strong>
 <em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
 
 <p>Untagged single-quote docstring start</p>
 
 
-<h3><a id="chk-24"></a>24. ~/Desktop/autoodocs/lib/utils.lua:61</h3>
+<h3><a id="chk-22"></a>22. ~/Desktop/autoodocs/lib/utils.lua:61</h3>
 <p>Classify file language via extension or shebang</p>
 
 <blockquote>
@@ -223,11 +215,11 @@ end
 end
 </code></pre>
 
-<h3><a id="chk-25"></a>25. ~/Desktop/autoodocs/autodocs.lua:2</h3>
+<h3><a id="chk-23"></a>23. ~/Desktop/autoodocs/autodocs.lua:2</h3>
 <p><code>-s</code> outputs extra stats</p>
 
 
-<p><a id="chk-26"></a><strong>26. ~/Desktop/autoodocs/autodocs.lua:85</strong>
+<p><a id="chk-24"></a><strong>24. ~/Desktop/autoodocs/autodocs.lua:85</strong>
 <em>↳ <a href="#run-10">@run 10.</a></em></p>
 
 <p>Verify tagged files were discovered</p>
@@ -235,7 +227,7 @@ end
 <pre><code class="language-lua">    if #files == 0 then
 </code></pre>
 
-<p><a id="chk-27"></a><strong>27. ~/Desktop/autoodocs/autodocs.lua:106</strong>
+<p><a id="chk-25"></a><strong>25. ~/Desktop/autoodocs/autodocs.lua:106</strong>
 <em>↳ <a href="#run-10">@run 10.</a></em></p>
 
 <p>Verify extraction produced results</p>
@@ -243,7 +235,7 @@ end
 <pre><code class="language-lua">    if #records == 0 then
 </code></pre>
 
-<p><a id="chk-28"></a><strong>28. ~/Desktop/autoodocs/autodocs.lua:120</strong>
+<p><a id="chk-26"></a><strong>26. ~/Desktop/autoodocs/autodocs.lua:120</strong>
 <em>↳ <a href="#run-10">@run 10.</a></em></p>
 
 <p>Render and compare against existing output</p>
@@ -266,37 +258,7 @@ end
 
 <h2>Defines (@def)</h2>
 
-<h3><a id="def-1"></a>1. ~/Desktop/autoodocs/readme.html:552</h3>
-<div class="callout callout-note">
-    <div class="callout-title">NOTE</div>
-    <p>Bulk-read file first so <code>get_lang</code> reuses the buffer</p>
-</div>
-
-<p>avoids a second <code>open</code>+<code>read</code> just for shebang detection</p>
-
-<pre><code class="language-html">    local f = open(filepath, "r")
-    if not f then return 0 end
-    local content = f:read("*a")
-    f:close()
-</code></pre>
-
-<h3><a id="def-2"></a>2. ~/Desktop/autoodocs/readme.html:559</h3>
-<p>Initialize per-file state machine variables</p>
-
-<pre><code class="language-html">&lt;/code&gt;&lt;/pre&gt;
-
-HASH019X
-
-HASH018X
-
-HASH020X
-
-&lt;pre&gt;&lt;code class="language-lua"&gt;    local function emit()
-        if tag ~= "" and text ~= "" then
-            local tr = trim(text)
-</code></pre>
-
-<h3><a id="def-3"></a>3. ~/Desktop/autoodocs/lib/parser.lua:1</h3>
+<h3><a id="def-1"></a>1. ~/Desktop/autoodocs/lib/parser.lua:1</h3>
 <p>Localize functions for hot loop performance</p>
 
 <pre><code class="language-lua">local find   = string.find
@@ -306,19 +268,19 @@ local match  = string.match
 local gmatch = string.gmatch
 </code></pre>
 
-<h3><a id="def-4"></a>4. ~/Desktop/autoodocs/lib/parser.lua:18</h3>
+<h3><a id="def-2"></a>2. ~/Desktop/autoodocs/lib/parser.lua:18</h3>
 <p>Hoisted <code>TAGS</code> table avoids per-call allocation in <code>strip_tags</code></p>
 
 <pre><code class="language-lua">local TAGS = {"@def", "@chk", "@run", "@err"}
 </code></pre>
 
-<h3><a id="def-5"></a>5. ~/Desktop/autoodocs/lib/parser.lua:21</h3>
+<h3><a id="def-3"></a>3. ~/Desktop/autoodocs/lib/parser.lua:21</h3>
 <p>Map <code>!x</code> suffixes to admonition types</p>
 
 <pre><code class="language-lua">M.ADMONITIONS = {n="NOTE", t="TIP", i="IMPORTANT", w="WARNING", c="CAUTION"}
 </code></pre>
 
-<h3><a id="def-6"></a>6. ~/Desktop/autoodocs/lib/utils.lua:1</h3>
+<h3><a id="def-4"></a>4. ~/Desktop/autoodocs/lib/utils.lua:1</h3>
 <p>Localize <code>string.*</code>, <code>table.*</code>, and <code>io.*</code> functions</p>
 
 <blockquote>
@@ -336,7 +298,7 @@ local M = {}
 
 </code></pre>
 
-<h3><a id="def-7"></a>7. ~/Desktop/autoodocs/lib/utils.lua:12</h3>
+<h3><a id="def-5"></a>5. ~/Desktop/autoodocs/lib/utils.lua:12</h3>
 <div class="callout callout-note">
     <div class="callout-title">NOTE</div>
     <p>Shell-escape a string for safe interpolation into <code>io.popen</code></p>
@@ -349,7 +311,7 @@ local M = {}
 end
 </code></pre>
 
-<h3><a id="def-8"></a>8. ~/Desktop/autoodocs/lib/utils.lua:41</h3>
+<h3><a id="def-6"></a>6. ~/Desktop/autoodocs/lib/utils.lua:41</h3>
 <p>Map file extension to fenced code block language</p>
 
 <pre><code class="language-lua">M.ext_map = {
@@ -366,7 +328,7 @@ end
 }
 </code></pre>
 
-<h3><a id="def-9"></a>9. ~/Desktop/autoodocs/lib/utils.lua:55</h3>
+<h3><a id="def-7"></a>7. ~/Desktop/autoodocs/lib/utils.lua:55</h3>
 <p>Map shebang interpreters to fenced code block language</p>
 
 <pre><code class="language-lua">M.shebang_map = {
@@ -375,7 +337,7 @@ end
 }
 </code></pre>
 
-<h3><a id="def-10"></a>10. ~/Desktop/autoodocs/lib/render.lua:1</h3>
+<h3><a id="def-8"></a>8. ~/Desktop/autoodocs/lib/render.lua:1</h3>
 <p>Localize functions for performance</p>
 
 <pre><code class="language-lua">local fmt    = string.format
@@ -383,27 +345,27 @@ local gmatch = string.gmatch
 local concat = table.concat
 </code></pre>
 
-<h3><a id="def-11"></a>11. ~/Desktop/autoodocs/lib/render.lua:5</h3>
+<h3><a id="def-9"></a>9. ~/Desktop/autoodocs/lib/render.lua:5</h3>
 <p>Import utils for trim</p>
 
 <pre><code class="language-lua">local utils = require("lib.utils")
 local trim = utils.trim
 </code></pre>
 
-<h3><a id="def-12"></a>12. ~/Desktop/autoodocs/lib/render.lua:8</h3>
+<h3><a id="def-10"></a>10. ~/Desktop/autoodocs/lib/render.lua:8</h3>
 <p>Define map</p>
 
 <pre><code class="language-lua">local M = {}
 </code></pre>
 
-<h3><a id="def-13"></a>13. ~/Desktop/autoodocs/lib/render.lua:11</h3>
+<h3><a id="def-11"></a>11. ~/Desktop/autoodocs/lib/render.lua:11</h3>
 <p>Map tag prefixes to anchor slugs and section titles</p>
 
 <pre><code class="language-lua">M.TAG_SEC   = {CHK="chk", DEF="def", RUN="run", ERR="err"}
 M.TAG_TITLE = {CHK="Checks", DEF="Defines", RUN="Runners", ERR="Errors"}
 </code></pre>
 
-<h3><a id="def-14"></a>14. ~/Desktop/autoodocs/autodocs.lua:10</h3>
+<h3><a id="def-12"></a>12. ~/Desktop/autoodocs/autodocs.lua:10</h3>
 <div class="callout callout-important">
     <div class="callout-title">IMPORTANT</div>
     <p>Defines with 9 line of subject</p>
@@ -432,7 +394,7 @@ M.TAG_TITLE = {CHK="Checks", DEF="Defines", RUN="Runners", ERR="Errors"}
     ---- handle errors with more definitions
 </code></pre>
 
-<h3><a id="def-15"></a>15. ~/Desktop/autoodocs/autodocs.lua:31</h3>
+<h3><a id="def-13"></a>13. ~/Desktop/autoodocs/autodocs.lua:31</h3>
 <p>Localize functions and load libraries</p>
 
 <pre><code class="language-lua">local match  = string.match
@@ -441,7 +403,7 @@ local sub    = string.sub
 local fmt    = string.format
 </code></pre>
 
-<h3><a id="def-16"></a>16. ~/Desktop/autoodocs/autodocs.lua:42</h3>
+<h3><a id="def-14"></a>14. ~/Desktop/autoodocs/autodocs.lua:42</h3>
 <p>Parse CLI args with defaults</p>
 
 <blockquote>
@@ -465,7 +427,7 @@ local HOME = match(SCAN_DIR, "^(/[^/]+/[^/]+)")
 local US = "\031"
 </code></pre>
 
-<h3><a id="def-17"></a>17. ~/Desktop/autoodocs/autodocs.lua:59</h3>
+<h3><a id="def-15"></a>15. ~/Desktop/autoodocs/autodocs.lua:59</h3>
 <p>Global state for collected records and line count</p>
 
 <pre><code class="language-lua">local records = {}
@@ -937,7 +899,7 @@ end
     end
 
     local cmd = fmt(
-        'grep -rl -I --exclude-dir=.git %s -e "@def" -e "@chk" -e "@run" -e "@err" %s 2&gt;/dev/null',
+        'grep -rl -I --exclude-dir=.git --exclude="readme*" %s -e "@def" -e "@chk" -e "@run" -e "@err" %s 2&gt;/dev/null',
         gi, utils.shell_quote(SCAN_DIR)
     )
     local pipe = io.popen(cmd)
@@ -1010,7 +972,7 @@ end
 <h2>Errors (@err)</h2>
 
 <p><a id="err-1"></a><strong>1. ~/Desktop/autoodocs/autodocs.lua:87</strong>
-<em>↳ <a href="#chk-26">@chk 26.</a></em></p>
+<em>↳ <a href="#chk-24">@chk 24.</a></em></p>
 
 <p>Handle missing tagged files</p>
 
@@ -1026,7 +988,7 @@ end
 </code></pre>
 
 <p><a id="err-2"></a><strong>2. ~/Desktop/autoodocs/autodocs.lua:108</strong>
-<em>↳ <a href="#chk-27">@chk 27.</a></em></p>
+<em>↳ <a href="#chk-25">@chk 25.</a></em></p>
 
 <p>Handle extraction failure</p>
 

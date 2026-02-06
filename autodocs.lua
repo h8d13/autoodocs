@@ -72,7 +72,7 @@ local function main()
     end
 
     local cmd = fmt(
-        'grep -rl -I --exclude-dir=.git %s -e "@def" -e "@chk" -e "@run" -e "@err" %s 2>/dev/null',
+        'grep -rl -I --exclude-dir=.git --exclude="readme*" %s -e "@def" -e "@chk" -e "@run" -e "@err" %s 2>/dev/null',
         gi, utils.shell_quote(SCAN_DIR)
     )
     local pipe = io.popen(cmd)
