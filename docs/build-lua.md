@@ -25,7 +25,7 @@ local fmt = string.format
 
 `~/Desktop/autoodocs/build.lua:8`
 
-[autodocs.lua:82](autodocs-lua.html#run-2)
+[autodocs.lua:82](autodocs-lua.html#run-1)
 
 ```lua
 print("Generating markdown...")

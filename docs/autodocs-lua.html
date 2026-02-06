@@ -54,10 +54,8 @@
 
 <div class="callout callout-important">
     <div class="callout-title">IMPORTANT</div>
-    <p>And a important callout style</p>
+    <p>after the end of comment block</p>
 </div>
-
-<p>after the end of comment block</p>
 
 <p><code>!n</code> NOTE</p>
 
@@ -68,19 +66,23 @@
 <p><code>!c</code> CAUTION</p>
 
 <pre><code class="language-lua">print('luadoc is awesome')
-    -- Check  -&gt; Early checks
+    -- @chk Check  -&gt; Early checks
     ---- guard the entry, bail early if preconditions fail
-    -- Define -&gt; Gives instructions to
+    -- @def Define -&gt; Gives instructions to
     ---- define the state/config the rest depends on
-    -- Run    -&gt; Use the instructions
+    -- @run Run    -&gt; Use the instructions
     ---- do the actual work using those definitions
-    -- Error  -&gt; Handle what went wrong
+    -- @err Error  -&gt; Handle what went wrong
     ---- handle errors with more definitions
+    -- @gen General -&gt; File description
+    ---- plain text at top, no section header
+    -- @src Source -&gt; reference a line nbr
+    ---- Mention line nr auto resolve anchor
 </code></pre>
 
 <h3><a id="def-2"></a>Localize functions and load libraries</h3>
 
-<p><code>~/Desktop/autoodocs/autodocs.lua:34</code></p>
+<p><code>~/Desktop/autoodocs/autodocs.lua:37</code></p>
 
 <pre><code class="language-lua">local match  = string.match
 local gsub   = string.gsub
@@ -91,7 +93,7 @@ local open   = io.open
 
 <h3><a id="def-3"></a>Parse CLI args with defaults</h3>
 
-<p><code>~/Desktop/autoodocs/autodocs.lua:45</code></p>
+<p><code>~/Desktop/autoodocs/autodocs.lua:48</code></p>
 
 <p>strip trailing slash, resolve absolute path via <code>/proc/self/environ</code></p>
 
@@ -115,7 +117,7 @@ local US = "\031"
 
 <h3><a id="def-4"></a>Global state for collected records and line count</h3>
 
-<p><code>~/Desktop/autoodocs/autodocs.lua:61</code></p>
+<p><code>~/Desktop/autoodocs/autodocs.lua:64</code></p>
 
 <p>see <a href="parser-lua.html#chk-15">lib/parser.lua:195</a> for file processing</p>
 
@@ -127,23 +129,23 @@ local total_input = 0
 
 <h3><a id="run-1"></a>Write file if content changed</h3>
 
-<p><code>~/Desktop/autoodocs/autodocs.lua:66</code></p>
+<p><code>~/Desktop/autoodocs/autodocs.lua:69</code></p>
 
 
 <h3><a id="run-2"></a>Main function</h3>
 
-<p><code>~/Desktop/autoodocs/autodocs.lua:82</code></p>
+<p><code>~/Desktop/autoodocs/autodocs.lua:85</code></p>
 
 <pre><code class="language-lua">local function main()
 </code></pre>
 
-<p><a id="run-2-1"></a><strong>2.1 ~/Desktop/autoodocs/autodocs.lua:84</strong>
+<p><a id="run-2-1"></a><strong>2.1 ~/Desktop/autoodocs/autodocs.lua:87</strong>
 <em>↳ <a href="#run-2">@run 2.</a></em></p>
 
 <p>Create output directory</p>
 
 
-<p><a id="run-2-2"></a><strong>2.2 ~/Desktop/autoodocs/autodocs.lua:87</strong>
+<p><a id="run-2-2"></a><strong>2.2 ~/Desktop/autoodocs/autodocs.lua:90</strong>
 <em>↳ <a href="#run-2">@run 2.</a></em></p>
 
 <p>Discover files containing documentation tags</p>
@@ -171,7 +173,7 @@ local total_input = 0
     pipe:close()
 </code></pre>
 
-<p><a id="run-2-3"></a><strong>2.3 ~/Desktop/autoodocs/autodocs.lua:113</strong>
+<p><a id="run-2-3"></a><strong>2.3 ~/Desktop/autoodocs/autodocs.lua:116</strong>
 <em>↳ <a href="#run-2">@run 2.</a></em></p>
 
 <p>Process all discovered files into intermediate <code>records</code></p>
@@ -181,7 +183,7 @@ local total_input = 0
     end
 </code></pre>
 
-<p><a id="run-2-4"></a><strong>2.4 ~/Desktop/autoodocs/autodocs.lua:124</strong>
+<p><a id="run-2-4"></a><strong>2.4 ~/Desktop/autoodocs/autodocs.lua:127</strong>
 <em>↳ <a href="#run-2">@run 2.</a></em></p>
 
 <p>Group and index records by file</p>
@@ -189,19 +191,19 @@ local total_input = 0
 <pre><code class="language-lua">    local by_file, file_order = render.group_records(records)
 </code></pre>
 
-<p><a id="run-2-5"></a><strong>2.5 ~/Desktop/autoodocs/autodocs.lua:127</strong>
+<p><a id="run-2-5"></a><strong>2.5 ~/Desktop/autoodocs/autodocs.lua:130</strong>
 <em>↳ <a href="#run-2">@run 2.</a></em></p>
 
 <p>Write index page</p>
 
 
-<p><a id="run-2-6"></a><strong>2.6 ~/Desktop/autoodocs/autodocs.lua:134</strong>
+<p><a id="run-2-6"></a><strong>2.6 ~/Desktop/autoodocs/autodocs.lua:137</strong>
 <em>↳ <a href="#run-2">@run 2.</a></em></p>
 
 <p>Write individual file pages</p>
 
 
-<p><a id="run-2-7"></a><strong>2.7 ~/Desktop/autoodocs/autodocs.lua:148</strong>
+<p><a id="run-2-7"></a><strong>2.7 ~/Desktop/autoodocs/autodocs.lua:151</strong>
 <em>↳ <a href="#run-2">@run 2.</a></em></p>
 
 <p>Output stats if requested</p>
@@ -212,14 +214,14 @@ local total_input = 0
 
 <h3><a id="run-3"></a>Entry point</h3>
 
-<p><code>~/Desktop/autoodocs/autodocs.lua:154</code></p>
+<p><code>~/Desktop/autoodocs/autodocs.lua:157</code></p>
 
 <pre><code class="language-lua">main()
 </code></pre>
 
 <h2><a id="err"></a>Errors</h2>
 
-<p><a id="err-1"></a><strong>1. ~/Desktop/autoodocs/autodocs.lua:107</strong>
+<p><a id="err-1"></a><strong>1. ~/Desktop/autoodocs/autodocs.lua:110</strong>
 <em>↳ <a href="#run-2">@run 2.</a></em></p>
 
 <p>No tagged files found</p>
@@ -230,7 +232,7 @@ local total_input = 0
     end
 </code></pre>
 
-<p><a id="err-2"></a><strong>2. ~/Desktop/autoodocs/autodocs.lua:118</strong>
+<p><a id="err-2"></a><strong>2. ~/Desktop/autoodocs/autodocs.lua:121</strong>
 <em>↳ <a href="#run-2">@run 2.</a></em></p>
 
 <p>No extractable documentation</p>

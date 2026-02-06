@@ -11,23 +11,26 @@
 
 -- @chk `-s` outputs extra stats
 
--- @def:9!i
--- Defines with 9 line of subject
--- And a important callout style
+-- @def:13!i
+-- `:N` lines of subject
 -- after the end of comment block
 -- `!n` NOTE
 -- `!t` TIP
 -- `!w` WARN
 -- `!c` CAUTION
 print('luadoc is awesome')
-    -- Check  -> Early checks
+    -- @chk Check  -> Early checks
     ---- guard the entry, bail early if preconditions fail
-    -- Define -> Gives instructions to
+    -- @def Define -> Gives instructions to
     ---- define the state/config the rest depends on
-    -- Run    -> Use the instructions
+    -- @run Run    -> Use the instructions
     ---- do the actual work using those definitions
-    -- Error  -> Handle what went wrong
+    -- @err Error  -> Handle what went wrong
     ---- handle errors with more definitions
+    -- @gen General -> File description
+    ---- plain text at top, no section header
+    -- @src Source -> reference a line nbr
+    ---- Mention line nr auto resolve anchor
 
 --########--
 
