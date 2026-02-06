@@ -1,5 +1,5 @@
 -- @gen Comment parser that extracts documentation tags from source files
--- @def:7 Localize functions for hot loop perf
+-- @def:8 Localize functions for hot loop perf
 local find   = string.find
 local sub    = string.sub
 local byte   = string.byte
@@ -7,6 +7,7 @@ local match  = string.match
 local gmatch = string.gmatch
 local gsub   = string.gsub
 local open   = io.open
+local concat = table.concat
 
 -- @def:5 Localize utils for hoot loop perf
 local utils = require("lib.utils")
@@ -24,17 +25,10 @@ local TAGS = {"@gen", "@def", "@chk", "@run", "@err"}
 -- @def:1 Map `!x` suffixes to admonition types
 M.ADMONITIONS = {n="NOTE", t="TIP", i="IMPORTANT", w="WARNING", c="CAUTION"}
 
--- @chk:6 Test whether a line contains any documentation tag
--- early `@` check short-circuits lines with no tags
-function M.has_tag(line)
-    if not find(line, "@", 1, true) then return nil end
-    return find(line, "@gen", 1, true) or find(line, "@def", 1, true) or
-           find(line, "@chk", 1, true) or find(line, "@run", 1, true) or
-           find(line, "@err", 1, true)
-end
-
--- @chk:8 Classify a tagged line into `GEN`, `DEF`, `CHK`, `RUN`, or `ERR`
+-- @chk:9 Detect and classify tag in one pass, returns nil if no tag
+-- pattern pre-filters then literal find confirms exact match
 function M.get_tag(line)
+    if not find(line, "@[gdcre][ehu][nfknr]", 1) then return nil end
     if     find(line, "@gen", 1, true) then return "GEN"
     elseif find(line, "@def", 1, true) then return "DEF"
     elseif find(line, "@chk", 1, true) then return "CHK"
@@ -256,11 +250,11 @@ function M.process_file(filepath, records, HOME, US, warnings)
     local state   = ""
     local tag     = ""
     local start   = ""
-    local text    = ""
+    local text    = {}
     local nsubj   = 0
     local cap_want = 0
     local capture = 0
-    local subj    = ""
+    local subj    = {}
     local adm     = nil
     local pending = nil
     local tag_indent = 0
@@ -269,8 +263,8 @@ function M.process_file(filepath, records, HOME, US, warnings)
     -- @run:38!n Emit a documentation record or defer for subject capture
     -- `lang` is passed through as-is, empty string means no fence label
     local function emit()
-        if tag ~= "" and text ~= "" then
-            local tr = trim(text)
+        if tag ~= "" and #text > 0 then
+            local tr = trim(concat(text, US))
             if tr ~= "" then
                 if nsubj > 0 then
                     pending = {
@@ -284,7 +278,7 @@ function M.process_file(filepath, records, HOME, US, warnings)
                         _nsubj = nsubj,
                     }
                     cap_want = nsubj
-                    subj = ""
+                    subj = {}
                 else
                     records[#records + 1] = {
                         tag  = tag,
@@ -302,7 +296,7 @@ function M.process_file(filepath, records, HOME, US, warnings)
         state = ""
         tag   = ""
         start = ""
-        text  = ""
+        text  = {}
         nsubj = 0
         adm   = nil
     end
@@ -310,10 +304,10 @@ function M.process_file(filepath, records, HOME, US, warnings)
     -- @run:9 Flush deferred record with captured `subj` lines
     local function flush_pending()
         if pending then
-            pending.subj = subj
+            pending.subj = concat(subj, US)
             records[#records + 1] = pending
             pending = nil
-            subj    = ""
+            subj    = {}
             capture = 0
         end
     end
@@ -336,13 +330,9 @@ function M.process_file(filepath, records, HOME, US, warnings)
             check_next = nil
         end
 
-        -- @run:15 Subject line capture mode
+        -- @run:11 Subject line capture mode
         if capture > 0 then
-            if subj ~= "" then
-                subj = subj .. US .. line
-            else
-                subj = line
-            end
+            subj[#subj + 1] = line
             capture = capture - 1
             if capture == 0 then
                 if warnings and pending then
@@ -357,11 +347,11 @@ function M.process_file(filepath, records, HOME, US, warnings)
         if state == "cblock" then
             if find(line, "*/", 1, true) then
                 local sc = M.strip_comment(line, "cblock_cont")
-                if sc ~= "" then text = text .. US .. sc end
+                if sc ~= "" then text[#text + 1] = sc end
                 emit()
             else
                 local sc = M.strip_comment(line, "cblock_cont")
-                text = text .. US .. sc
+                text[#text + 1] = sc
             end
             goto continue
         end
@@ -370,11 +360,11 @@ function M.process_file(filepath, records, HOME, US, warnings)
         if state == "html" then
             if find(line, "-->", 1, true) then
                 local sc = M.strip_comment(line, "html_cont")
-                if sc ~= "" then text = text .. US .. sc end
+                if sc ~= "" then text[#text + 1] = sc end
                 emit()
             else
                 local sc = M.strip_comment(line, "html_cont")
-                text = text .. US .. sc
+                text[#text + 1] = sc
             end
             goto continue
         end
@@ -383,11 +373,11 @@ function M.process_file(filepath, records, HOME, US, warnings)
         if state == "luablock" then
             if find(line, "]]", 1, true) then
                 local sc = M.strip_comment(line, "luablock_cont")
-                if sc ~= "" then text = text .. US .. sc end
+                if sc ~= "" then text[#text + 1] = sc end
                 emit()
             else
                 local sc = M.strip_comment(line, "luablock_cont")
-                text = text .. US .. sc
+                text[#text + 1] = sc
             end
             goto continue
         end
@@ -396,11 +386,11 @@ function M.process_file(filepath, records, HOME, US, warnings)
         if state == "hblock" then
             if find(line, "-}", 1, true) then
                 local sc = M.strip_comment(line, "hblock_cont")
-                if sc ~= "" then text = text .. US .. sc end
+                if sc ~= "" then text[#text + 1] = sc end
                 emit()
             else
                 local sc = M.strip_comment(line, "hblock_cont")
-                text = text .. US .. sc
+                text[#text + 1] = sc
             end
             goto continue
         end
@@ -410,14 +400,14 @@ function M.process_file(filepath, records, HOME, US, warnings)
             if find(line, "*/", 1, true) then
                 state = ""
             else
-                if M.has_tag(line) then
-                    tag   = M.get_tag(line)
+                tag = M.get_tag(line)
+                if tag then
                     start = tostring(ln)
                     local ti = 1; while byte(line,ti) == 32 or byte(line,ti) == 9 do ti = ti+1 end; tag_indent = ti-1
                     local sc = M.strip_comment(line, "cblock_cont")
                     nsubj = M.get_subject_count(sc)
                     adm   = M.get_admonition(sc)
-                    text  = M.strip_tags(sc)
+                    text  = {M.strip_tags(sc)}
                     state = "cblock"
                 end
             end
@@ -429,14 +419,14 @@ function M.process_file(filepath, records, HOME, US, warnings)
             if find(line, "-->", 1, true) then
                 state = ""
             else
-                if M.has_tag(line) then
-                    tag   = M.get_tag(line)
+                tag = M.get_tag(line)
+                if tag then
                     start = tostring(ln)
                     local ti = 1; while byte(line,ti) == 32 or byte(line,ti) == 9 do ti = ti+1 end; tag_indent = ti-1
                     local sc = M.strip_comment(line, "html_cont")
                     nsubj = M.get_subject_count(sc)
                     adm   = M.get_admonition(sc)
-                    text  = M.strip_tags(sc)
+                    text  = {M.strip_tags(sc)}
                     state = "html"
                 end
             end
@@ -448,11 +438,11 @@ function M.process_file(filepath, records, HOME, US, warnings)
             local close = (state == "dquote") and '"""' or "'''"
             if find(line, close, 1, true) then
                 local sc = M.strip_comment(line, "docstring_cont")
-                if sc ~= "" then text = text .. US .. sc end
+                if sc ~= "" then text[#text + 1] = sc end
                 emit()
             else
                 local sc = M.strip_comment(line, "docstring_cont")
-                text = text .. US .. sc
+                text[#text + 1] = sc
             end
             goto continue
         end
@@ -468,14 +458,14 @@ function M.process_file(filepath, records, HOME, US, warnings)
             if find(line, close, 1, true) then
                 state = ""
             else
-                if M.has_tag(line) then
-                    tag   = M.get_tag(line)
+                tag = M.get_tag(line)
+                if tag then
                     start = tostring(ln)
                     local ti = 1; while byte(line,ti) == 32 or byte(line,ti) == 9 do ti = ti+1 end; tag_indent = ti-1
                     local sc = M.strip_comment(line, "docstring_cont")
                     nsubj = M.get_subject_count(sc)
                     adm   = M.get_admonition(sc)
-                    text  = M.strip_tags(sc)
+                    text  = {M.strip_tags(sc)}
                     state = promote
                 end
             end
@@ -488,11 +478,11 @@ function M.process_file(filepath, records, HOME, US, warnings)
         -- @run:13 Continue or close existing single-line comment block
         if state ~= "" then
             if style == state then
-                if M.has_tag(line) then
+                if M.get_tag(line) then
                     emit()
                 else
                     local sc = M.strip_comment(line, style)
-                    text = text .. US .. sc
+                    text[#text + 1] = sc
                     goto continue
                 end
             else
@@ -501,14 +491,14 @@ function M.process_file(filepath, records, HOME, US, warnings)
         end
 
         -- @run:26 Dispatch new tagged comment by style
-        if M.has_tag(line) and style ~= "none" then
-            tag   = M.get_tag(line)
+        tag = M.get_tag(line)
+        if tag and style ~= "none" then
             start = tostring(ln)
             local ti = 1; while byte(line,ti) == 32 or byte(line,ti) == 9 do ti = ti+1 end; tag_indent = ti-1
             local sc = M.strip_comment(line, style)
             nsubj = M.get_subject_count(sc)
             adm   = M.get_admonition(sc)
-            text  = M.strip_tags(sc)
+            text  = {M.strip_tags(sc)}
 
             if style == "hash" or style == "dslash" or style == "ddash" or style == "semi" or style == "percent" then
                 state = style
@@ -548,7 +538,7 @@ function M.process_file(filepath, records, HOME, US, warnings)
         if cap_want > 0 and style == "none" then
             capture  = cap_want
             cap_want = 0
-            subj     = line
+            subj[1]  = line
             capture  = capture - 1
             if capture == 0 then flush_pending() end
         end

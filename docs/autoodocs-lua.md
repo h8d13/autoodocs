@@ -220,29 +220,3 @@ end
 main()
 ```
 
-## <a id="err"></a>Errors
-
-<a id="err-1"></a>**1. ~/Desktop/autoodocs/autoodocs.lua:118**
-*↳ [@run 2.](#run-2)*
-
-No tagged files found
-
-```lua
-    if #files == 0 then
-        io.stderr:write(fmt("autoodocs: no tags found under %s\n", SCAN_DIR))
-        return
-    end
-```
-
-<a id="err-2"></a>**2. ~/Desktop/autoodocs/autoodocs.lua:129**
-*↳ [@run 2.](#run-2)*
-
-No extractable documentation
-
-```lua
-    if #records == 0 then
-        io.stderr:write(fmt("autoodocs: tags found but no extractable docs under %s\n", SCAN_DIR))
-        return
-    end
-```
-

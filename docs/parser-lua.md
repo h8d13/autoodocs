@@ -6,27 +6,15 @@ Comment parser that extracts documentation tags from source files
 
 ## <a id="chk"></a>Checks
 
-### <a id="chk-1"></a>Test whether a line contains any documentation tag
+### <a id="chk-1"></a>Detect and classify tag in one pass, returns nil if no tag
 
-`~/Desktop/autoodocs/lib/parser.lua:27`
+`~/Desktop/autoodocs/lib/parser.lua:28`
 
-early `@` check short-circuits lines with no tags
-
-```lua
-function M.has_tag(line)
-    if not find(line, "@", 1, true) then return nil end
-    return find(line, "@gen", 1, true) or find(line, "@def", 1, true) or
-           find(line, "@chk", 1, true) or find(line, "@run", 1, true) or
-           find(line, "@err", 1, true)
-end
-```
-
-### <a id="chk-2"></a>Classify a tagged line into `GEN`, `DEF`, `CHK`, `RUN`, or `ERR`
-
-`~/Desktop/autoodocs/lib/parser.lua:36`
+pattern pre-filters then literal find confirms exact match
 
 ```lua
 function M.get_tag(line)
+    if not find(line, "@[gdcre][ehu][nfknr]", 1) then return nil end
     if     find(line, "@gen", 1, true) then return "GEN"
     elseif find(line, "@def", 1, true) then return "DEF"
     elseif find(line, "@chk", 1, true) then return "CHK"
@@ -36,9 +24,9 @@ function M.get_tag(line)
 end
 ```
 
-### <a id="chk-3"></a>Extract the subject line count from `@tag:N` syntax
+### <a id="chk-2"></a>Extract the subject line count from `@tag:N` syntax
 
-`~/Desktop/autoodocs/lib/parser.lua:46`
+`~/Desktop/autoodocs/lib/parser.lua:40`
 
 using pattern capture after the colon
 
@@ -51,9 +39,9 @@ function M.get_subject_count(text)
 end
 ```
 
-### <a id="chk-4"></a>Extract `!x` admonition suffix from tag syntax
+### <a id="chk-3"></a>Extract `!x` admonition suffix from tag syntax
 
-`~/Desktop/autoodocs/lib/parser.lua:67`
+`~/Desktop/autoodocs/lib/parser.lua:61`
 
 ```lua
 function M.get_admonition(text)
@@ -62,9 +50,9 @@ function M.get_admonition(text)
 end
 ```
 
-### <a id="chk-5"></a>Detect comment style via byte-level prefix check
+### <a id="chk-4"></a>Detect comment style via byte-level prefix check
 
-`~/Desktop/autoodocs/lib/parser.lua:98`
+`~/Desktop/autoodocs/lib/parser.lua:92`
 
 skips leading whitespace without allocating a trimmed copy
 
@@ -97,103 +85,103 @@ function M.detect_style(line)
 end
 ```
 
-<a id="chk-6"></a>**6. ~/Desktop/autoodocs/lib/parser.lua:130**
+<a id="chk-5"></a>**5. ~/Desktop/autoodocs/lib/parser.lua:124**
 *↳ [@run 3.](#run-3)*
 
 shell type comments
 
 
-<a id="chk-7"></a>**7. ~/Desktop/autoodocs/lib/parser.lua:135**
+<a id="chk-6"></a>**6. ~/Desktop/autoodocs/lib/parser.lua:129**
 *↳ [@run 3.](#run-3)*
 
 double-slash comments
 
 
-<a id="chk-8"></a>**8. ~/Desktop/autoodocs/lib/parser.lua:140**
+<a id="chk-7"></a>**7. ~/Desktop/autoodocs/lib/parser.lua:134**
 *↳ [@run 3.](#run-3)*
 
 double-dash comments
 
 
-<a id="chk-9"></a>**9. ~/Desktop/autoodocs/lib/parser.lua:145**
+<a id="chk-8"></a>**8. ~/Desktop/autoodocs/lib/parser.lua:139**
 *↳ [@run 3.](#run-3)*
 
 semicolon comments (Lisp/ASM/INI)
 
 
-<a id="chk-10"></a>**10. ~/Desktop/autoodocs/lib/parser.lua:150**
+<a id="chk-9"></a>**9. ~/Desktop/autoodocs/lib/parser.lua:144**
 *↳ [@run 3.](#run-3)*
 
 percent comments (MATLAB/LaTeX)
 
 
-<a id="chk-11"></a>**11. ~/Desktop/autoodocs/lib/parser.lua:155**
+<a id="chk-10"></a>**10. ~/Desktop/autoodocs/lib/parser.lua:149**
 *↳ [@run 3.](#run-3)*
 
 Lua block comment opening
 
 
-<a id="chk-12"></a>**12. ~/Desktop/autoodocs/lib/parser.lua:162**
+<a id="chk-11"></a>**11. ~/Desktop/autoodocs/lib/parser.lua:156**
 *↳ [@run 3.](#run-3)*
 
 Haskell block comment opening
 
 
-<a id="chk-13"></a>**13. ~/Desktop/autoodocs/lib/parser.lua:169**
+<a id="chk-12"></a>**12. ~/Desktop/autoodocs/lib/parser.lua:163**
 *↳ [@run 3.](#run-3)*
 
 C-style block opening
 
 
-<a id="chk-14"></a>**14. ~/Desktop/autoodocs/lib/parser.lua:176**
+<a id="chk-13"></a>**13. ~/Desktop/autoodocs/lib/parser.lua:170**
 *↳ [@run 3.](#run-3)*
 
 HTML comment opening
 
 
-<a id="chk-15"></a>**15. ~/Desktop/autoodocs/lib/parser.lua:183**
+<a id="chk-14"></a>**14. ~/Desktop/autoodocs/lib/parser.lua:177**
 *↳ [@run 3.](#run-3)*
 
 block comment continuation lines
 
 
-<a id="chk-16"></a>**16. ~/Desktop/autoodocs/lib/parser.lua:194**
+<a id="chk-15"></a>**15. ~/Desktop/autoodocs/lib/parser.lua:188**
 *↳ [@run 3.](#run-3)*
 
 html closing
 
 
-<a id="chk-17"></a>**17. ~/Desktop/autoodocs/lib/parser.lua:200**
+<a id="chk-16"></a>**16. ~/Desktop/autoodocs/lib/parser.lua:194**
 *↳ [@run 3.](#run-3)*
 
 Lua block continuation
 
 
-<a id="chk-18"></a>**18. ~/Desktop/autoodocs/lib/parser.lua:206**
+<a id="chk-17"></a>**17. ~/Desktop/autoodocs/lib/parser.lua:200**
 *↳ [@run 3.](#run-3)*
 
 Haskell block continuation
 
 
-<a id="chk-19"></a>**19. ~/Desktop/autoodocs/lib/parser.lua:212**
+<a id="chk-18"></a>**18. ~/Desktop/autoodocs/lib/parser.lua:206**
 *↳ [@run 3.](#run-3)*
 
 triple-quote docstring styles
 
 
-<a id="chk-20"></a>**20. ~/Desktop/autoodocs/lib/parser.lua:219**
+<a id="chk-19"></a>**19. ~/Desktop/autoodocs/lib/parser.lua:213**
 *↳ [@run 3.](#run-3)*
 
 single-quote docstring style
 
 
-<a id="chk-21"></a>**21. ~/Desktop/autoodocs/lib/parser.lua:226**
+<a id="chk-20"></a>**20. ~/Desktop/autoodocs/lib/parser.lua:220**
 *↳ [@run 3.](#run-3)*
 
 docstring continuation lines
 
 
-<a id="chk-22"></a>**22. ~/Desktop/autoodocs/lib/parser.lua:330**
+<a id="chk-21"></a>**21. ~/Desktop/autoodocs/lib/parser.lua:324**
 *↳ [@run 4.2](#run-4-2)*
 
 Validate previous subject ended at blank line
@@ -208,25 +196,25 @@ Validate previous subject ended at blank line
         end
 ```
 
-<a id="chk-23"></a>**23. ~/Desktop/autoodocs/lib/parser.lua:408**
+<a id="chk-22"></a>**22. ~/Desktop/autoodocs/lib/parser.lua:398**
 *↳ [@run 4.2](#run-4-2)*
 
 Scan untagged block comment for tags
 
 
-<a id="chk-24"></a>**24. ~/Desktop/autoodocs/lib/parser.lua:427**
+<a id="chk-23"></a>**23. ~/Desktop/autoodocs/lib/parser.lua:417**
 *↳ [@run 4.2](#run-4-2)*
 
 Scan untagged HTML comment for tags
 
 
-<a id="chk-25"></a>**25. ~/Desktop/autoodocs/lib/parser.lua:460**
+<a id="chk-24"></a>**24. ~/Desktop/autoodocs/lib/parser.lua:450**
 *↳ [@run 4.2](#run-4-2)*
 
 Scan untagged docstring for tags
 
 
-<a id="chk-26"></a>**26. ~/Desktop/autoodocs/lib/parser.lua:485**
+<a id="chk-25"></a>**25. ~/Desktop/autoodocs/lib/parser.lua:475**
 *↳ [@run 4.2](#run-4-2)*
 
 Detect comment style of current line
@@ -235,25 +223,25 @@ Detect comment style of current line
         local style = M.detect_style(line)
 ```
 
-<a id="chk-27"></a>**27. ~/Desktop/autoodocs/lib/parser.lua:531**
+<a id="chk-26"></a>**26. ~/Desktop/autoodocs/lib/parser.lua:521**
 *↳ [@run 4.2](#run-4-2)*
 
 Untagged block comment start - scan for tags
 
 
-<a id="chk-28"></a>**28. ~/Desktop/autoodocs/lib/parser.lua:534**
+<a id="chk-27"></a>**27. ~/Desktop/autoodocs/lib/parser.lua:524**
 *↳ [@run 4.2](#run-4-2)*
 
 Untagged HTML comment start
 
 
-<a id="chk-29"></a>**29. ~/Desktop/autoodocs/lib/parser.lua:537**
+<a id="chk-28"></a>**28. ~/Desktop/autoodocs/lib/parser.lua:527**
 *↳ [@run 4.2](#run-4-2)*
 
 Untagged double-quote docstring start
 
 
-<a id="chk-30"></a>**30. ~/Desktop/autoodocs/lib/parser.lua:541**
+<a id="chk-29"></a>**29. ~/Desktop/autoodocs/lib/parser.lua:531**
 *↳ [@run 4.2](#run-4-2)*
 
 Untagged single-quote docstring start
@@ -273,11 +261,12 @@ local match  = string.match
 local gmatch = string.gmatch
 local gsub   = string.gsub
 local open   = io.open
+local concat = table.concat
 ```
 
 ### <a id="def-2"></a>Localize utils for hoot loop perf
 
-`~/Desktop/autoodocs/lib/parser.lua:11`
+`~/Desktop/autoodocs/lib/parser.lua:12`
 
 ```lua
 local utils = require("lib.utils")
@@ -289,7 +278,7 @@ local get_lang = utils.get_lang
 
 ### <a id="def-3"></a>Localize map
 
-`~/Desktop/autoodocs/lib/parser.lua:18`
+`~/Desktop/autoodocs/lib/parser.lua:19`
 
 ```lua
 local M = {}
@@ -297,7 +286,7 @@ local M = {}
 
 ### <a id="def-4"></a>Hoisted `TAGS` table avoids per-call allocation in `strip_tags`
 
-`~/Desktop/autoodocs/lib/parser.lua:21`
+`~/Desktop/autoodocs/lib/parser.lua:22`
 
 ```lua
 local TAGS = {"@gen", "@def", "@chk", "@run", "@err"}
@@ -305,13 +294,13 @@ local TAGS = {"@gen", "@def", "@chk", "@run", "@err"}
 
 ### <a id="def-5"></a>Map `!x` suffixes to admonition types
 
-`~/Desktop/autoodocs/lib/parser.lua:24`
+`~/Desktop/autoodocs/lib/parser.lua:25`
 
 ```lua
 M.ADMONITIONS = {n="NOTE", t="TIP", i="IMPORTANT", w="WARNING", c="CAUTION"}
 ```
 
-<a id="def-6"></a>**6. ~/Desktop/autoodocs/lib/parser.lua:243**
+<a id="def-6"></a>**6. ~/Desktop/autoodocs/lib/parser.lua:237**
 *↳ [@run 4.](#run-4)*
 
 > [!NOTE]
@@ -326,7 +315,7 @@ avoids a second `open`+`read` just for shebang detection
     f:close()
 ```
 
-<a id="def-7"></a>**7. ~/Desktop/autoodocs/lib/parser.lua:250**
+<a id="def-7"></a>**7. ~/Desktop/autoodocs/lib/parser.lua:244**
 *↳ [@run 4.](#run-4)*
 
 Initialize per-file state machine variables
@@ -341,11 +330,11 @@ Initialize per-file state machine variables
     local state   = ""
     local tag     = ""
     local start   = ""
-    local text    = ""
+    local text    = {}
     local nsubj   = 0
     local cap_want = 0
     local capture = 0
-    local subj    = ""
+    local subj    = {}
     local adm     = nil
     local pending = nil
     local tag_indent = 0
@@ -356,7 +345,7 @@ Initialize per-file state machine variables
 
 ### <a id="run-1"></a>Strip `@tag:N` and trailing digits from text
 
-`~/Desktop/autoodocs/lib/parser.lua:55`
+`~/Desktop/autoodocs/lib/parser.lua:49`
 
 rejoining prefix with remaining content
 
@@ -374,7 +363,7 @@ end
 
 ### <a id="run-2"></a>Remove `@tag`, `@tag:N`, or `@tag!x` syntax from comment text
 
-`~/Desktop/autoodocs/lib/parser.lua:73`
+`~/Desktop/autoodocs/lib/parser.lua:67`
 
 delegates to `strip_tag_num` for `:N` and `:N!x` variants
 
@@ -405,21 +394,21 @@ end
 
 ### <a id="run-3"></a>Strip comment delimiters and extract inner text
 
-`~/Desktop/autoodocs/lib/parser.lua:127`
+`~/Desktop/autoodocs/lib/parser.lua:121`
 
 for all styles including block continuations
 
 
 ### <a id="run-4"></a>Walk one file as a line-by-line state machine
 
-`~/Desktop/autoodocs/lib/parser.lua:239`
+`~/Desktop/autoodocs/lib/parser.lua:233`
 
 extracting tagged comments into `records` table
 
 > `warnings` table receives subject count validation errors when provided
 
 
-<a id="run-4-1"></a>**4.1 ~/Desktop/autoodocs/lib/parser.lua:269**
+<a id="run-4-1"></a>**4.1 ~/Desktop/autoodocs/lib/parser.lua:263**
 *↳ [@run 4.](#run-4)*
 
 > [!NOTE]
@@ -429,8 +418,8 @@ extracting tagged comments into `records` table
 
 ```lua
     local function emit()
-        if tag ~= "" and text ~= "" then
-            local tr = trim(text)
+        if tag ~= "" and #text > 0 then
+            local tr = trim(concat(text, US))
             if tr ~= "" then
                 if nsubj > 0 then
                     pending = {
@@ -444,7 +433,7 @@ extracting tagged comments into `records` table
                         _nsubj = nsubj,
                     }
                     cap_want = nsubj
-                    subj = ""
+                    subj = {}
                 else
                     records[#records + 1] = {
                         tag  = tag,
@@ -462,13 +451,13 @@ extracting tagged comments into `records` table
         state = ""
         tag   = ""
         start = ""
-        text  = ""
+        text  = {}
         nsubj = 0
         adm   = nil
     end
 ```
 
-<a id="run-4-2"></a>**4.2 ~/Desktop/autoodocs/lib/parser.lua:310**
+<a id="run-4-2"></a>**4.2 ~/Desktop/autoodocs/lib/parser.lua:304**
 *↳ [@run 4.](#run-4)*
 
 Flush deferred record with captured `subj` lines
@@ -476,27 +465,23 @@ Flush deferred record with captured `subj` lines
 ```lua
     local function flush_pending()
         if pending then
-            pending.subj = subj
+            pending.subj = concat(subj, US)
             records[#records + 1] = pending
             pending = nil
-            subj    = ""
+            subj    = {}
             capture = 0
         end
     end
 ```
 
-<a id="run-4-2-1"></a>**4.2.1 ~/Desktop/autoodocs/lib/parser.lua:339**
+<a id="run-4-2-1"></a>**4.2.1 ~/Desktop/autoodocs/lib/parser.lua:333**
 *↳ [@run 4.2](#run-4-2)*
 
 Subject line capture mode
 
 ```lua
         if capture > 0 then
-            if subj ~= "" then
-                subj = subj .. US .. line
-            else
-                subj = line
-            end
+            subj[#subj + 1] = line
             capture = capture - 1
             if capture == 0 then
                 if warnings and pending then
@@ -508,7 +493,7 @@ Subject line capture mode
         end
 ```
 
-<a id="run-4-2-2"></a>**4.2.2 ~/Desktop/autoodocs/lib/parser.lua:356**
+<a id="run-4-2-2"></a>**4.2.2 ~/Desktop/autoodocs/lib/parser.lua:346**
 *↳ [@run 4.2](#run-4-2)*
 
 Accumulate C-style block comment with tag
@@ -517,17 +502,17 @@ Accumulate C-style block comment with tag
         if state == "cblock" then
             if find(line, "*/", 1, true) then
                 local sc = M.strip_comment(line, "cblock_cont")
-                if sc ~= "" then text = text .. US .. sc end
+                if sc ~= "" then text[#text + 1] = sc end
                 emit()
             else
                 local sc = M.strip_comment(line, "cblock_cont")
-                text = text .. US .. sc
+                text[#text + 1] = sc
             end
             goto continue
         end
 ```
 
-<a id="run-4-2-3"></a>**4.2.3 ~/Desktop/autoodocs/lib/parser.lua:369**
+<a id="run-4-2-3"></a>**4.2.3 ~/Desktop/autoodocs/lib/parser.lua:359**
 *↳ [@run 4.2](#run-4-2)*
 
 Accumulate HTML comment with tag
@@ -536,29 +521,29 @@ Accumulate HTML comment with tag
         if state == "html" then
             if find(line, "-->", 1, true) then
                 local sc = M.strip_comment(line, "html_cont")
-                if sc ~= "" then text = text .. US .. sc end
+                if sc ~= "" then text[#text + 1] = sc end
                 emit()
             else
                 local sc = M.strip_comment(line, "html_cont")
-                text = text .. US .. sc
+                text[#text + 1] = sc
             end
             goto continue
         end
 ```
 
-<a id="run-4-2-4"></a>**4.2.4 ~/Desktop/autoodocs/lib/parser.lua:382**
+<a id="run-4-2-4"></a>**4.2.4 ~/Desktop/autoodocs/lib/parser.lua:372**
 *↳ [@run 4.2](#run-4-2)*
 
 Accumulate Lua block comment with tag
 
 
-<a id="run-4-2-5"></a>**4.2.5 ~/Desktop/autoodocs/lib/parser.lua:395**
+<a id="run-4-2-5"></a>**4.2.5 ~/Desktop/autoodocs/lib/parser.lua:385**
 *↳ [@run 4.2](#run-4-2)*
 
 Accumulate Haskell block comment with tag
 
 
-<a id="run-4-2-6"></a>**4.2.6 ~/Desktop/autoodocs/lib/parser.lua:446**
+<a id="run-4-2-6"></a>**4.2.6 ~/Desktop/autoodocs/lib/parser.lua:436**
 *↳ [@run 4.2](#run-4-2)*
 
 Accumulate docstring with tag
@@ -568,17 +553,17 @@ Accumulate docstring with tag
             local close = (state == "dquote") and '"""' or "'''"
             if find(line, close, 1, true) then
                 local sc = M.strip_comment(line, "docstring_cont")
-                if sc ~= "" then text = text .. US .. sc end
+                if sc ~= "" then text[#text + 1] = sc end
                 emit()
             else
                 local sc = M.strip_comment(line, "docstring_cont")
-                text = text .. US .. sc
+                text[#text + 1] = sc
             end
             goto continue
         end
 ```
 
-<a id="run-4-2-7"></a>**4.2.7 ~/Desktop/autoodocs/lib/parser.lua:488**
+<a id="run-4-2-7"></a>**4.2.7 ~/Desktop/autoodocs/lib/parser.lua:478**
 *↳ [@run 4.2](#run-4-2)*
 
 Continue or close existing single-line comment block
@@ -586,11 +571,11 @@ Continue or close existing single-line comment block
 ```lua
         if state ~= "" then
             if style == state then
-                if M.has_tag(line) then
+                if M.get_tag(line) then
                     emit()
                 else
                     local sc = M.strip_comment(line, style)
-                    text = text .. US .. sc
+                    text[#text + 1] = sc
                     goto continue
                 end
             else
@@ -599,20 +584,20 @@ Continue or close existing single-line comment block
         end
 ```
 
-<a id="run-4-2-8"></a>**4.2.8 ~/Desktop/autoodocs/lib/parser.lua:503**
+<a id="run-4-2-8"></a>**4.2.8 ~/Desktop/autoodocs/lib/parser.lua:493**
 *↳ [@run 4.2](#run-4-2)*
 
 Dispatch new tagged comment by style
 
 ```lua
-        if M.has_tag(line) and style ~= "none" then
-            tag   = M.get_tag(line)
+        tag = M.get_tag(line)
+        if tag and style ~= "none" then
             start = tostring(ln)
             local ti = 1; while byte(line,ti) == 32 or byte(line,ti) == 9 do ti = ti+1 end; tag_indent = ti-1
             local sc = M.strip_comment(line, style)
             nsubj = M.get_subject_count(sc)
             adm   = M.get_admonition(sc)
-            text  = M.strip_tags(sc)
+            text  = {M.strip_tags(sc)}
 
             if style == "hash" or style == "dslash" or style == "ddash" or style == "semi" or style == "percent" then
                 state = style
@@ -633,7 +618,7 @@ Dispatch new tagged comment by style
             end
 ```
 
-<a id="run-4-2-9"></a>**4.2.9 ~/Desktop/autoodocs/lib/parser.lua:547**
+<a id="run-4-2-9"></a>**4.2.9 ~/Desktop/autoodocs/lib/parser.lua:537**
 *↳ [@run 4.2](#run-4-2)*
 
 Begin subject capture if waiting and hit a code line
@@ -642,7 +627,7 @@ Begin subject capture if waiting and hit a code line
         if cap_want > 0 and style == "none" then
             capture  = cap_want
             cap_want = 0
-            subj     = line
+            subj[1]  = line
             capture  = capture - 1
             if capture == 0 then flush_pending() end
         end
