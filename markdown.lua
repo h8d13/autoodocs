@@ -121,28 +121,30 @@ THE SOFTWARE.
 ]]
 
 
+-- @def:1 Lua 5.1/5.2 compatibility
 local unpack = unpack or table.unpack
 
+-- @def:1 Forward declarations for mutually recursive functions
 local span_transform, encode_backslash_escapes, block_transform, blocks_to_html, blocks_to_html
 
 ----------------------------------------------------------------------
 -- Utility functions
 ----------------------------------------------------------------------
 
--- Returns the result of mapping the values in table t through the function f
+-- @def:5 Map values in table through function f
 local function map(t, f)
     local out = {}
     for k,v in pairs(t) do out[k] = f(v,k) end
     return out
 end
 
--- The identity function, useful as a placeholder.
+-- @def:1 Identity function, useful as a placeholder
 local function identity(text) return text end
 
--- Functional style if statement. (NOTE: no short circuit evaluation)
+-- @def:1 Functional style ternary (no short circuit)
 local function iff(t, a, b) if t then return a else return b end end
 
--- Splits the text into an array of separate lines.
+-- @run:12 Split text into array of lines by separator
 local function split(text, sep)
     sep = sep or "\n"
     local lines = {}
@@ -253,11 +255,8 @@ end
 -- Hash
 ----------------------------------------------------------------------
 
--- This is used to "hash" data into alphanumeric strings that are unique
--- in the document. (Note that this is not cryptographic hash, the hash
--- function is not one-way.) The hash procedure is used to protect parts
--- of the document from further processing.
-
+-- @def:15!n Hash data into unique alphanumeric strings
+-- not cryptographic - used to protect parts from further processing
 local HASH = {
     -- Has the hash been inited.
     inited = false,
@@ -308,11 +307,8 @@ end
 -- Protection
 ----------------------------------------------------------------------
 
--- The protection module is used to "protect" parts of a document
--- so that they are not modified by subsequent processing steps.
--- Protected parts are saved in a table for later unprotection
-
--- Protection data
+-- @def:9!n Protect document parts from modification
+-- saved in table for later unprotection
 local PD = {
     -- Saved blocks that have been converted
     blocks = {},
@@ -392,11 +388,9 @@ end
 -- Block transform
 ----------------------------------------------------------------------
 
--- The block transform functions transform the text on the block level.
--- They work with the text as an array of lines rather than as individual
--- characters.
+-- @run Block-level text transforms working with arrays of lines
 
--- Returns true if the line is a ruler of (char) characters.
+-- @chk:6 Returns true if line is a ruler of repeated characters
 -- The line must contain at least three char characters and contain only spaces and
 -- char characters.
 local function is_ruler_of(line, char)
@@ -405,7 +399,7 @@ local function is_ruler_of(line, char)
     return true
 end
 
--- Identifies the block level formatting present in the line
+-- @chk Classify block-level formatting in a line
 local function classify(line)
     local info = {line = line, text = line}
 
@@ -470,8 +464,7 @@ local function classify(line)
     return info
 end
 
--- Find headers constisting of a normal line followed by a ruler and converts them to
--- header entries.
+-- @run Convert normal + ruler lines to header entries
 local function headers(array)
     local i = 1
     while i <= #array - 1 do
@@ -489,7 +482,7 @@ local function headers(array)
     return array
 end
 
--- Find list blocks and convert them to protected data blocks
+-- @run Convert list blocks to protected HTML
 local function lists(array, sublist)
     local function process_list(arr)
         local function any_blanks(arr)
@@ -612,7 +605,7 @@ local function lists(array, sublist)
     return array
 end
 
--- Find and convert blockquote markers.
+-- @run Convert blockquote markers with GitHub callout support
 local function blockquotes(lines)
     local function find_blockquote(lines)
         local start
@@ -674,7 +667,7 @@ local function blockquotes(lines)
     return lines
 end
 
--- Find and convert fenced code blocks (``` or ~~~) with optional language hint
+-- @run Convert fenced code blocks with language hints
 local function fenced_codeblocks(lines)
     local function find_fenced_codeblock(lines)
         local start, fence_char, fence_len, lang
@@ -835,10 +828,9 @@ end
 -- Span transform
 ----------------------------------------------------------------------
 
--- Functions for transforming the text at the span level.
+-- @run Span-level text transforms for inline formatting
 
--- These characters may need to be escaped because they have a special
--- meaning in markdown.
+-- @def:2 Characters with special markdown meaning needing escape
 escape_chars = "'\\`*_{}[]()>#+-.!'"
 escape_table = {}
 
@@ -1126,8 +1118,7 @@ end
 -- Markdown
 ----------------------------------------------------------------------
 
--- Cleanup the text by normalizing some possible variations to make further
--- processing easier.
+-- @run Normalize line endings, tabs, and whitespace
 local function cleanup(text)
     -- Standardize line endings
     text = text:gsub("\r\n", "\n")  -- DOS to UNIX
@@ -1172,7 +1163,7 @@ end
 
 link_database = {}
 
--- Main markdown processing function
+-- @run:10 Main markdown processing pipeline
 local function markdown(text)
     init_hash(text)
     init_escape_table()
@@ -1275,7 +1266,7 @@ function OptionParser:run(args)
     return true
 end
 
--- Handles the case when markdown is run from the command line
+-- @run CLI handler with HTML wrapping and TOC generation
 local function run_command_line(arg)
     -- Generate output for input s given options
     local function run(s, options)

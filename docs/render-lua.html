@@ -102,6 +102,11 @@ M.TAG_ORDER = {"CHK", "DEF", "RUN", "ERR"}
                 else break end
             end
         end
+        local display = line ~= "" and (path .. ":" .. line) or path
+        local href = anchor ~= "" and fmt("%s.html#%s", slug, anchor) or (slug .. ".html")
+        return fmt("[%s](%s)", display, href)
+    end)
+end
 </code></pre>
 
 <h3><a id="run-3"></a>Render a single entry</h3>

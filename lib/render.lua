@@ -29,7 +29,7 @@ end
 -- @def:1 Line-to-anchor mapping built during grouping
 M.line_map = {}
 
--- @run:11 Convert @src:filepath:line to clickable markdown links
+-- @run:16 Convert @src:filepath:line to clickable markdown links
 local function link_sources(text)
     return gsub(text, "@src:([^%s:]+):?(%d*)", function(path, line)
         local slug = slugify(path)

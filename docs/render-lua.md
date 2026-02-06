@@ -75,6 +75,11 @@ local function link_sources(text)
                 else break end
             end
         end
+        local display = line ~= "" and (path .. ":" .. line) or path
+        local href = anchor ~= "" and fmt("%s.html#%s", slug, anchor) or (slug .. ".html")
+        return fmt("[%s](%s)", display, href)
+    end)
+end
 ```
 
 ### <a id="run-3"></a>Render a single entry
