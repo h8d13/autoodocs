@@ -3,7 +3,7 @@
 # Autoodocs
 
 A lightweight documentation generator that extracts tagged comments from source files.
-Inspired by @tscoding `nob.h` autodocs.
+Inspired by @tsoding `nob.h` autodocs.
 
 ## Features
 
