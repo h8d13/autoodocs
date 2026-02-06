@@ -87,9 +87,9 @@ local US = "\031"
 
 ### <a id="def-4"></a>Global state for collected records and line count
 
-`~/Desktop/autoodocs/autodocs.lua:64`
+`~/Desktop/autoodocs/autodocs.lua:64` *↳ [lib/parser.lua:195](parser-lua.html#chk-15)*
 
-see [lib/parser.lua:195](parser-lua.html#chk-15) for file processing
+see  for file processing
 
 ```lua
 local records = {}

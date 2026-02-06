@@ -44,7 +44,7 @@ local function link_sources(text)
         end
         local display = line ~= "" and (path .. ":" .. line) or path
         local href = anchor ~= "" and fmt("%s.html#%s", slug, anchor) or (slug .. ".html")
-        return fmt("[%s](%s)", display, href)
+        return fmt("*↳ [%s](%s)*", display, href)
     end)
 end
 
@@ -59,18 +59,37 @@ local function render_entry(w, r)
         return
     end
 
+    -- Check for @src tag in text to inline with location
+    local src_link = ""
+    local text_without_src = gsub(r.text, "@src:([^%s:]+):?(%d*)", function(path, line)
+        local slug = slugify(path)
+        local anchor = ""
+        if line ~= "" and M.line_map[slug] then
+            local ln = tonumber(line)
+            for _, entry in ipairs(M.line_map[slug]) do
+                if entry.line <= ln then anchor = entry.anchor
+                else break end
+            end
+        end
+        local display = line ~= "" and (path .. ":" .. line) or path
+        local href = anchor ~= "" and fmt("%s.html#%s", slug, anchor) or (slug .. ".html")
+        src_link = fmt(" *↳ [%s](%s)*", display, href)
+        return ""
+    end)
+
     if r.parent then
         -- Child entry: bold text
-        w(fmt('<a id="%s"></a>**%s %s**\n', r.anchor, r.idx, r.loc))
+        w(fmt('<a id="%s"></a>**%s %s**%s\n', r.anchor, r.idx, r.loc, src_link))
         w(fmt("*↳ [@%s %s](#%s)*\n\n", M.TAG_SEC[r.parent.tag], r.parent.idx, r.parent.anchor))
     else
         -- Top-level entry: h3 header (appears in TOC)
-        local title = r.text:match("^([^\031]+)") or ""
+        local title = text_without_src:match("^([^\031]+)") or ""
         title = trim(title)
         if #title > 90 then title = title:sub(1, 87) .. "..." end
         w(fmt('### <a id="%s"></a>%s\n\n', r.anchor, title))
-        w(fmt('`%s`\n\n', r.loc))
+        w(fmt('`%s`%s\n\n', r.loc, src_link))
     end
+    r.text = text_without_src
 
     -- For top-level entries, skip first line (used as h3 title)
     local skip_first = (not r.parent)

@@ -21,7 +21,7 @@
 <li class="toc-sub"><a href="#def-5">Line-to-anchor mapping built during grouping</a></li>
 <li><a href="#run">Runners</a></li>
 <li class="toc-sub"><a href="#run-1">Generate a slug from a file path for anchors/filenames</a></li>
-<li class="toc-sub"><a href="#run-2">Convert @src:filepath:line to clickable markdown links</a></li>
+<li class="toc-sub"><a href="#run-2">Convert line to clickable markdown links</a></li>
 <li class="toc-sub"><a href="#run-3">Render a single entry</a></li>
 <li class="toc-sub"><a href="#run-4">Render index page</a></li>
 <li class="toc-sub"><a href="#run-5">Render a single file's documentation page</a></li>
@@ -89,9 +89,9 @@ M.TAG_ORDER = {"GEN", "CHK", "DEF", "RUN", "ERR"}
 <p><code>~/Desktop/autoodocs/lib/render.lua:22</code></p>
 
 
-<h3><a id="run-2"></a>Convert @src:filepath:line to clickable markdown links</h3>
+<h3><a id="run-2"></a>Convert line to clickable markdown links</h3>
 
-<p><code>~/Desktop/autoodocs/lib/render.lua:33</code></p>
+<p><code>~/Desktop/autoodocs/lib/render.lua:33</code> <em>↳ <a href="filepath.html">filepath</a></em></p>
 
 <pre><code class="language-lua">local function link_sources(text)
     return gsub(text, "@src:([^%s:]+):?(%d*)", function(path, line)
@@ -106,7 +106,7 @@ M.TAG_ORDER = {"GEN", "CHK", "DEF", "RUN", "ERR"}
         end
         local display = line ~= "" and (path .. ":" .. line) or path
         local href = anchor ~= "" and fmt("%s.html#%s", slug, anchor) or (slug .. ".html")
-        return fmt("[%s](%s)", display, href)
+        return fmt("*↳ [%s](%s)*", display, href)
     end)
 end
 </code></pre>
@@ -118,22 +118,22 @@ end
 
 <h3><a id="run-4"></a>Render index page</h3>
 
-<p><code>~/Desktop/autoodocs/lib/render.lua:124</code></p>
+<p><code>~/Desktop/autoodocs/lib/render.lua:143</code></p>
 
 
 <h3><a id="run-5"></a>Render a single file's documentation page</h3>
 
-<p><code>~/Desktop/autoodocs/lib/render.lua:176</code></p>
+<p><code>~/Desktop/autoodocs/lib/render.lua:195</code></p>
 
 
 <h3><a id="run-6"></a>Group records by file and assign indices</h3>
 
-<p><code>~/Desktop/autoodocs/lib/render.lua:207</code></p>
+<p><code>~/Desktop/autoodocs/lib/render.lua:226</code></p>
 
 
 <h3><a id="run-7"></a>Get slug for a file path</h3>
 
-<p><code>~/Desktop/autoodocs/lib/render.lua:268</code></p>
+<p><code>~/Desktop/autoodocs/lib/render.lua:287</code></p>
 
 
 

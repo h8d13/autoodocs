@@ -11,6 +11,7 @@ print("Generating markdown...")
 os.execute("lua autodocs.lua . docs -s")
 
 -- @run:2 Copy stylesheet to output directory
+-- @src:default.css
 print("Copying assets...")
 os.execute("cp default.css docs/")
 

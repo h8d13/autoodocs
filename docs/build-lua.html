@@ -48,9 +48,7 @@
 
 <h3><a id="run-2"></a>Generate markdown documentation</h3>
 
-<p><code>~/Desktop/autoodocs/build.lua:8</code></p>
-
-<p><a href="autodocs-lua.html#run-1">autodocs.lua:82</a></p>
+<p><code>~/Desktop/autoodocs/build.lua:8</code> <em>↳ <a href="autodocs-lua.html#run-1">autodocs.lua:82</a></em></p>
 
 <pre><code class="language-lua">print("Generating markdown...")
 os.execute("lua autodocs.lua . docs -s")
@@ -58,7 +56,7 @@ os.execute("lua autodocs.lua . docs -s")
 
 <h3><a id="run-3"></a>Copy stylesheet to output directory</h3>
 
-<p><code>~/Desktop/autoodocs/build.lua:13</code></p>
+<p><code>~/Desktop/autoodocs/build.lua:13</code> <em>↳ <a href="default-css.html">default.css</a></em></p>
 
 <pre><code class="language-lua">print("Copying assets...")
 os.execute("cp default.css docs/")
@@ -66,9 +64,7 @@ os.execute("cp default.css docs/")
 
 <h3><a id="run-4"></a>Convert all markdown files to HTML</h3>
 
-<p><code>~/Desktop/autoodocs/build.lua:17</code></p>
-
-<p><a href="markdown-lua.html#run-9">markdown.lua:1264</a></p>
+<p><code>~/Desktop/autoodocs/build.lua:18</code> <em>↳ <a href="markdown-lua.html#run-9">markdown.lua:1264</a></em></p>
 
 <pre><code class="language-lua">print("Converting to HTML...")
 local pipe = io.popen("ls docs/*.md 2&gt;/dev/null")

@@ -6,6 +6,7 @@ Select a file from the sidebar to view its documentation.
 [build.lua](build-lua.html)
 [markdown.lua](markdown-lua.html)
 [autodocs.lua](autodocs-lua.html)
+[default.css](default-css.html)
 [>lib]
 [parser.lua](parser-lua.html)
 [utils.lua](utils-lua.html)

@@ -1,5 +1,6 @@
-/* Basic markdown stylesheet with GitHub-style sidebar */
+/* @gen Basic markdown stylesheet with GitHub-style sidebar */
 
+/* @def:3 Box sizing reset */
 * {
     box-sizing: border-box;
 }
@@ -13,14 +14,14 @@ body {
     padding: 0;
 }
 
-/* Layout container */
+/* @def:5 Layout container */
 .container {
     display: flex;
     max-width: 1400px;
     margin: 0 auto;
 }
 
-/* Sidebar */
+/* @def:11 Sidebar navigation panel */
 .sidebar {
     width: 280px;
     min-width: 280px;
@@ -118,7 +119,7 @@ body {
     margin: 0.15em 0;
 }
 
-/* Main content */
+/* @def:6 Main content area */
 .content {
     flex: 1;
     min-width: 0;
@@ -126,7 +127,7 @@ body {
     max-width: 900px;
 }
 
-/* Headings */
+/* @def:16 Heading styles */
 h1, h2, h3, h4, h5, h6 {
     margin-top: 0.3em;
     margin-bottom: 0.5em;
@@ -171,7 +172,7 @@ blockquote p {
     margin: 0;
 }
 
-/* Code */
+/* @def:12 Code and pre blocks */
 code {
     font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
     font-size: 0.9em;
@@ -236,7 +237,7 @@ th {
 strong { font-weight: 600; }
 em { font-style: italic; }
 
-/* Callouts */
+/* @def:44 GitHub-style callout boxes */
 .callout {
     border-left: 4px solid;
     margin: 1em 0;
@@ -281,7 +282,7 @@ em { font-style: italic; }
 }
 .callout-caution .callout-title { color: #cf222e; }
 
-/* Mobile responsive */
+/* @def:17 Mobile responsive breakpoint */
 @media (max-width: 900px) {
     .container {
         flex-direction: column;
