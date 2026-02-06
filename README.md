@@ -1,10 +1,16 @@
+<!-- @gen autoodocs meta-data examples hidden within any kind of comments
+for obvious reasons README.md or readme.md only support minimal tags
+ -->
 # Autoodocs
 
 A lightweight documentation generator that extracts tagged comments from source files.
+Inspired by @tscoding `nob.h` autodocs.
 
+<!-- @def Feature list -->
 ## Features
 
 - Extracts `@gen`, `@def`, `@chk`, `@run`, `@err` tagged comments
+- Supports `--`, `//`, `#`, `;`, `%`, `/* */`, `<!-- -->`, `--[[ ]]`, `{- -}`, `"""`, `'''`
 - Respects `.gitignore` and `.somefolder/` ignores
 - Skips the whole comment block until next code line
 - Cross-references with `@src:file:line` auto-resolving anchors
@@ -12,6 +18,7 @@ A lightweight documentation generator that extracts tagged comments from source 
 - GitHub-style callouts (`!n` NOTE, `!t` TIP, `!w` WARN, `!c` CAUTION)
 - Generates markdown with HTML output via bundled converter
 
+<!-- @chk Requires Lua 5.x and git -->
 ## Installation
 
 Clone to a hidden folder so autoodocs doesn't document itself:
@@ -21,6 +28,8 @@ cd /yourprojectroot/
 git clone https://github.com/h8d13/autoodocs .autoodocs/
 ```
 
+<!-- @run CLI usage -->
+<!-- @src:build.lua -->
 ## Usage
 
 ```sh
@@ -43,6 +52,7 @@ repos:
         always_run: true
 ```
 
+<!-- @run GitHub Pages deployment -->
 ## GitHub Pages
 
 Create a branch named `pages` or directly from `master | main`.

@@ -61,9 +61,9 @@ M.line_map = {}
 `~/Desktop/autoodocs/lib/render.lua:22`
 
 
-### <a id="run-2"></a>Convert line to clickable markdown links
+### <a id="run-2"></a>Convert @src:filepath:line to clickable markdown links
 
-`~/Desktop/autoodocs/lib/render.lua:33` *↳ [filepath](filepath.html)*
+`~/Desktop/autoodocs/lib/render.lua:33`
 
 ```lua
 local function link_sources(text)
@@ -91,21 +91,21 @@ end
 
 ### <a id="run-4"></a>Render index page
 
-`~/Desktop/autoodocs/lib/render.lua:143`
+`~/Desktop/autoodocs/lib/render.lua:124`
 
 
 ### <a id="run-5"></a>Render a single file's documentation page
 
-`~/Desktop/autoodocs/lib/render.lua:224`
+`~/Desktop/autoodocs/lib/render.lua:207`
 
 
 ### <a id="run-6"></a>Group records by file and assign indices
 
-`~/Desktop/autoodocs/lib/render.lua:255`
+`~/Desktop/autoodocs/lib/render.lua:238`
 
 
 ### <a id="run-7"></a>Get slug for a file path
 
-`~/Desktop/autoodocs/lib/render.lua:316`
+`~/Desktop/autoodocs/lib/render.lua:299`
 
 

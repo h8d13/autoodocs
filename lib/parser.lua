@@ -109,12 +109,17 @@ function M.detect_style(line)
         if b2 == 42 then return "cblock" end
         if b2 == 47 then return "dslash" end
     elseif b == 35 then return "hash"
+    elseif b == 59 then return "semi"  -- ';' Lisp/ASM/INI
+    elseif b == 37 then return "percent"  -- '%' MATLAB/LaTeX
     elseif b == 34 then -- '"'
         if sub(line, i, i + 2) == '"""' then return "dquote" end
     elseif b == 39 then -- "'"
         if sub(line, i, i + 2) == "'''" then return "squote" end
     elseif b == 45 then -- '-'
+        if sub(line, i, i + 3) == "--[[" then return "luablock" end
         if byte(line, i + 1) == 45 then return "ddash" end
+    elseif b == 123 then -- '{'
+        if byte(line, i + 1) == 45 then return "hblock" end  -- Haskell {-
     end
     return "none"
 end
@@ -136,6 +141,30 @@ function M.strip_comment(line, style)
     elseif style == "ddash" then
         local sc = match(line, "%-%-(.*)") or ""
         return trim_lead(sc)
+
+    -- @chk semicolon comments (Lisp/ASM/INI)
+    elseif style == "semi" then
+        local sc = match(line, ";(.*)") or ""
+        return trim_lead(sc)
+
+    -- @chk percent comments (MATLAB/LaTeX)
+    elseif style == "percent" then
+        local sc = match(line, "%%(.*)") or ""
+        return trim_lead(sc)
+
+    -- @chk Lua block comment opening --[[
+    elseif style == "luablock" then
+        local sc = match(line, "%-%-%[%[(.*)") or ""
+        sc = trim_trail(sc)
+        if sub(sc, -2) == "]]" then sc = sub(sc, 1, -3) end
+        return trim(sc)
+
+    -- @chk Haskell block comment opening {-
+    elseif style == "hblock" then
+        local sc = match(line, "{%-(.*)") or ""
+        sc = trim_trail(sc)
+        if sub(sc, -2) == "-}" then sc = sub(sc, 1, -3) end
+        return trim(sc)
 
     -- @chk C-style block opening
     elseif style == "cblock" then
@@ -166,6 +195,18 @@ function M.strip_comment(line, style)
     elseif style == "html_cont" then
         local sc = trim_trail(line)
         if sub(sc, -3) == "-->" then sc = sub(sc, 1, -4) end
+        return trim(sc)
+
+    -- @chk Lua block continuation
+    elseif style == "luablock_cont" then
+        local sc = trim_trail(line)
+        if sub(sc, -2) == "]]" then sc = sub(sc, 1, -3) end
+        return trim(sc)
+
+    -- @chk Haskell block continuation
+    elseif style == "hblock_cont" then
+        local sc = trim_trail(line)
+        if sub(sc, -2) == "-}" then sc = sub(sc, 1, -3) end
         return trim(sc)
 
     -- @chk triple-quote docstring styles
@@ -322,6 +363,32 @@ function M.process_file(filepath, records, HOME, US)
             goto continue
         end
 
+        -- @run Accumulate Lua block comment with tag
+        if state == "luablock" then
+            if find(line, "]]", 1, true) then
+                local sc = M.strip_comment(line, "luablock_cont")
+                if sc ~= "" then text = text .. US .. sc end
+                emit()
+            else
+                local sc = M.strip_comment(line, "luablock_cont")
+                text = text .. US .. sc
+            end
+            goto continue
+        end
+
+        -- @run Accumulate Haskell block comment with tag
+        if state == "hblock" then
+            if find(line, "-}", 1, true) then
+                local sc = M.strip_comment(line, "hblock_cont")
+                if sc ~= "" then text = text .. US .. sc end
+                emit()
+            else
+                local sc = M.strip_comment(line, "hblock_cont")
+                text = text .. US .. sc
+            end
+            goto continue
+        end
+
         -- @chk Scan untagged block comment for tags
         if state == "cblock_scan" then
             if find(line, "*/", 1, true) then
@@ -427,12 +494,16 @@ function M.process_file(filepath, records, HOME, US)
             adm   = M.get_admonition(sc)
             text  = M.strip_tags(sc)
 
-            if style == "hash" or style == "dslash" or style == "ddash" then
+            if style == "hash" or style == "dslash" or style == "ddash" or style == "semi" or style == "percent" then
                 state = style
             elseif style == "cblock" then
                 if find(line, "*/", 1, true) then emit() else state = "cblock" end
             elseif style == "html" then
                 if find(line, "-->", 1, true) then emit() else state = "html" end
+            elseif style == "luablock" then
+                if find(line, "]]", 1, true) then emit() else state = "luablock" end
+            elseif style == "hblock" then
+                if find(line, "-}", 1, true) then emit() else state = "hblock" end
             elseif style == "dquote" then
                 local rest = match(line, '"""(.*)')
                 if rest and find(rest, '"""', 1, true) then emit() else state = "dquote" end

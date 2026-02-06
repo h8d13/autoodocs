@@ -24,7 +24,9 @@ This creates a pleasing flow to work with for docs/ pages.
 `~/Desktop/autoodocs/autoodocs.lua:14`
 
 > [!IMPORTANT]
-> after the end of comment block
+> we define `:` then `n` the amount of subject
+
+and optionally a callout:
 
 `!n` NOTE
 
@@ -52,7 +54,7 @@ print('luadoc is awesome')
 
 ### <a id="def-2"></a>Localize functions and load libraries
 
-`~/Desktop/autoodocs/autoodocs.lua:37`
+`~/Desktop/autoodocs/autoodocs.lua:38`
 
 ```lua
 local match  = string.match
@@ -67,7 +69,7 @@ local script_dir = arg[0]:match("^(.-)[^/]*$") or "./"
 
 ### <a id="def-3"></a>Parse CLI args with defaults
 
-`~/Desktop/autoodocs/autoodocs.lua:52`
+`~/Desktop/autoodocs/autoodocs.lua:53`
 
 strip trailing slash, resolve absolute path via `/proc/self/environ`
 
@@ -90,9 +92,9 @@ local US = "\031"
 
 ### <a id="def-4"></a>Global state for collected records and line count
 
-`~/Desktop/autoodocs/autoodocs.lua:68` *↳ [lib/parser.lua:195](parser-lua.html#chk-15)*
+`~/Desktop/autoodocs/autoodocs.lua:69`
 
-see  for file processing
+see *↳ [lib/parser.lua:195](parser-lua.html#chk-16)* for file processing
 
 ```lua
 local records = {}
@@ -103,24 +105,24 @@ local total_input = 0
 
 ### <a id="run-1"></a>Write file if content changed
 
-`~/Desktop/autoodocs/autoodocs.lua:73`
+`~/Desktop/autoodocs/autoodocs.lua:74`
 
 
 ### <a id="run-2"></a>Main function
 
-`~/Desktop/autoodocs/autoodocs.lua:89`
+`~/Desktop/autoodocs/autoodocs.lua:90`
 
 ```lua
 local function main()
 ```
 
-<a id="run-2-1"></a>**2.1 ~/Desktop/autoodocs/autoodocs.lua:91**
+<a id="run-2-1"></a>**2.1 ~/Desktop/autoodocs/autoodocs.lua:92**
 *↳ [@run 2.](#run-2)*
 
 Create output directory
 
 
-<a id="run-2-2"></a>**2.2 ~/Desktop/autoodocs/autoodocs.lua:94**
+<a id="run-2-2"></a>**2.2 ~/Desktop/autoodocs/autoodocs.lua:95**
 *↳ [@run 2.](#run-2)*
 
 Discover files containing documentation tags
@@ -147,7 +149,7 @@ Discover files containing documentation tags
     pipe:close()
 ```
 
-<a id="run-2-3"></a>**2.3 ~/Desktop/autoodocs/autoodocs.lua:120**
+<a id="run-2-3"></a>**2.3 ~/Desktop/autoodocs/autoodocs.lua:121**
 *↳ [@run 2.](#run-2)*
 
 Process all discovered files into intermediate `records`
@@ -158,7 +160,7 @@ Process all discovered files into intermediate `records`
     end
 ```
 
-<a id="run-2-4"></a>**2.4 ~/Desktop/autoodocs/autoodocs.lua:131**
+<a id="run-2-4"></a>**2.4 ~/Desktop/autoodocs/autoodocs.lua:132**
 *↳ [@run 2.](#run-2)*
 
 Group and index records by file
@@ -167,19 +169,19 @@ Group and index records by file
     local by_file, file_order = render.group_records(records)
 ```
 
-<a id="run-2-5"></a>**2.5 ~/Desktop/autoodocs/autoodocs.lua:134**
+<a id="run-2-5"></a>**2.5 ~/Desktop/autoodocs/autoodocs.lua:135**
 *↳ [@run 2.](#run-2)*
 
 Write index page
 
 
-<a id="run-2-6"></a>**2.6 ~/Desktop/autoodocs/autoodocs.lua:141**
+<a id="run-2-6"></a>**2.6 ~/Desktop/autoodocs/autoodocs.lua:142**
 *↳ [@run 2.](#run-2)*
 
 Write individual file pages
 
 
-<a id="run-2-7"></a>**2.7 ~/Desktop/autoodocs/autoodocs.lua:155**
+<a id="run-2-7"></a>**2.7 ~/Desktop/autoodocs/autoodocs.lua:156**
 *↳ [@run 2.](#run-2)*
 
 Output stats if requested
@@ -191,7 +193,7 @@ Output stats if requested
 
 ### <a id="run-3"></a>Entry point
 
-`~/Desktop/autoodocs/autoodocs.lua:161`
+`~/Desktop/autoodocs/autoodocs.lua:162`
 
 ```lua
 main()
@@ -199,7 +201,7 @@ main()
 
 ## <a id="err"></a>Errors
 
-<a id="err-1"></a>**1. ~/Desktop/autoodocs/autoodocs.lua:114**
+<a id="err-1"></a>**1. ~/Desktop/autoodocs/autoodocs.lua:115**
 *↳ [@run 2.](#run-2)*
 
 No tagged files found
@@ -211,7 +213,7 @@ No tagged files found
     end
 ```
 
-<a id="err-2"></a>**2. ~/Desktop/autoodocs/autoodocs.lua:125**
+<a id="err-2"></a>**2. ~/Desktop/autoodocs/autoodocs.lua:126**
 *↳ [@run 2.](#run-2)*
 
 No extractable documentation

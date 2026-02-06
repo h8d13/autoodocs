@@ -81,72 +81,108 @@ function M.detect_style(line)
         if b2 == 42 then return "cblock" end
         if b2 == 47 then return "dslash" end
     elseif b == 35 then return "hash"
+    elseif b == 59 then return "semi"  -- ';' Lisp/ASM/INI
+    elseif b == 37 then return "percent"  -- '%' MATLAB/LaTeX
     elseif b == 34 then -- '"'
         if sub(line, i, i + 2) == '"""' then return "dquote" end
     elseif b == 39 then -- "'"
         if sub(line, i, i + 2) == "'''" then return "squote" end
     elseif b == 45 then -- '-'
+        if sub(line, i, i + 3) == "--[[" then return "luablock" end
         if byte(line, i + 1) == 45 then return "ddash" end
-    end
-    return "none"
-end
 ```
 
-<a id="chk-6"></a>**6. ~/Desktop/autoodocs/lib/parser.lua:125**
+<a id="chk-6"></a>**6. ~/Desktop/autoodocs/lib/parser.lua:130**
 *↳ [@run 3.](#run-3)*
 
 shell type comments
 
 
-<a id="chk-7"></a>**7. ~/Desktop/autoodocs/lib/parser.lua:130**
+<a id="chk-7"></a>**7. ~/Desktop/autoodocs/lib/parser.lua:135**
 *↳ [@run 3.](#run-3)*
 
 double-slash comments
 
 
-<a id="chk-8"></a>**8. ~/Desktop/autoodocs/lib/parser.lua:135**
+<a id="chk-8"></a>**8. ~/Desktop/autoodocs/lib/parser.lua:140**
 *↳ [@run 3.](#run-3)*
 
 double-dash comments
 
 
-<a id="chk-9"></a>**9. ~/Desktop/autoodocs/lib/parser.lua:140**
+<a id="chk-9"></a>**9. ~/Desktop/autoodocs/lib/parser.lua:145**
+*↳ [@run 3.](#run-3)*
+
+semicolon comments (Lisp/ASM/INI)
+
+
+<a id="chk-10"></a>**10. ~/Desktop/autoodocs/lib/parser.lua:150**
+*↳ [@run 3.](#run-3)*
+
+percent comments (MATLAB/LaTeX)
+
+
+<a id="chk-11"></a>**11. ~/Desktop/autoodocs/lib/parser.lua:155**
+*↳ [@run 3.](#run-3)*
+
+Lua block comment opening --[[
+
+
+<a id="chk-12"></a>**12. ~/Desktop/autoodocs/lib/parser.lua:162**
+*↳ [@run 3.](#run-3)*
+
+Haskell block comment opening {-
+
+
+<a id="chk-13"></a>**13. ~/Desktop/autoodocs/lib/parser.lua:169**
 *↳ [@run 3.](#run-3)*
 
 C-style block opening
 
 
-<a id="chk-10"></a>**10. ~/Desktop/autoodocs/lib/parser.lua:147**
+<a id="chk-14"></a>**14. ~/Desktop/autoodocs/lib/parser.lua:176**
 *↳ [@run 3.](#run-3)*
 
 HTML comment opening
 
 
-<a id="chk-11"></a>**11. ~/Desktop/autoodocs/lib/parser.lua:154**
+<a id="chk-15"></a>**15. ~/Desktop/autoodocs/lib/parser.lua:183**
 *↳ [@run 3.](#run-3)*
 
 block comment continuation lines
 
 
-<a id="chk-12"></a>**12. ~/Desktop/autoodocs/lib/parser.lua:165**
+<a id="chk-16"></a>**16. ~/Desktop/autoodocs/lib/parser.lua:194**
 *↳ [@run 3.](#run-3)*
 
 html closing
 
 
-<a id="chk-13"></a>**13. ~/Desktop/autoodocs/lib/parser.lua:171**
+<a id="chk-17"></a>**17. ~/Desktop/autoodocs/lib/parser.lua:200**
+*↳ [@run 3.](#run-3)*
+
+Lua block continuation
+
+
+<a id="chk-18"></a>**18. ~/Desktop/autoodocs/lib/parser.lua:206**
+*↳ [@run 3.](#run-3)*
+
+Haskell block continuation
+
+
+<a id="chk-19"></a>**19. ~/Desktop/autoodocs/lib/parser.lua:212**
 *↳ [@run 3.](#run-3)*
 
 triple-quote docstring styles
 
 
-<a id="chk-14"></a>**14. ~/Desktop/autoodocs/lib/parser.lua:178**
+<a id="chk-20"></a>**20. ~/Desktop/autoodocs/lib/parser.lua:219**
 *↳ [@run 3.](#run-3)*
 
 single-quote docstring style
 
 
-<a id="chk-15"></a>**15. ~/Desktop/autoodocs/lib/parser.lua:185**
+<a id="chk-21"></a>**21. ~/Desktop/autoodocs/lib/parser.lua:226**
 *↳ [@run 3.](#run-3)*
 
 docstring continuation lines
@@ -154,25 +190,25 @@ docstring continuation lines
 > no opening delimiter to strip; checks both `"""` and `'''` closers
 
 
-<a id="chk-16"></a>**16. ~/Desktop/autoodocs/lib/parser.lua:325**
+<a id="chk-22"></a>**22. ~/Desktop/autoodocs/lib/parser.lua:392**
 *↳ [@run 4.2](#run-4-2)*
 
 Scan untagged block comment for tags
 
 
-<a id="chk-17"></a>**17. ~/Desktop/autoodocs/lib/parser.lua:344**
+<a id="chk-23"></a>**23. ~/Desktop/autoodocs/lib/parser.lua:411**
 *↳ [@run 4.2](#run-4-2)*
 
 Scan untagged HTML comment for tags
 
 
-<a id="chk-18"></a>**18. ~/Desktop/autoodocs/lib/parser.lua:377**
+<a id="chk-24"></a>**24. ~/Desktop/autoodocs/lib/parser.lua:444**
 *↳ [@run 4.2](#run-4-2)*
 
 Scan untagged docstring for tags
 
 
-<a id="chk-19"></a>**19. ~/Desktop/autoodocs/lib/parser.lua:402**
+<a id="chk-25"></a>**25. ~/Desktop/autoodocs/lib/parser.lua:469**
 *↳ [@run 4.2](#run-4-2)*
 
 Detect comment style of current line
@@ -181,25 +217,25 @@ Detect comment style of current line
         local style = M.detect_style(line)
 ```
 
-<a id="chk-20"></a>**20. ~/Desktop/autoodocs/lib/parser.lua:444**
+<a id="chk-26"></a>**26. ~/Desktop/autoodocs/lib/parser.lua:515**
 *↳ [@run 4.2](#run-4-2)*
 
 Untagged block comment start - scan for tags
 
 
-<a id="chk-21"></a>**21. ~/Desktop/autoodocs/lib/parser.lua:447**
+<a id="chk-27"></a>**27. ~/Desktop/autoodocs/lib/parser.lua:518**
 *↳ [@run 4.2](#run-4-2)*
 
 Untagged HTML comment start
 
 
-<a id="chk-22"></a>**22. ~/Desktop/autoodocs/lib/parser.lua:450**
+<a id="chk-28"></a>**28. ~/Desktop/autoodocs/lib/parser.lua:521**
 *↳ [@run 4.2](#run-4-2)*
 
 Untagged double-quote docstring start
 
 
-<a id="chk-23"></a>**23. ~/Desktop/autoodocs/lib/parser.lua:454**
+<a id="chk-29"></a>**29. ~/Desktop/autoodocs/lib/parser.lua:525**
 *↳ [@run 4.2](#run-4-2)*
 
 Untagged single-quote docstring start
@@ -257,7 +293,7 @@ local TAGS = {"@gen", "@def", "@chk", "@run", "@err"}
 M.ADMONITIONS = {n="NOTE", t="TIP", i="IMPORTANT", w="WARNING", c="CAUTION"}
 ```
 
-<a id="def-6"></a>**6. ~/Desktop/autoodocs/lib/parser.lua:202**
+<a id="def-6"></a>**6. ~/Desktop/autoodocs/lib/parser.lua:243**
 *↳ [@run 4.](#run-4)*
 
 > [!NOTE]
@@ -272,7 +308,7 @@ avoids a second `open`+`read` just for shebang detection
     f:close()
 ```
 
-<a id="def-7"></a>**7. ~/Desktop/autoodocs/lib/parser.lua:209**
+<a id="def-7"></a>**7. ~/Desktop/autoodocs/lib/parser.lua:250**
 *↳ [@run 4.](#run-4)*
 
 Initialize per-file state machine variables
@@ -350,19 +386,19 @@ end
 
 ### <a id="run-3"></a>Strip comment delimiters and extract inner text
 
-`~/Desktop/autoodocs/lib/parser.lua:122`
+`~/Desktop/autoodocs/lib/parser.lua:127`
 
 for all styles including block continuations
 
 
 ### <a id="run-4"></a>Walk one file as a line-by-line state machine
 
-`~/Desktop/autoodocs/lib/parser.lua:199`
+`~/Desktop/autoodocs/lib/parser.lua:240`
 
 extracting tagged comments into `records` table
 
 
-<a id="run-4-1"></a>**4.1 ~/Desktop/autoodocs/lib/parser.lua:227**
+<a id="run-4-1"></a>**4.1 ~/Desktop/autoodocs/lib/parser.lua:268**
 *↳ [@run 4.](#run-4)*
 
 > [!NOTE]
@@ -410,7 +446,7 @@ extracting tagged comments into `records` table
     end
 ```
 
-<a id="run-4-2"></a>**4.2 ~/Desktop/autoodocs/lib/parser.lua:267**
+<a id="run-4-2"></a>**4.2 ~/Desktop/autoodocs/lib/parser.lua:308**
 *↳ [@run 4.](#run-4)*
 
 Flush deferred record with captured `subj` lines
@@ -427,7 +463,7 @@ Flush deferred record with captured `subj` lines
     end
 ```
 
-<a id="run-4-2-1"></a>**4.2.1 ~/Desktop/autoodocs/lib/parser.lua:287**
+<a id="run-4-2-1"></a>**4.2.1 ~/Desktop/autoodocs/lib/parser.lua:328**
 *↳ [@run 4.2](#run-4-2)*
 
 Subject line capture mode
@@ -445,7 +481,7 @@ Subject line capture mode
         end
 ```
 
-<a id="run-4-2-2"></a>**4.2.2 ~/Desktop/autoodocs/lib/parser.lua:299**
+<a id="run-4-2-2"></a>**4.2.2 ~/Desktop/autoodocs/lib/parser.lua:340**
 *↳ [@run 4.2](#run-4-2)*
 
 Accumulate C-style block comment with tag
@@ -464,7 +500,7 @@ Accumulate C-style block comment with tag
         end
 ```
 
-<a id="run-4-2-3"></a>**4.2.3 ~/Desktop/autoodocs/lib/parser.lua:312**
+<a id="run-4-2-3"></a>**4.2.3 ~/Desktop/autoodocs/lib/parser.lua:353**
 *↳ [@run 4.2](#run-4-2)*
 
 Accumulate HTML comment with tag
@@ -483,7 +519,19 @@ Accumulate HTML comment with tag
         end
 ```
 
-<a id="run-4-2-4"></a>**4.2.4 ~/Desktop/autoodocs/lib/parser.lua:363**
+<a id="run-4-2-4"></a>**4.2.4 ~/Desktop/autoodocs/lib/parser.lua:366**
+*↳ [@run 4.2](#run-4-2)*
+
+Accumulate Lua block comment with tag
+
+
+<a id="run-4-2-5"></a>**4.2.5 ~/Desktop/autoodocs/lib/parser.lua:379**
+*↳ [@run 4.2](#run-4-2)*
+
+Accumulate Haskell block comment with tag
+
+
+<a id="run-4-2-6"></a>**4.2.6 ~/Desktop/autoodocs/lib/parser.lua:430**
 *↳ [@run 4.2](#run-4-2)*
 
 Accumulate docstring with tag
@@ -503,7 +551,7 @@ Accumulate docstring with tag
         end
 ```
 
-<a id="run-4-2-5"></a>**4.2.5 ~/Desktop/autoodocs/lib/parser.lua:405**
+<a id="run-4-2-7"></a>**4.2.7 ~/Desktop/autoodocs/lib/parser.lua:472**
 *↳ [@run 4.2](#run-4-2)*
 
 Continue or close existing single-line comment block
@@ -524,7 +572,7 @@ Continue or close existing single-line comment block
         end
 ```
 
-<a id="run-4-2-6"></a>**4.2.6 ~/Desktop/autoodocs/lib/parser.lua:420**
+<a id="run-4-2-8"></a>**4.2.8 ~/Desktop/autoodocs/lib/parser.lua:487**
 *↳ [@run 4.2](#run-4-2)*
 
 Dispatch new tagged comment by style
@@ -539,22 +587,22 @@ Dispatch new tagged comment by style
             adm   = M.get_admonition(sc)
             text  = M.strip_tags(sc)
 
-            if style == "hash" or style == "dslash" or style == "ddash" then
+            if style == "hash" or style == "dslash" or style == "ddash" or style == "semi" or style == "percent" then
                 state = style
             elseif style == "cblock" then
                 if find(line, "*/", 1, true) then emit() else state = "cblock" end
             elseif style == "html" then
                 if find(line, "-->", 1, true) then emit() else state = "html" end
+            elseif style == "luablock" then
+                if find(line, "]]", 1, true) then emit() else state = "luablock" end
+            elseif style == "hblock" then
+                if find(line, "-}", 1, true) then emit() else state = "hblock" end
             elseif style == "dquote" then
                 local rest = match(line, '"""(.*)')
                 if rest and find(rest, '"""', 1, true) then emit() else state = "dquote" end
-            elseif style == "squote" then
-                local rest = match(line, "'''(.*)")
-                if rest and find(rest, "'''", 1, true) then emit() else state = "squote" end
-            end
 ```
 
-<a id="run-4-2-7"></a>**4.2.7 ~/Desktop/autoodocs/lib/parser.lua:460**
+<a id="run-4-2-9"></a>**4.2.9 ~/Desktop/autoodocs/lib/parser.lua:531**
 *↳ [@run 4.2](#run-4-2)*
 
 Begin subject capture if waiting and hit a code line

@@ -24,7 +24,9 @@ local dir = arg[0]:match("^(.-)[^/]*$") or "./"
 
 ### <a id="run-2"></a>Generate markdown documentation
 
-`~/Desktop/autoodocs/build.lua:9` *↳ [autoodocs.lua:82](autoodocs-lua.html#run-1)*
+`~/Desktop/autoodocs/build.lua:9`
+
+*↳ [autoodocs.lua:82](autoodocs-lua.html#run-1)*
 
 ```lua
 print("Generating markdown...")
@@ -33,7 +35,9 @@ os.execute(fmt("lua %sautoodocs.lua . docs -s", dir))
 
 ### <a id="run-3"></a>Copy stylesheet to output directory
 
-`~/Desktop/autoodocs/build.lua:14` *↳ [default.css](default-css.html)*
+`~/Desktop/autoodocs/build.lua:14`
+
+*↳ [default.css](default-css.html)*
 
 ```lua
 print("Copying assets...")
@@ -42,7 +46,9 @@ os.execute(fmt("cp %sdefault.css docs/", dir))
 
 ### <a id="run-4"></a>Convert all markdown files to HTML
 
-`~/Desktop/autoodocs/build.lua:19` *↳ [markdown.lua:1264](markdown-lua.html#run-9)*
+`~/Desktop/autoodocs/build.lua:19`
+
+*↳ [markdown.lua:1264](markdown-lua.html#run-9)*
 
 ```lua
 print("Converting to HTML...")

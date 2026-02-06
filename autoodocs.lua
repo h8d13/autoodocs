@@ -12,8 +12,9 @@
 -- @chk `-s` outputs extra stats
 
 -- @def:13!i
--- `:N` lines of subject
 -- after the end of comment block
+-- we define `:` then `n` the amount of subject
+-- and optionally a callout:
 -- `!n` NOTE
 -- `!t` TIP
 -- `!w` WARN

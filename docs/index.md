@@ -3,10 +3,12 @@
 # Autoodocs
 
 A lightweight documentation generator that extracts tagged comments from source files.
+Inspired by @tscoding `nob.h` autodocs.
 
 ## Features
 
 - Extracts `@gen`, `@def`, `@chk`, `@run`, `@err` tagged comments
+- Supports `--`, `//`, `#`, `;`, `%`, `/* */`, `<!-- -->`, `--[[ ]]`, `{- -}`, `"""`, `'''`
 - Respects `.gitignore` and `.somefolder/` ignores
 - Skips the whole comment block until next code line
 - Cross-references with `@src:file:line` auto-resolving anchors
@@ -58,6 +60,7 @@ Or directly from root `/` or without a specific branch.
 [build.lua](build-lua.html)
 [markdown.lua](markdown-lua.html)
 [default.css](default-css.html)
+[README.md](readme-md.html)
 [autoodocs.lua](autoodocs-lua.html)
 [>lib]
 [parser.lua](parser-lua.html)
