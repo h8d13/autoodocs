@@ -33,16 +33,23 @@
 
 <ul>
     <li>Extracts <code>@gen</code>, <code>@def</code>, <code>@chk</code>, <code>@run</code>, <code>@err</code> tagged comments</li>
+    <li>Skips the whole comment block until next code line</li>
     <li>Cross-references with <code>@src:file:line</code> auto-resolving anchors</li>
-    <li>GitHub-style callouts (<code>!n</code> NOTE, <code>!t</code> TIP, <code>!w</code> WARN, <code>!c</code> CAUTION)</li>
     <li>Subject line counts with <code>:N</code> syntax</li>
+    <li>GitHub-style callouts (<code>!n</code> NOTE, <code>!t</code> TIP, <code>!w</code> WARN, <code>!c</code> CAUTION)</li>
     <li>Generates markdown with HTML output via bundled converter</li>
 </ul>
 
 <h2>Usage</h2>
 
+<p>Create a branch named <code>pages</code>.</p>
+
+<p>Go to repo <code>Settings</code> > <code>Pages</code> > <code>Deploy from branch</code> > <code>pages</code> > <code>/docs</code></p>
+
 <pre><code class="language-sh">lua autodocs.lua [scan_dir] [out_dir] [-s]  # generate markdown
 lua markdown.lua docs/file.md               # convert to HTML
+
+# do both at once
 lua build.lua                               # run full pipeline
 </code></pre>
 
