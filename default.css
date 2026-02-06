@@ -89,6 +89,35 @@ body {
     line-height: 1.3;
 }
 
+.sidebar .toc-dir {
+    list-style: none;
+}
+
+.sidebar .toc-dir details {
+    margin: 0.25em 0;
+}
+
+.sidebar .toc-dir summary {
+    cursor: pointer;
+    padding: 0.3em 0.5em;
+    color: #555;
+    font-size: 0.9em;
+    border-radius: 4px;
+}
+
+.sidebar .toc-dir summary:hover {
+    background: #e9e9e9;
+}
+
+.sidebar .toc-dir ul {
+    padding-left: 1em;
+    margin: 0;
+}
+
+.sidebar .toc-dir li {
+    margin: 0.15em 0;
+}
+
 /* Main content */
 .content {
     flex: 1;

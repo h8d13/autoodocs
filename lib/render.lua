@@ -129,7 +129,6 @@ function M.render_index(file_order)
     w("# Documentation\n\n")
     w("Select a file from the sidebar to view its documentation.\n\n")
 
-    -- Hidden nav data for TOC extraction
     -- Find common path prefix across all files
     local prefix = match(file_order[1] or "", "^(.*/)") or ""
     for _, file in ipairs(file_order) do
@@ -138,11 +137,36 @@ function M.render_index(file_order)
         end
     end
 
-    w("<!-- NAV\n")
+    -- Group files: root files first, then by subdirectory
+    local root_files = {}
+    local dir_files = {}
     for _, file in ipairs(file_order) do
-        local slug = slugify(file)
-        local display = sub(file, #prefix + 1)
-        w(fmt("[%s](%s.html)\n", display, slug))
+        local rel = sub(file, #prefix + 1)
+        local dir = match(rel, "^([^/]+)/")
+        if dir then
+            dir_files[dir] = dir_files[dir] or {}
+            dir_files[dir][#dir_files[dir] + 1] = {file = file, rel = rel}
+        else
+            root_files[#root_files + 1] = {file = file, rel = rel}
+        end
+    end
+
+    -- Hidden nav data for TOC extraction
+    w("<!-- NAV\n")
+    -- Root files first
+    for _, f in ipairs(root_files) do
+        local slug = slugify(f.file)
+        w(fmt("[%s](%s.html)\n", f.rel, slug))
+    end
+    -- Then grouped subdirectories
+    for dir, files in pairs(dir_files) do
+        w(fmt("[>%s]\n", dir))
+        for _, f in ipairs(files) do
+            local slug = slugify(f.file)
+            local basename = match(f.rel, "/(.+)$") or f.rel
+            w(fmt("[%s](%s.html)\n", basename, slug))
+        end
+        w("[<]\n")
     end
     w("-->\n")
 

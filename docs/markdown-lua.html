@@ -46,11 +46,13 @@
 
 <p>Markdown to HTML converter with GitHub-style callouts and TOC generation</p>
 
+<p>Mostly stolen from https://github.com/speedata/luamarkdown with minor modifications for our parsers.</p>
+
 <h2><a id="chk"></a>Checks</h2>
 
 <h3><a id="chk-1"></a>Returns true if line is a ruler of repeated characters</h3>
 
-<p><code>~/Desktop/autoodocs/markdown.lua:391</code></p>
+<p><code>~/Desktop/autoodocs/markdown.lua:388</code></p>
 
 <p>The line must contain at least three char characters and contain only spaces and</p>
 
@@ -68,21 +70,21 @@ end
 
 <h3><a id="chk-2"></a>Classify block-level formatting in a line</h3>
 
-<p><code>~/Desktop/autoodocs/markdown.lua:400</code></p>
+<p><code>~/Desktop/autoodocs/markdown.lua:397</code></p>
 
 
 <h2><a id="def"></a>Defines</h2>
 
 <h3><a id="def-1"></a>Forward declarations for mutually recursive functions</h3>
 
-<p><code>~/Desktop/autoodocs/markdown.lua:125</code></p>
+<p><code>~/Desktop/autoodocs/markdown.lua:122</code></p>
 
 <pre><code class="language-lua">local span_transform, encode_backslash_escapes, block_transform, blocks_to_html
 </code></pre>
 
 <h3><a id="def-2"></a>Map values in table through function f</h3>
 
-<p><code>~/Desktop/autoodocs/markdown.lua:132</code></p>
+<p><code>~/Desktop/autoodocs/markdown.lua:129</code></p>
 
 <pre><code class="language-lua">local function map(t, f)
     local out = {}
@@ -93,21 +95,21 @@ end
 
 <h3><a id="def-3"></a>Identity function, useful as a placeholder</h3>
 
-<p><code>~/Desktop/autoodocs/markdown.lua:139</code></p>
+<p><code>~/Desktop/autoodocs/markdown.lua:136</code></p>
 
 <pre><code class="language-lua">local function identity(text) return text end
 </code></pre>
 
 <h3><a id="def-4"></a>Functional style ternary (no short circuit)</h3>
 
-<p><code>~/Desktop/autoodocs/markdown.lua:142</code></p>
+<p><code>~/Desktop/autoodocs/markdown.lua:139</code></p>
 
 <pre><code class="language-lua">local function iff(t, a, b) if t then return a else return b end end
 </code></pre>
 
 <h3><a id="def-5"></a>Hash data into unique alphanumeric strings</h3>
 
-<p><code>~/Desktop/autoodocs/markdown.lua:256</code></p>
+<p><code>~/Desktop/autoodocs/markdown.lua:253</code></p>
 
 <div class="callout callout-note">
     <div class="callout-title">NOTE</div>
@@ -133,7 +135,7 @@ end
 
 <h3><a id="def-6"></a>Protect document parts from modification</h3>
 
-<p><code>~/Desktop/autoodocs/markdown.lua:308</code></p>
+<p><code>~/Desktop/autoodocs/markdown.lua:305</code></p>
 
 <div class="callout callout-note">
     <div class="callout-title">NOTE</div>
@@ -153,7 +155,7 @@ end
 
 <h3><a id="def-7"></a>Characters with special markdown meaning needing escape</h3>
 
-<p><code>~/Desktop/autoodocs/markdown.lua:831</code></p>
+<p><code>~/Desktop/autoodocs/markdown.lua:828</code></p>
 
 <pre><code class="language-lua">escape_chars = "'\\`*_{}[]()&gt;#+-.!'"
 escape_table = {}
@@ -163,7 +165,7 @@ escape_table = {}
 
 <h3><a id="run-1"></a>Split text into array of lines by separator</h3>
 
-<p><code>~/Desktop/autoodocs/markdown.lua:145</code></p>
+<p><code>~/Desktop/autoodocs/markdown.lua:142</code></p>
 
 <pre><code class="language-lua">local function split(text, sep)
     sep = sep or "\n"
@@ -181,42 +183,42 @@ end
 
 <h3><a id="run-2"></a>Block-level text transforms working with arrays of lines</h3>
 
-<p><code>~/Desktop/autoodocs/markdown.lua:389</code></p>
+<p><code>~/Desktop/autoodocs/markdown.lua:386</code></p>
 
 
 <h3><a id="run-3"></a>Convert normal + ruler lines to header entries</h3>
 
-<p><code>~/Desktop/autoodocs/markdown.lua:465</code></p>
+<p><code>~/Desktop/autoodocs/markdown.lua:462</code></p>
 
 
 <h3><a id="run-4"></a>Convert list blocks to protected HTML</h3>
 
-<p><code>~/Desktop/autoodocs/markdown.lua:483</code></p>
+<p><code>~/Desktop/autoodocs/markdown.lua:480</code></p>
 
 
 <h3><a id="run-5"></a>Convert blockquote markers with GitHub callout support</h3>
 
-<p><code>~/Desktop/autoodocs/markdown.lua:606</code></p>
+<p><code>~/Desktop/autoodocs/markdown.lua:603</code></p>
 
 
 <h3><a id="run-6"></a>Convert fenced code blocks with language hints</h3>
 
-<p><code>~/Desktop/autoodocs/markdown.lua:668</code></p>
+<p><code>~/Desktop/autoodocs/markdown.lua:665</code></p>
 
 
 <h3><a id="run-7"></a>Span-level text transforms for inline formatting</h3>
 
-<p><code>~/Desktop/autoodocs/markdown.lua:829</code></p>
+<p><code>~/Desktop/autoodocs/markdown.lua:826</code></p>
 
 
 <h3><a id="run-8"></a>Normalize line endings, tabs, and whitespace</h3>
 
-<p><code>~/Desktop/autoodocs/markdown.lua:1119</code></p>
+<p><code>~/Desktop/autoodocs/markdown.lua:1116</code></p>
 
 
 <h3><a id="run-9"></a>Main markdown processing pipeline</h3>
 
-<p><code>~/Desktop/autoodocs/markdown.lua:1164</code></p>
+<p><code>~/Desktop/autoodocs/markdown.lua:1161</code></p>
 
 <pre><code class="language-lua">local function markdown(text)
     init_hash(text)
@@ -232,36 +234,36 @@ end
 
 <h3><a id="run-10"></a>CLI handler with HTML wrapping and TOC generation</h3>
 
-<p><code>~/Desktop/autoodocs/markdown.lua:1267</code></p>
+<p><code>~/Desktop/autoodocs/markdown.lua:1264</code></p>
 
 
 <h2><a id="err"></a>Errors</h2>
 
-<p><a id="err-1"></a><strong>1. ~/Desktop/autoodocs/markdown.lua:1274</strong>
+<p><a id="err-1"></a><strong>1. ~/Desktop/autoodocs/markdown.lua:1271</strong>
 <em>↳ <a href="#run-10">@run 10.</a></em></p>
 
 <p>Header file not found</p>
 
 
-<p><a id="err-1-1"></a><strong>1.1 ~/Desktop/autoodocs/markdown.lua:1302</strong>
+<p><a id="err-1-1"></a><strong>1.1 ~/Desktop/autoodocs/markdown.lua:1299</strong>
 <em>↳ <a href="#err-1">@err 1.</a></em></p>
 
 <p>Stylesheet file not found for inline inclusion</p>
 
 
-<p><a id="err-2"></a><strong>2. ~/Desktop/autoodocs/markdown.lua:1363</strong>
+<p><a id="err-2"></a><strong>2. ~/Desktop/autoodocs/markdown.lua:1372</strong>
 <em>↳ <a href="#run-10">@run 10.</a></em></p>
 
 <p>Footer file not found</p>
 
 
-<p><a id="err-3"></a><strong>3. ~/Desktop/autoodocs/markdown.lua:1426</strong>
+<p><a id="err-3"></a><strong>3. ~/Desktop/autoodocs/markdown.lua:1435</strong>
 <em>↳ <a href="#run-10">@run 10.</a></em></p>
 
 <p>Test file not found</p>
 
 
-<p><a id="err-4"></a><strong>4. ~/Desktop/autoodocs/markdown.lua:1436</strong>
+<p><a id="err-4"></a><strong>4. ~/Desktop/autoodocs/markdown.lua:1445</strong>
 <em>↳ <a href="#run-10">@run 10.</a></em></p>
 
 <p>Input or output file cannot be opened</p>

@@ -1,15 +1,15 @@
 #!/usr/bin/env lua
 -- @gen Documentation generator that extracts tagged comments from source files
--- @chk `-s` outputs extra stats
-
--- @gen
 -- This library is built to generate docs from source code.
 -- It is also made for AI to auto document it's code in a structured human readable format.
 -- This creates a pleasing flow to work with for docs/ pages.
+
 --########--
 --HLPARSER--
 --Examples--
 --########--
+
+-- @chk `-s` outputs extra stats
 
 -- @def:9!i
 -- Defines with 9 line of subject

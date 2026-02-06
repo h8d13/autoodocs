@@ -1,15 +1,12 @@
 #!/usr/bin/env lua
 -- @gen Markdown to HTML converter with GitHub-style callouts and TOC generation
+-- Mostly stolen from https://github.com/speedata/luamarkdown with minor modifications for our parsers.
 
 --[[
 # markdown.lua -- version 0.40
 
 **Author:** Niklas Frykholm, <niklas@frykholm.se>
 **Date:** 31 May 2008
-
-See the following page for changes to the original file
-https://github.com/speedata/luamarkdown
-
 
 This is an implementation of the popular text markup language Markdown in pure Lua.
 Markdown can convert documents written in a simple and easy to read text format
@@ -1326,8 +1323,20 @@ local function run_command_line(arg)
         if #toc == 0 then
             local nav = s:match("<!%-%- NAV%s*(.-)%-%->")
             if nav then
-                for text, href in nav:gmatch("%[([^%]]+)%]%(([^%)]+)%)") do
-                    toc[#toc + 1] = string.format('<li><a href="%s">%s</a></li>', href, text)
+                local in_group = false
+                for line in nav:gmatch("[^\n]+") do
+                    local dir = line:match("^%[>([^%]]+)%]$")
+                    local close = line:match("^%[<%]$")
+                    local text, href = line:match("^%[([^%]]+)%]%(([^%)]+)%)")
+                    if dir then
+                        toc[#toc + 1] = string.format('<li class="toc-dir"><details><summary>%s/</summary><ul>', dir)
+                        in_group = true
+                    elseif close then
+                        toc[#toc + 1] = '</ul></details></li>'
+                        in_group = false
+                    elseif text and href then
+                        toc[#toc + 1] = string.format('<li><a href="%s">%s</a></li>', href, text)
+                    end
                 end
             end
         end

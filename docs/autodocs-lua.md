@@ -10,19 +10,11 @@ It is also made for AI to auto document it's code in a structured human readable
 
 This creates a pleasing flow to work with for docs/ pages.
 
-########--
-
-HLPARSER--
-
-Examples--
-
-########--
-
 ## <a id="chk"></a>Checks
 
 ### <a id="chk-1"></a>`-s` outputs extra stats
 
-`~/Desktop/autoodocs/autodocs.lua:3`
+`~/Desktop/autoodocs/autodocs.lua:12`
 
 
 ## <a id="def"></a>Defines

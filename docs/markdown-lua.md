@@ -4,11 +4,13 @@
 
 Markdown to HTML converter with GitHub-style callouts and TOC generation
 
+Mostly stolen from https://github.com/speedata/luamarkdown with minor modifications for our parsers.
+
 ## <a id="chk"></a>Checks
 
 ### <a id="chk-1"></a>Returns true if line is a ruler of repeated characters
 
-`~/Desktop/autoodocs/markdown.lua:391`
+`~/Desktop/autoodocs/markdown.lua:388`
 
 The line must contain at least three char characters and contain only spaces and
 
@@ -25,14 +27,14 @@ end
 
 ### <a id="chk-2"></a>Classify block-level formatting in a line
 
-`~/Desktop/autoodocs/markdown.lua:400`
+`~/Desktop/autoodocs/markdown.lua:397`
 
 
 ## <a id="def"></a>Defines
 
 ### <a id="def-1"></a>Forward declarations for mutually recursive functions
 
-`~/Desktop/autoodocs/markdown.lua:125`
+`~/Desktop/autoodocs/markdown.lua:122`
 
 ```lua
 local span_transform, encode_backslash_escapes, block_transform, blocks_to_html
@@ -40,7 +42,7 @@ local span_transform, encode_backslash_escapes, block_transform, blocks_to_html
 
 ### <a id="def-2"></a>Map values in table through function f
 
-`~/Desktop/autoodocs/markdown.lua:132`
+`~/Desktop/autoodocs/markdown.lua:129`
 
 ```lua
 local function map(t, f)
@@ -52,7 +54,7 @@ end
 
 ### <a id="def-3"></a>Identity function, useful as a placeholder
 
-`~/Desktop/autoodocs/markdown.lua:139`
+`~/Desktop/autoodocs/markdown.lua:136`
 
 ```lua
 local function identity(text) return text end
@@ -60,7 +62,7 @@ local function identity(text) return text end
 
 ### <a id="def-4"></a>Functional style ternary (no short circuit)
 
-`~/Desktop/autoodocs/markdown.lua:142`
+`~/Desktop/autoodocs/markdown.lua:139`
 
 ```lua
 local function iff(t, a, b) if t then return a else return b end end
@@ -68,7 +70,7 @@ local function iff(t, a, b) if t then return a else return b end end
 
 ### <a id="def-5"></a>Hash data into unique alphanumeric strings
 
-`~/Desktop/autoodocs/markdown.lua:256`
+`~/Desktop/autoodocs/markdown.lua:253`
 
 > [!NOTE]
 > not cryptographic - used to protect parts from further processing
@@ -93,7 +95,7 @@ local HASH = {
 
 ### <a id="def-6"></a>Protect document parts from modification
 
-`~/Desktop/autoodocs/markdown.lua:308`
+`~/Desktop/autoodocs/markdown.lua:305`
 
 > [!NOTE]
 > saved in table for later unprotection
@@ -112,7 +114,7 @@ local PD = {
 
 ### <a id="def-7"></a>Characters with special markdown meaning needing escape
 
-`~/Desktop/autoodocs/markdown.lua:831`
+`~/Desktop/autoodocs/markdown.lua:828`
 
 ```lua
 escape_chars = "'\\`*_{}[]()>#+-.!'"
@@ -123,7 +125,7 @@ escape_table = {}
 
 ### <a id="run-1"></a>Split text into array of lines by separator
 
-`~/Desktop/autoodocs/markdown.lua:145`
+`~/Desktop/autoodocs/markdown.lua:142`
 
 ```lua
 local function split(text, sep)
@@ -142,42 +144,42 @@ end
 
 ### <a id="run-2"></a>Block-level text transforms working with arrays of lines
 
-`~/Desktop/autoodocs/markdown.lua:389`
+`~/Desktop/autoodocs/markdown.lua:386`
 
 
 ### <a id="run-3"></a>Convert normal + ruler lines to header entries
 
-`~/Desktop/autoodocs/markdown.lua:465`
+`~/Desktop/autoodocs/markdown.lua:462`
 
 
 ### <a id="run-4"></a>Convert list blocks to protected HTML
 
-`~/Desktop/autoodocs/markdown.lua:483`
+`~/Desktop/autoodocs/markdown.lua:480`
 
 
 ### <a id="run-5"></a>Convert blockquote markers with GitHub callout support
 
-`~/Desktop/autoodocs/markdown.lua:606`
+`~/Desktop/autoodocs/markdown.lua:603`
 
 
 ### <a id="run-6"></a>Convert fenced code blocks with language hints
 
-`~/Desktop/autoodocs/markdown.lua:668`
+`~/Desktop/autoodocs/markdown.lua:665`
 
 
 ### <a id="run-7"></a>Span-level text transforms for inline formatting
 
-`~/Desktop/autoodocs/markdown.lua:829`
+`~/Desktop/autoodocs/markdown.lua:826`
 
 
 ### <a id="run-8"></a>Normalize line endings, tabs, and whitespace
 
-`~/Desktop/autoodocs/markdown.lua:1119`
+`~/Desktop/autoodocs/markdown.lua:1116`
 
 
 ### <a id="run-9"></a>Main markdown processing pipeline
 
-`~/Desktop/autoodocs/markdown.lua:1164`
+`~/Desktop/autoodocs/markdown.lua:1161`
 
 ```lua
 local function markdown(text)
@@ -194,36 +196,36 @@ local function markdown(text)
 
 ### <a id="run-10"></a>CLI handler with HTML wrapping and TOC generation
 
-`~/Desktop/autoodocs/markdown.lua:1267`
+`~/Desktop/autoodocs/markdown.lua:1264`
 
 
 ## <a id="err"></a>Errors
 
-<a id="err-1"></a>**1. ~/Desktop/autoodocs/markdown.lua:1274**
+<a id="err-1"></a>**1. ~/Desktop/autoodocs/markdown.lua:1271**
 *↳ [@run 10.](#run-10)*
 
 Header file not found
 
 
-<a id="err-1-1"></a>**1.1 ~/Desktop/autoodocs/markdown.lua:1302**
+<a id="err-1-1"></a>**1.1 ~/Desktop/autoodocs/markdown.lua:1299**
 *↳ [@err 1.](#err-1)*
 
 Stylesheet file not found for inline inclusion
 
 
-<a id="err-2"></a>**2. ~/Desktop/autoodocs/markdown.lua:1363**
+<a id="err-2"></a>**2. ~/Desktop/autoodocs/markdown.lua:1372**
 *↳ [@run 10.](#run-10)*
 
 Footer file not found
 
 
-<a id="err-3"></a>**3. ~/Desktop/autoodocs/markdown.lua:1426**
+<a id="err-3"></a>**3. ~/Desktop/autoodocs/markdown.lua:1435**
 *↳ [@run 10.](#run-10)*
 
 Test file not found
 
 
-<a id="err-4"></a>**4. ~/Desktop/autoodocs/markdown.lua:1436**
+<a id="err-4"></a>**4. ~/Desktop/autoodocs/markdown.lua:1445**
 *↳ [@run 10.](#run-10)*
 
 Input or output file cannot be opened
