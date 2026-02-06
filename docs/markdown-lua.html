@@ -13,18 +13,19 @@
 <a href="index.html" class="sidebar-home">← Index</a>
 <h2>Contents</h2>
 <ul id="toc">
+<li><a href="#gen">General</a></li>
+<li class="toc-sub"><a href="#gen-1">Markdown to HTML converter with GitHub-style callouts and TOC generation</a></li>
 <li><a href="#chk">Checks</a></li>
 <li class="toc-sub"><a href="#chk-1">Returns true if line is a ruler of repeated characters</a></li>
 <li class="toc-sub"><a href="#chk-2">Classify block-level formatting in a line</a></li>
 <li><a href="#def">Defines</a></li>
-<li class="toc-sub"><a href="#def-1">Lua 5.1/5.2 compatibility</a></li>
-<li class="toc-sub"><a href="#def-2">Forward declarations for mutually recursive functions</a></li>
-<li class="toc-sub"><a href="#def-3">Map values in table through function f</a></li>
-<li class="toc-sub"><a href="#def-4">Identity function, useful as a placeholder</a></li>
-<li class="toc-sub"><a href="#def-5">Functional style ternary (no short circuit)</a></li>
-<li class="toc-sub"><a href="#def-6">Hash data into unique alphanumeric strings</a></li>
-<li class="toc-sub"><a href="#def-7">Protect document parts from modification</a></li>
-<li class="toc-sub"><a href="#def-8">Characters with special markdown meaning needing escape</a></li>
+<li class="toc-sub"><a href="#def-1">Forward declarations for mutually recursive functions</a></li>
+<li class="toc-sub"><a href="#def-2">Map values in table through function f</a></li>
+<li class="toc-sub"><a href="#def-3">Identity function, useful as a placeholder</a></li>
+<li class="toc-sub"><a href="#def-4">Functional style ternary (no short circuit)</a></li>
+<li class="toc-sub"><a href="#def-5">Hash data into unique alphanumeric strings</a></li>
+<li class="toc-sub"><a href="#def-6">Protect document parts from modification</a></li>
+<li class="toc-sub"><a href="#def-7">Characters with special markdown meaning needing escape</a></li>
 <li><a href="#run">Runners</a></li>
 <li class="toc-sub"><a href="#run-1">Split text into array of lines by separator</a></li>
 <li class="toc-sub"><a href="#run-2">Block-level text transforms working with arrays of lines</a></li>
@@ -36,6 +37,7 @@
 <li class="toc-sub"><a href="#run-8">Normalize line endings, tabs, and whitespace</a></li>
 <li class="toc-sub"><a href="#run-9">Main markdown processing pipeline</a></li>
 <li class="toc-sub"><a href="#run-10">CLI handler with HTML wrapping and TOC generation</a></li>
+<li><a href="#err">Errors</a></li>
 </ul>
 </nav>
 <main class="content">
@@ -44,11 +46,18 @@
 
 <p><code>~/Desktop/autoodocs/markdown.lua</code></p>
 
+<h2><a id="gen"></a>General</h2>
+
+<h3><a id="gen-1"></a>Markdown to HTML converter with GitHub-style callouts and TOC generation</h3>
+
+<p><code>~/Desktop/autoodocs/markdown.lua:2</code></p>
+
+
 <h2><a id="chk"></a>Checks</h2>
 
 <h3><a id="chk-1"></a>Returns true if line is a ruler of repeated characters</h3>
 
-<p><code>~/Desktop/autoodocs/markdown.lua:393</code></p>
+<p><code>~/Desktop/autoodocs/markdown.lua:391</code></p>
 
 <p>The line must contain at least three char characters and contain only spaces and</p>
 
@@ -66,28 +75,21 @@ end
 
 <h3><a id="chk-2"></a>Classify block-level formatting in a line</h3>
 
-<p><code>~/Desktop/autoodocs/markdown.lua:402</code></p>
+<p><code>~/Desktop/autoodocs/markdown.lua:400</code></p>
 
 
 <h2><a id="def"></a>Defines</h2>
 
-<h3><a id="def-1"></a>Lua 5.1/5.2 compatibility</h3>
+<h3><a id="def-1"></a>Forward declarations for mutually recursive functions</h3>
 
-<p><code>~/Desktop/autoodocs/markdown.lua:124</code></p>
+<p><code>~/Desktop/autoodocs/markdown.lua:125</code></p>
 
-<pre><code class="language-lua">local unpack = unpack or table.unpack
+<pre><code class="language-lua">local span_transform, encode_backslash_escapes, block_transform, blocks_to_html
 </code></pre>
 
-<h3><a id="def-2"></a>Forward declarations for mutually recursive functions</h3>
+<h3><a id="def-2"></a>Map values in table through function f</h3>
 
-<p><code>~/Desktop/autoodocs/markdown.lua:127</code></p>
-
-<pre><code class="language-lua">local span_transform, encode_backslash_escapes, block_transform, blocks_to_html, blocks_to_html
-</code></pre>
-
-<h3><a id="def-3"></a>Map values in table through function f</h3>
-
-<p><code>~/Desktop/autoodocs/markdown.lua:134</code></p>
+<p><code>~/Desktop/autoodocs/markdown.lua:132</code></p>
 
 <pre><code class="language-lua">local function map(t, f)
     local out = {}
@@ -96,23 +98,23 @@ end
 end
 </code></pre>
 
-<h3><a id="def-4"></a>Identity function, useful as a placeholder</h3>
+<h3><a id="def-3"></a>Identity function, useful as a placeholder</h3>
 
-<p><code>~/Desktop/autoodocs/markdown.lua:141</code></p>
+<p><code>~/Desktop/autoodocs/markdown.lua:139</code></p>
 
 <pre><code class="language-lua">local function identity(text) return text end
 </code></pre>
 
-<h3><a id="def-5"></a>Functional style ternary (no short circuit)</h3>
+<h3><a id="def-4"></a>Functional style ternary (no short circuit)</h3>
 
-<p><code>~/Desktop/autoodocs/markdown.lua:144</code></p>
+<p><code>~/Desktop/autoodocs/markdown.lua:142</code></p>
 
 <pre><code class="language-lua">local function iff(t, a, b) if t then return a else return b end end
 </code></pre>
 
-<h3><a id="def-6"></a>Hash data into unique alphanumeric strings</h3>
+<h3><a id="def-5"></a>Hash data into unique alphanumeric strings</h3>
 
-<p><code>~/Desktop/autoodocs/markdown.lua:258</code></p>
+<p><code>~/Desktop/autoodocs/markdown.lua:256</code></p>
 
 <div class="callout callout-note">
     <div class="callout-title">NOTE</div>
@@ -136,9 +138,9 @@ end
 }
 </code></pre>
 
-<h3><a id="def-7"></a>Protect document parts from modification</h3>
+<h3><a id="def-6"></a>Protect document parts from modification</h3>
 
-<p><code>~/Desktop/autoodocs/markdown.lua:310</code></p>
+<p><code>~/Desktop/autoodocs/markdown.lua:308</code></p>
 
 <div class="callout callout-note">
     <div class="callout-title">NOTE</div>
@@ -156,9 +158,9 @@ end
 }
 </code></pre>
 
-<h3><a id="def-8"></a>Characters with special markdown meaning needing escape</h3>
+<h3><a id="def-7"></a>Characters with special markdown meaning needing escape</h3>
 
-<p><code>~/Desktop/autoodocs/markdown.lua:833</code></p>
+<p><code>~/Desktop/autoodocs/markdown.lua:831</code></p>
 
 <pre><code class="language-lua">escape_chars = "'\\`*_{}[]()&gt;#+-.!'"
 escape_table = {}
@@ -168,7 +170,7 @@ escape_table = {}
 
 <h3><a id="run-1"></a>Split text into array of lines by separator</h3>
 
-<p><code>~/Desktop/autoodocs/markdown.lua:147</code></p>
+<p><code>~/Desktop/autoodocs/markdown.lua:145</code></p>
 
 <pre><code class="language-lua">local function split(text, sep)
     sep = sep or "\n"
@@ -186,42 +188,42 @@ end
 
 <h3><a id="run-2"></a>Block-level text transforms working with arrays of lines</h3>
 
-<p><code>~/Desktop/autoodocs/markdown.lua:391</code></p>
+<p><code>~/Desktop/autoodocs/markdown.lua:389</code></p>
 
 
 <h3><a id="run-3"></a>Convert normal + ruler lines to header entries</h3>
 
-<p><code>~/Desktop/autoodocs/markdown.lua:467</code></p>
+<p><code>~/Desktop/autoodocs/markdown.lua:465</code></p>
 
 
 <h3><a id="run-4"></a>Convert list blocks to protected HTML</h3>
 
-<p><code>~/Desktop/autoodocs/markdown.lua:485</code></p>
+<p><code>~/Desktop/autoodocs/markdown.lua:483</code></p>
 
 
 <h3><a id="run-5"></a>Convert blockquote markers with GitHub callout support</h3>
 
-<p><code>~/Desktop/autoodocs/markdown.lua:608</code></p>
+<p><code>~/Desktop/autoodocs/markdown.lua:606</code></p>
 
 
 <h3><a id="run-6"></a>Convert fenced code blocks with language hints</h3>
 
-<p><code>~/Desktop/autoodocs/markdown.lua:670</code></p>
+<p><code>~/Desktop/autoodocs/markdown.lua:668</code></p>
 
 
 <h3><a id="run-7"></a>Span-level text transforms for inline formatting</h3>
 
-<p><code>~/Desktop/autoodocs/markdown.lua:831</code></p>
+<p><code>~/Desktop/autoodocs/markdown.lua:829</code></p>
 
 
 <h3><a id="run-8"></a>Normalize line endings, tabs, and whitespace</h3>
 
-<p><code>~/Desktop/autoodocs/markdown.lua:1121</code></p>
+<p><code>~/Desktop/autoodocs/markdown.lua:1119</code></p>
 
 
 <h3><a id="run-9"></a>Main markdown processing pipeline</h3>
 
-<p><code>~/Desktop/autoodocs/markdown.lua:1166</code></p>
+<p><code>~/Desktop/autoodocs/markdown.lua:1164</code></p>
 
 <pre><code class="language-lua">local function markdown(text)
     init_hash(text)
@@ -237,7 +239,39 @@ end
 
 <h3><a id="run-10"></a>CLI handler with HTML wrapping and TOC generation</h3>
 
-<p><code>~/Desktop/autoodocs/markdown.lua:1269</code></p>
+<p><code>~/Desktop/autoodocs/markdown.lua:1267</code></p>
+
+
+<h2><a id="err"></a>Errors</h2>
+
+<p><a id="err-1"></a><strong>1. ~/Desktop/autoodocs/markdown.lua:1274</strong>
+<em>↳ <a href="#run-10">@run 10.</a></em></p>
+
+<p>Header file not found</p>
+
+
+<p><a id="err-1-1"></a><strong>1.1 ~/Desktop/autoodocs/markdown.lua:1302</strong>
+<em>↳ <a href="#err-1">@err 1.</a></em></p>
+
+<p>Stylesheet file not found for inline inclusion</p>
+
+
+<p><a id="err-2"></a><strong>2. ~/Desktop/autoodocs/markdown.lua:1363</strong>
+<em>↳ <a href="#run-10">@run 10.</a></em></p>
+
+<p>Footer file not found</p>
+
+
+<p><a id="err-3"></a><strong>3. ~/Desktop/autoodocs/markdown.lua:1426</strong>
+<em>↳ <a href="#run-10">@run 10.</a></em></p>
+
+<p>Test file not found</p>
+
+
+<p><a id="err-4"></a><strong>4. ~/Desktop/autoodocs/markdown.lua:1436</strong>
+<em>↳ <a href="#run-10">@run 10.</a></em></p>
+
+<p>Input or output file cannot be opened</p>
 
 
 

@@ -1,6 +1,11 @@
 #!/usr/bin/env lua
+-- @gen Documentation generator that extracts tagged comments from source files
 -- @chk `-s` outputs extra stats
 
+-- @gen
+-- This library is built to generate docs from source code.
+-- It is also made for AI to auto document it's code in a structured human readable format.
+-- This creates a pleasing flow to work with for docs/ pages.
 --########--
 --HLPARSER--
 --Examples--
@@ -25,7 +30,6 @@ print('luadoc is awesome')
     ---- handle errors with more definitions
 
 --########--
--- RUNNER
 
 -- @def:5 Localize functions and load libraries
 local match  = string.match
@@ -100,7 +104,7 @@ local function main()
     end
     pipe:close()
 
-    -- @chk:4 Verify tagged files were discovered
+    -- @err:4 No tagged files found
     if #files == 0 then
         io.stderr:write(fmt("autodocs: no tags found under %s\n", SCAN_DIR))
         return
@@ -111,7 +115,7 @@ local function main()
         total_input = total_input + parser.process_file(fp, records, HOME, US)
     end
 
-    -- @chk:4 Verify extraction produced results
+    -- @err:4 No extractable documentation
     if #records == 0 then
         io.stderr:write(fmt("autodocs: tags found but no extractable docs under %s\n", SCAN_DIR))
         return

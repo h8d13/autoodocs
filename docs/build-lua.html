@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>build.lua</title>
+    <link rel="stylesheet" type="text/css" href="default.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<div class="container">
+<nav class="sidebar">
+<a href="index.html" class="sidebar-home">← Index</a>
+<h2>Contents</h2>
+<ul id="toc">
+<li><a href="#gen">General</a></li>
+<li class="toc-sub"><a href="#gen-1">Build script that runs autodocs and converts output to HTML</a></li>
+<li><a href="#def">Defines</a></li>
+<li class="toc-sub"><a href="#def-1">Localize format function</a></li>
+<li><a href="#run">Runners</a></li>
+<li class="toc-sub"><a href="#run-1">Build pipeline: generate docs and convert to HTML</a></li>
+<li class="toc-sub"><a href="#run-2">Generate markdown documentation</a></li>
+<li class="toc-sub"><a href="#run-3">Copy stylesheet to output directory</a></li>
+<li class="toc-sub"><a href="#run-4">Convert all markdown files to HTML</a></li>
+</ul>
+</nav>
+<main class="content">
+
+<h1>build.lua</h1>
+
+<p><code>~/Desktop/autoodocs/build.lua</code></p>
+
+<h2><a id="gen"></a>General</h2>
+
+<h3><a id="gen-1"></a>Build script that runs autodocs and converts output to HTML</h3>
+
+<p><code>~/Desktop/autoodocs/build.lua:2</code></p>
+
+
+<h2><a id="def"></a>Defines</h2>
+
+<h3><a id="def-1"></a>Localize format function</h3>
+
+<p><code>~/Desktop/autoodocs/build.lua:5</code></p>
+
+<pre><code class="language-lua">local fmt = string.format
+</code></pre>
+
+<h2><a id="run"></a>Runners</h2>
+
+<h3><a id="run-1"></a>Build pipeline: generate docs and convert to HTML</h3>
+
+<p><code>~/Desktop/autoodocs/build.lua:3</code></p>
+
+
+<h3><a id="run-2"></a>Generate markdown documentation</h3>
+
+<p><code>~/Desktop/autoodocs/build.lua:8</code></p>
+
+<pre><code class="language-lua">print("Generating markdown...")
+os.execute("lua autodocs.lua . docs -s")
+</code></pre>
+
+<h3><a id="run-3"></a>Copy stylesheet to output directory</h3>
+
+<p><code>~/Desktop/autoodocs/build.lua:12</code></p>
+
+<pre><code class="language-lua">print("Copying assets...")
+os.execute("cp default.css docs/")
+</code></pre>
+
+<h3><a id="run-4"></a>Convert all markdown files to HTML</h3>
+
+<p><code>~/Desktop/autoodocs/build.lua:16</code></p>
+
+<pre><code class="language-lua">print("Converting to HTML...")
+local pipe = io.popen("ls docs/*.md 2&gt;/dev/null")
+for md in pipe:lines() do
+    os.execute(fmt("lua markdown.lua %s", md))
+end
+pipe:close()
+</code></pre>
+
+
+</main>
+</div>
+<script>
+hljs.highlightAll();
+// Highlight active section on scroll
+var links = document.querySelectorAll('.sidebar a');
+var sections = document.querySelectorAll('.content h2, .content h3');
+window.addEventListener('scroll', function() {
+    var current = '';
+    sections.forEach(function(section) {
+        var anchor = section.querySelector('a');
+        if (anchor && window.scrollY >= section.offsetTop - 100) {
+            current = anchor.id;
+        }
+    });
+    links.forEach(function(link) {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + current) {
+            link.classList.add('active');
+        }
+    });
+});
+</script>
+</body></html>

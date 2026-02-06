@@ -2,11 +2,18 @@
 
 `~/Desktop/autoodocs/lib/utils.lua`
 
+## <a id="gen"></a>General
+
+### <a id="gen-1"></a>String utilities, shell escaping, and language detection
+
+`~/Desktop/autoodocs/lib/utils.lua:1`
+
+
 ## <a id="chk"></a>Checks
 
 ### <a id="chk-1"></a>Classify file language via extension or shebang
 
-`~/Desktop/autoodocs/lib/utils.lua:59`
+`~/Desktop/autoodocs/lib/utils.lua:60`
 
 accepts `first_line` to avoid reopening the file
 
@@ -29,7 +36,7 @@ end
 
 ### <a id="def-1"></a>Localize `string.*`, `table.*`, and `io.*` functions
 
-`~/Desktop/autoodocs/lib/utils.lua:1`
+`~/Desktop/autoodocs/lib/utils.lua:2`
 
 bypasses metatable and global lookups in the hot loop
 
@@ -47,7 +54,7 @@ local M = {}
 
 ### <a id="def-2"></a>Shell-escape a string for safe interpolation into `io.popen`
 
-`~/Desktop/autoodocs/lib/utils.lua:12`
+`~/Desktop/autoodocs/lib/utils.lua:13`
 
 > [!NOTE]
 > prevents breakage from paths containing `"`, `$()`, or backticks
@@ -60,7 +67,7 @@ end
 
 ### <a id="def-3"></a>Map file extension to fenced code block language
 
-`~/Desktop/autoodocs/lib/utils.lua:39`
+`~/Desktop/autoodocs/lib/utils.lua:40`
 
 ```lua
 M.ext_map = {
@@ -79,7 +86,7 @@ M.ext_map = {
 
 ### <a id="def-4"></a>Map shebang interpreters to fenced code block language
 
-`~/Desktop/autoodocs/lib/utils.lua:53`
+`~/Desktop/autoodocs/lib/utils.lua:54`
 
 ```lua
 M.shebang_map = {
@@ -92,7 +99,7 @@ M.shebang_map = {
 
 ### <a id="run-1"></a>Strip leading whitespace, returns original if unchanged
 
-`~/Desktop/autoodocs/lib/utils.lua:18`
+`~/Desktop/autoodocs/lib/utils.lua:19`
 
 ```lua
 function M.trim_lead(s)
@@ -105,7 +112,7 @@ end
 
 ### <a id="run-2"></a>Strip trailing whitespace, returns original if unchanged
 
-`~/Desktop/autoodocs/lib/utils.lua:26`
+`~/Desktop/autoodocs/lib/utils.lua:27`
 
 ```lua
 function M.trim_trail(s)
@@ -118,7 +125,7 @@ end
 
 ### <a id="run-3"></a>Trim both ends via `trim_lead` and `trim_trail`
 
-`~/Desktop/autoodocs/lib/utils.lua:34`
+`~/Desktop/autoodocs/lib/utils.lua:35`
 
 ```lua
 function M.trim(s)

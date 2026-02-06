@@ -2,11 +2,18 @@
 
 `~/Desktop/autoodocs/lib/render.lua`
 
+## <a id="gen"></a>General
+
+### <a id="gen-1"></a>Markdown renderer that generates documentation pages with cross-references
+
+`~/Desktop/autoodocs/lib/render.lua:1`
+
+
 ## <a id="def"></a>Defines
 
 ### <a id="def-1"></a>Localize functions for performance
 
-`~/Desktop/autoodocs/lib/render.lua:1`
+`~/Desktop/autoodocs/lib/render.lua:2`
 
 ```lua
 local fmt    = string.format
@@ -19,7 +26,7 @@ local sub    = string.sub
 
 ### <a id="def-2"></a>Import utils for trim
 
-`~/Desktop/autoodocs/lib/render.lua:9`
+`~/Desktop/autoodocs/lib/render.lua:10`
 
 ```lua
 local utils = require("lib.utils")
@@ -28,7 +35,7 @@ local trim = utils.trim
 
 ### <a id="def-3"></a>Module table
 
-`~/Desktop/autoodocs/lib/render.lua:13`
+`~/Desktop/autoodocs/lib/render.lua:14`
 
 ```lua
 local M = {}
@@ -36,17 +43,17 @@ local M = {}
 
 ### <a id="def-4"></a>Map tag prefixes to anchor slugs and section titles
 
-`~/Desktop/autoodocs/lib/render.lua:16`
+`~/Desktop/autoodocs/lib/render.lua:17`
 
 ```lua
-M.TAG_SEC   = {CHK="chk", DEF="def", RUN="run", ERR="err"}
-M.TAG_TITLE = {CHK="Checks", DEF="Defines", RUN="Runners", ERR="Errors"}
-M.TAG_ORDER = {"CHK", "DEF", "RUN", "ERR"}
+M.TAG_SEC   = {GEN="gen", CHK="chk", DEF="def", RUN="run", ERR="err"}
+M.TAG_TITLE = {GEN="General", CHK="Checks", DEF="Defines", RUN="Runners", ERR="Errors"}
+M.TAG_ORDER = {"GEN", "CHK", "DEF", "RUN", "ERR"}
 ```
 
 ### <a id="def-5"></a>Line-to-anchor mapping built during grouping
 
-`~/Desktop/autoodocs/lib/render.lua:29`
+`~/Desktop/autoodocs/lib/render.lua:30`
 
 ```lua
 M.line_map = {}
@@ -56,12 +63,12 @@ M.line_map = {}
 
 ### <a id="run-1"></a>Generate a slug from a file path for anchors/filenames
 
-`~/Desktop/autoodocs/lib/render.lua:21`
+`~/Desktop/autoodocs/lib/render.lua:22`
 
 
 ### <a id="run-2"></a>Convert @src:filepath:line to clickable markdown links
 
-`~/Desktop/autoodocs/lib/render.lua:32`
+`~/Desktop/autoodocs/lib/render.lua:33`
 
 ```lua
 local function link_sources(text)
@@ -84,26 +91,26 @@ end
 
 ### <a id="run-3"></a>Render a single entry
 
-`~/Desktop/autoodocs/lib/render.lua:50`
+`~/Desktop/autoodocs/lib/render.lua:51`
 
 
 ### <a id="run-4"></a>Render index page
 
-`~/Desktop/autoodocs/lib/render.lua:114`
+`~/Desktop/autoodocs/lib/render.lua:115`
 
 
 ### <a id="run-5"></a>Render a single file's documentation page
 
-`~/Desktop/autoodocs/lib/render.lua:142`
+`~/Desktop/autoodocs/lib/render.lua:143`
 
 
 ### <a id="run-6"></a>Group records by file and assign indices
 
-`~/Desktop/autoodocs/lib/render.lua:171`
+`~/Desktop/autoodocs/lib/render.lua:172`
 
 
 ### <a id="run-7"></a>Get slug for a file path
 
-`~/Desktop/autoodocs/lib/render.lua:232`
+`~/Desktop/autoodocs/lib/render.lua:233`
 
 

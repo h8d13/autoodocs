@@ -1,3 +1,4 @@
+-- @gen String utilities, shell escaping, and language detection
 -- @def:9 Localize `string.*`, `table.*`, and `io.*` functions
 -- bypasses metatable and global lookups in the hot loop
 local find   = string.find

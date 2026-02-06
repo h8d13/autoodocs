@@ -1,4 +1,5 @@
 #!/usr/bin/env lua
+-- @gen Markdown to HTML converter with GitHub-style callouts and TOC generation
 
 --[[
 # markdown.lua -- version 0.40
@@ -121,11 +122,8 @@ THE SOFTWARE.
 ]]
 
 
--- @def:1 Lua 5.1/5.2 compatibility
-local unpack = unpack or table.unpack
-
 -- @def:1 Forward declarations for mutually recursive functions
-local span_transform, encode_backslash_escapes, block_transform, blocks_to_html, blocks_to_html
+local span_transform, encode_backslash_escapes, block_transform, blocks_to_html
 
 ----------------------------------------------------------------------
 -- Utility functions
@@ -177,7 +175,7 @@ local function find_first(s, patterns, index)
         local match = {s:find(p, index)}
         if #match>0 and (#res==0 or match[1] < res[1]) then res = match end
     end
-    return unpack(res)
+    return table.unpack(res)
 end
 
 -- If a replacement array is specified, the range [start, stop] in the array is replaced
@@ -1273,6 +1271,7 @@ local function run_command_line(arg)
         s = markdown(s)
         if not options.wrap_header then return s end
         local header = ""
+        -- @err Header file not found
         if options.header then
             local f = io.open(options.header) or error("Could not open file: " .. options.header)
             header = f:read("*a")
@@ -1300,6 +1299,7 @@ local function run_command_line(arg)
             local title = options.title or s:match("<h1>(.-)</h1>") or s:match("<h2>(.-)</h2>") or
                 s:match("<h3>(.-)</h3>") or "Untitled"
             header = header:gsub("TITLE", title)
+            -- @err Stylesheet file not found for inline inclusion
             if options.inline_style then
                 local style = ""
                 local f = io.open(options.stylesheet)
@@ -1360,6 +1360,7 @@ window.addEventListener('scroll', function() {
 });
 </script>
 </body></html>]]
+        -- @err Footer file not found
         if options.footer then
             local f = io.open(options.footer) or error("Could not open file: " .. options.footer)
             footer = f:read("*a")
@@ -1422,6 +1423,7 @@ Other options:
     op:flag("a", "append", function() options.append = true end)
     op:flag("t", "test", function()
         local n = arg[0]:gsub("markdown.lua", "markdown-tests.lua")
+        -- @err Test file not found
         local f = io.open(n)
         if f then
             f:close() dofile(n)
@@ -1431,6 +1433,7 @@ Other options:
         run_stdin = false
     end)
     op:flag("h", "help", function() print(help) run_stdin = false end)
+    -- @err Input or output file cannot be opened
     op:arg(function(path)
             local file = io.open(path) or error("Could not open file: " .. path)
             local s = file:read("*a")

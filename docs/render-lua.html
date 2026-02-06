@@ -13,6 +13,8 @@
 <a href="index.html" class="sidebar-home">← Index</a>
 <h2>Contents</h2>
 <ul id="toc">
+<li><a href="#gen">General</a></li>
+<li class="toc-sub"><a href="#gen-1">Markdown renderer that generates documentation pages with cross-references</a></li>
 <li><a href="#def">Defines</a></li>
 <li class="toc-sub"><a href="#def-1">Localize functions for performance</a></li>
 <li class="toc-sub"><a href="#def-2">Import utils for trim</a></li>
@@ -35,11 +37,18 @@
 
 <p><code>~/Desktop/autoodocs/lib/render.lua</code></p>
 
+<h2><a id="gen"></a>General</h2>
+
+<h3><a id="gen-1"></a>Markdown renderer that generates documentation pages with cross-references</h3>
+
+<p><code>~/Desktop/autoodocs/lib/render.lua:1</code></p>
+
+
 <h2><a id="def"></a>Defines</h2>
 
 <h3><a id="def-1"></a>Localize functions for performance</h3>
 
-<p><code>~/Desktop/autoodocs/lib/render.lua:1</code></p>
+<p><code>~/Desktop/autoodocs/lib/render.lua:2</code></p>
 
 <pre><code class="language-lua">local fmt    = string.format
 local gmatch = string.gmatch
@@ -51,7 +60,7 @@ local sub    = string.sub
 
 <h3><a id="def-2"></a>Import utils for trim</h3>
 
-<p><code>~/Desktop/autoodocs/lib/render.lua:9</code></p>
+<p><code>~/Desktop/autoodocs/lib/render.lua:10</code></p>
 
 <pre><code class="language-lua">local utils = require("lib.utils")
 local trim = utils.trim
@@ -59,23 +68,23 @@ local trim = utils.trim
 
 <h3><a id="def-3"></a>Module table</h3>
 
-<p><code>~/Desktop/autoodocs/lib/render.lua:13</code></p>
+<p><code>~/Desktop/autoodocs/lib/render.lua:14</code></p>
 
 <pre><code class="language-lua">local M = {}
 </code></pre>
 
 <h3><a id="def-4"></a>Map tag prefixes to anchor slugs and section titles</h3>
 
-<p><code>~/Desktop/autoodocs/lib/render.lua:16</code></p>
+<p><code>~/Desktop/autoodocs/lib/render.lua:17</code></p>
 
-<pre><code class="language-lua">M.TAG_SEC   = {CHK="chk", DEF="def", RUN="run", ERR="err"}
-M.TAG_TITLE = {CHK="Checks", DEF="Defines", RUN="Runners", ERR="Errors"}
-M.TAG_ORDER = {"CHK", "DEF", "RUN", "ERR"}
+<pre><code class="language-lua">M.TAG_SEC   = {GEN="gen", CHK="chk", DEF="def", RUN="run", ERR="err"}
+M.TAG_TITLE = {GEN="General", CHK="Checks", DEF="Defines", RUN="Runners", ERR="Errors"}
+M.TAG_ORDER = {"GEN", "CHK", "DEF", "RUN", "ERR"}
 </code></pre>
 
 <h3><a id="def-5"></a>Line-to-anchor mapping built during grouping</h3>
 
-<p><code>~/Desktop/autoodocs/lib/render.lua:29</code></p>
+<p><code>~/Desktop/autoodocs/lib/render.lua:30</code></p>
 
 <pre><code class="language-lua">M.line_map = {}
 </code></pre>
@@ -84,12 +93,12 @@ M.TAG_ORDER = {"CHK", "DEF", "RUN", "ERR"}
 
 <h3><a id="run-1"></a>Generate a slug from a file path for anchors/filenames</h3>
 
-<p><code>~/Desktop/autoodocs/lib/render.lua:21</code></p>
+<p><code>~/Desktop/autoodocs/lib/render.lua:22</code></p>
 
 
 <h3><a id="run-2"></a>Convert @src:filepath:line to clickable markdown links</h3>
 
-<p><code>~/Desktop/autoodocs/lib/render.lua:32</code></p>
+<p><code>~/Desktop/autoodocs/lib/render.lua:33</code></p>
 
 <pre><code class="language-lua">local function link_sources(text)
     return gsub(text, "@src:([^%s:]+):?(%d*)", function(path, line)
@@ -111,27 +120,27 @@ end
 
 <h3><a id="run-3"></a>Render a single entry</h3>
 
-<p><code>~/Desktop/autoodocs/lib/render.lua:50</code></p>
+<p><code>~/Desktop/autoodocs/lib/render.lua:51</code></p>
 
 
 <h3><a id="run-4"></a>Render index page</h3>
 
-<p><code>~/Desktop/autoodocs/lib/render.lua:114</code></p>
+<p><code>~/Desktop/autoodocs/lib/render.lua:115</code></p>
 
 
 <h3><a id="run-5"></a>Render a single file's documentation page</h3>
 
-<p><code>~/Desktop/autoodocs/lib/render.lua:142</code></p>
+<p><code>~/Desktop/autoodocs/lib/render.lua:143</code></p>
 
 
 <h3><a id="run-6"></a>Group records by file and assign indices</h3>
 
-<p><code>~/Desktop/autoodocs/lib/render.lua:171</code></p>
+<p><code>~/Desktop/autoodocs/lib/render.lua:172</code></p>
 
 
 <h3><a id="run-7"></a>Get slug for a file path</h3>
 
-<p><code>~/Desktop/autoodocs/lib/render.lua:232</code></p>
+<p><code>~/Desktop/autoodocs/lib/render.lua:233</code></p>
 
 
 

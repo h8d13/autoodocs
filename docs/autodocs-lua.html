@@ -13,6 +13,8 @@
 <a href="index.html" class="sidebar-home">← Index</a>
 <h2>Contents</h2>
 <ul id="toc">
+<li><a href="#gen">General</a></li>
+<li class="toc-sub"><a href="#gen-1">Documentation generator that extracts tagged comments from source files</a></li>
 <li><a href="#chk">Checks</a></li>
 <li><a href="#def">Defines</a></li>
 <li class="toc-sub"><a href="#def-2">Localize functions and load libraries</a></li>
@@ -22,6 +24,7 @@
 <li class="toc-sub"><a href="#run-1">Write file if content changed</a></li>
 <li class="toc-sub"><a href="#run-2">Main function</a></li>
 <li class="toc-sub"><a href="#run-3">Entry point</a></li>
+<li><a href="#err">Errors</a></li>
 </ul>
 </nav>
 <main class="content">
@@ -30,40 +33,44 @@
 
 <p><code>~/Desktop/autoodocs/autodocs.lua</code></p>
 
-<h2><a id="chk"></a>Checks</h2>
+<h2><a id="gen"></a>General</h2>
 
-<h3><a id="chk-1"></a><code>-s</code> outputs extra stats</h3>
+<h3><a id="gen-1"></a>Documentation generator that extracts tagged comments from source files</h3>
 
 <p><code>~/Desktop/autoodocs/autodocs.lua:2</code></p>
 
 
-<p><a id="chk-2"></a><strong>2. ~/Desktop/autoodocs/autodocs.lua:103</strong>
-<em>↳ <a href="#run-2">@run 2.</a></em></p>
+<h3><a id="gen-2"></a></h3>
 
-<p>Verify tagged files were discovered</p>
+<p><code>~/Desktop/autoodocs/autodocs.lua:5</code></p>
 
-<pre><code class="language-lua">    if #files == 0 then
-        io.stderr:write(fmt("autodocs: no tags found under %s\n", SCAN_DIR))
-        return
-    end
-</code></pre>
+<p>It is also made for AI to auto document it's code in a structured human readable format.</p>
 
-<p><a id="chk-3"></a><strong>3. ~/Desktop/autoodocs/autodocs.lua:114</strong>
-<em>↳ <a href="#run-2">@run 2.</a></em></p>
+<blockquote>
+    <p>This creates a pleasing flow to work with for docs/ pages.</p>
+    
+    <h8>--</h8>
+    
+    <p>HLPARSER--</p>
+    
+    <p>Examples--</p>
+    
+    <h8>--</h8>
+</blockquote>
 
-<p>Verify extraction produced results</p>
 
-<pre><code class="language-lua">    if #records == 0 then
-        io.stderr:write(fmt("autodocs: tags found but no extractable docs under %s\n", SCAN_DIR))
-        return
-    end
-</code></pre>
+<h2><a id="chk"></a>Checks</h2>
+
+<h3><a id="chk-1"></a><code>-s</code> outputs extra stats</h3>
+
+<p><code>~/Desktop/autoodocs/autodocs.lua:3</code></p>
+
 
 <h2><a id="def"></a>Defines</h2>
 
 <h3><a id="def-1"></a></h3>
 
-<p><code>~/Desktop/autoodocs/autodocs.lua:9</code></p>
+<p><code>~/Desktop/autoodocs/autodocs.lua:14</code></p>
 
 <div class="callout callout-important">
     <div class="callout-title">IMPORTANT</div>
@@ -93,7 +100,7 @@
 
 <h3><a id="def-2"></a>Localize functions and load libraries</h3>
 
-<p><code>~/Desktop/autoodocs/autodocs.lua:30</code></p>
+<p><code>~/Desktop/autoodocs/autodocs.lua:34</code></p>
 
 <pre><code class="language-lua">local match  = string.match
 local gsub   = string.gsub
@@ -104,7 +111,7 @@ local open   = io.open
 
 <h3><a id="def-3"></a>Parse CLI args with defaults</h3>
 
-<p><code>~/Desktop/autoodocs/autodocs.lua:41</code></p>
+<p><code>~/Desktop/autoodocs/autodocs.lua:45</code></p>
 
 <p>strip trailing slash, resolve absolute path via <code>/proc/self/environ</code></p>
 
@@ -128,9 +135,9 @@ local US = "\031"
 
 <h3><a id="def-4"></a>Global state for collected records and line count</h3>
 
-<p><code>~/Desktop/autoodocs/autodocs.lua:57</code></p>
+<p><code>~/Desktop/autoodocs/autodocs.lua:61</code></p>
 
-<p>see <a href="parser-lua.html#run-4">lib/parser.lua:195</a> for file processing</p>
+<p>see <a href="parser-lua.html#chk-15">lib/parser.lua:195</a> for file processing</p>
 
 <pre><code class="language-lua">local records = {}
 local total_input = 0
@@ -140,23 +147,23 @@ local total_input = 0
 
 <h3><a id="run-1"></a>Write file if content changed</h3>
 
-<p><code>~/Desktop/autoodocs/autodocs.lua:62</code></p>
+<p><code>~/Desktop/autoodocs/autodocs.lua:66</code></p>
 
 
 <h3><a id="run-2"></a>Main function</h3>
 
-<p><code>~/Desktop/autoodocs/autodocs.lua:78</code></p>
+<p><code>~/Desktop/autoodocs/autodocs.lua:82</code></p>
 
 <pre><code class="language-lua">local function main()
 </code></pre>
 
-<p><a id="run-2-1"></a><strong>2.1 ~/Desktop/autoodocs/autodocs.lua:80</strong>
+<p><a id="run-2-1"></a><strong>2.1 ~/Desktop/autoodocs/autodocs.lua:84</strong>
 <em>↳ <a href="#run-2">@run 2.</a></em></p>
 
 <p>Create output directory</p>
 
 
-<p><a id="run-2-2"></a><strong>2.2 ~/Desktop/autoodocs/autodocs.lua:83</strong>
+<p><a id="run-2-2"></a><strong>2.2 ~/Desktop/autoodocs/autodocs.lua:87</strong>
 <em>↳ <a href="#run-2">@run 2.</a></em></p>
 
 <p>Discover files containing documentation tags</p>
@@ -184,7 +191,7 @@ local total_input = 0
     pipe:close()
 </code></pre>
 
-<p><a id="run-2-3"></a><strong>2.3 ~/Desktop/autoodocs/autodocs.lua:109</strong>
+<p><a id="run-2-3"></a><strong>2.3 ~/Desktop/autoodocs/autodocs.lua:113</strong>
 <em>↳ <a href="#run-2">@run 2.</a></em></p>
 
 <p>Process all discovered files into intermediate <code>records</code></p>
@@ -194,7 +201,7 @@ local total_input = 0
     end
 </code></pre>
 
-<p><a id="run-2-4"></a><strong>2.4 ~/Desktop/autoodocs/autodocs.lua:120</strong>
+<p><a id="run-2-4"></a><strong>2.4 ~/Desktop/autoodocs/autodocs.lua:124</strong>
 <em>↳ <a href="#run-2">@run 2.</a></em></p>
 
 <p>Group and index records by file</p>
@@ -202,19 +209,19 @@ local total_input = 0
 <pre><code class="language-lua">    local by_file, file_order = render.group_records(records)
 </code></pre>
 
-<p><a id="run-2-5"></a><strong>2.5 ~/Desktop/autoodocs/autodocs.lua:123</strong>
+<p><a id="run-2-5"></a><strong>2.5 ~/Desktop/autoodocs/autodocs.lua:127</strong>
 <em>↳ <a href="#run-2">@run 2.</a></em></p>
 
 <p>Write index page</p>
 
 
-<p><a id="run-2-6"></a><strong>2.6 ~/Desktop/autoodocs/autodocs.lua:130</strong>
+<p><a id="run-2-6"></a><strong>2.6 ~/Desktop/autoodocs/autodocs.lua:134</strong>
 <em>↳ <a href="#run-2">@run 2.</a></em></p>
 
 <p>Write individual file pages</p>
 
 
-<p><a id="run-2-7"></a><strong>2.7 ~/Desktop/autoodocs/autodocs.lua:144</strong>
+<p><a id="run-2-7"></a><strong>2.7 ~/Desktop/autoodocs/autodocs.lua:148</strong>
 <em>↳ <a href="#run-2">@run 2.</a></em></p>
 
 <p>Output stats if requested</p>
@@ -225,9 +232,33 @@ local total_input = 0
 
 <h3><a id="run-3"></a>Entry point</h3>
 
-<p><code>~/Desktop/autoodocs/autodocs.lua:150</code></p>
+<p><code>~/Desktop/autoodocs/autodocs.lua:154</code></p>
 
 <pre><code class="language-lua">main()
+</code></pre>
+
+<h2><a id="err"></a>Errors</h2>
+
+<p><a id="err-1"></a><strong>1. ~/Desktop/autoodocs/autodocs.lua:107</strong>
+<em>↳ <a href="#run-2">@run 2.</a></em></p>
+
+<p>No tagged files found</p>
+
+<pre><code class="language-lua">    if #files == 0 then
+        io.stderr:write(fmt("autodocs: no tags found under %s\n", SCAN_DIR))
+        return
+    end
+</code></pre>
+
+<p><a id="err-2"></a><strong>2. ~/Desktop/autoodocs/autodocs.lua:118</strong>
+<em>↳ <a href="#run-2">@run 2.</a></em></p>
+
+<p>No extractable documentation</p>
+
+<pre><code class="language-lua">    if #records == 0 then
+        io.stderr:write(fmt("autodocs: tags found but no extractable docs under %s\n", SCAN_DIR))
+        return
+    end
 </code></pre>
 
 

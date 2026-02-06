@@ -1,3 +1,4 @@
+-- @gen Comment parser that extracts documentation tags from source files
 -- @def:7 Localize functions for hot loop perf
 local find   = string.find
 local sub    = string.sub
@@ -18,33 +19,36 @@ local get_lang = utils.get_lang
 local M = {}
 
 -- @def:1 Hoisted `TAGS` table avoids per-call allocation in `strip_tags`
-local TAGS = {"@def", "@chk", "@run", "@err"}
+local TAGS = {"@gen", "@def", "@chk", "@run", "@err"}
 
 -- @def:1 Map `!x` suffixes to admonition types
 M.ADMONITIONS = {n="NOTE", t="TIP", i="IMPORTANT", w="WARNING", c="CAUTION"}
 
--- @chk:5 Test whether a line contains any documentation tag
+-- @chk:6 Test whether a line contains any documentation tag
 -- early `@` check short-circuits lines with no tags
 function M.has_tag(line)
     if not find(line, "@", 1, true) then return nil end
-    return find(line, "@def", 1, true) or find(line, "@chk", 1, true) or
-           find(line, "@run", 1, true) or find(line, "@err", 1, true)
+    return find(line, "@gen", 1, true) or find(line, "@def", 1, true) or
+           find(line, "@chk", 1, true) or find(line, "@run", 1, true) or
+           find(line, "@err", 1, true)
 end
 
--- @chk:7 Classify a tagged line into `DEF`, `CHK`, `RUN`, or `ERR`
+-- @chk:8 Classify a tagged line into `GEN`, `DEF`, `CHK`, `RUN`, or `ERR`
 function M.get_tag(line)
-    if     find(line, "@def", 1, true) then return "DEF"
+    if     find(line, "@gen", 1, true) then return "GEN"
+    elseif find(line, "@def", 1, true) then return "DEF"
     elseif find(line, "@chk", 1, true) then return "CHK"
     elseif find(line, "@run", 1, true) then return "RUN"
     elseif find(line, "@err", 1, true) then return "ERR"
     end
 end
 
--- @chk:5 Extract the subject line count from `@tag:N` syntax
+-- @chk:6 Extract the subject line count from `@tag:N` syntax
 -- using pattern capture after the colon
 function M.get_subject_count(text)
-    local n = match(text, "@def:(%d+)") or match(text, "@chk:(%d+)") or
-              match(text, "@run:(%d+)") or match(text, "@err:(%d+)")
+    local n = match(text, "@gen:(%d+)") or match(text, "@def:(%d+)") or
+              match(text, "@chk:(%d+)") or match(text, "@run:(%d+)") or
+              match(text, "@err:(%d+)")
     return tonumber(n) or 0
 end
 

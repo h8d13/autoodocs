@@ -1,3 +1,4 @@
+-- @gen Markdown renderer that generates documentation pages with cross-references
 -- @def:6 Localize functions for performance
 local fmt    = string.format
 local gmatch = string.gmatch
@@ -14,9 +15,9 @@ local trim = utils.trim
 local M = {}
 
 -- @def:3 Map tag prefixes to anchor slugs and section titles
-M.TAG_SEC   = {CHK="chk", DEF="def", RUN="run", ERR="err"}
-M.TAG_TITLE = {CHK="Checks", DEF="Defines", RUN="Runners", ERR="Errors"}
-M.TAG_ORDER = {"CHK", "DEF", "RUN", "ERR"}
+M.TAG_SEC   = {GEN="gen", CHK="chk", DEF="def", RUN="run", ERR="err"}
+M.TAG_TITLE = {GEN="General", CHK="Checks", DEF="Defines", RUN="Runners", ERR="Errors"}
+M.TAG_ORDER = {"GEN", "CHK", "DEF", "RUN", "ERR"}
 
 -- @run Generate a slug from a file path for anchors/filenames
 local function slugify(path)
@@ -149,7 +150,7 @@ function M.render_file_page(file, entries)
     w(fmt("`%s`\n\n", file))
 
     -- Group entries by tag type
-    local by_tag = {CHK={}, DEF={}, RUN={}, ERR={}}
+    local by_tag = {GEN={}, CHK={}, DEF={}, RUN={}, ERR={}}
     for _, r in ipairs(entries) do
         by_tag[r.tag][#by_tag[r.tag] + 1] = r
     end
@@ -187,7 +188,7 @@ function M.group_records(records)
 
     for _, file in ipairs(file_order) do
         local entries = by_file[file]
-        local mi = {CHK=0, DEF=0, RUN=0, ERR=0}
+        local mi = {GEN=0, CHK=0, DEF=0, RUN=0, ERR=0}
         local scope = {}
         local slug = slugify(file)
         M.line_map[slug] = {}
