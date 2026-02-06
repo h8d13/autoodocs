@@ -50,6 +50,15 @@ end
 
 -- @run Render a single entry
 local function render_entry(w, r)
+    -- GEN entries: just plain text at top, no header
+    if r.tag == "GEN" then
+        for tline in gmatch(r.text, "[^\031]+") do
+            local tr = link_sources(trim(tline))
+            if tr ~= "" then w(tr .. "\n\n") end
+        end
+        return
+    end
+
     if r.parent then
         -- Child entry: bold text
         w(fmt('<a id="%s"></a>**%s %s**\n', r.anchor, r.idx, r.loc))
@@ -155,11 +164,13 @@ function M.render_file_page(file, entries)
         by_tag[r.tag][#by_tag[r.tag] + 1] = r
     end
 
-    -- Render each tag section
+    -- Render each tag section (GEN has no header)
     for _, tag in ipairs(M.TAG_ORDER) do
         local tag_entries = by_tag[tag]
         if #tag_entries > 0 then
-            w(fmt('## <a id="%s"></a>%s\n\n', M.TAG_SEC[tag], M.TAG_TITLE[tag]))
+            if tag ~= "GEN" then
+                w(fmt('## <a id="%s"></a>%s\n\n', M.TAG_SEC[tag], M.TAG_TITLE[tag]))
+            end
             for _, r in ipairs(tag_entries) do
                 render_entry(w, r)
             end

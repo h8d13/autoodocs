@@ -2,12 +2,7 @@
 
 `~/Desktop/autoodocs/lib/parser.lua`
 
-## <a id="gen"></a>General
-
-### <a id="gen-1"></a>Comment parser that extracts documentation tags from source files
-
-`~/Desktop/autoodocs/lib/parser.lua:1`
-
+Comment parser that extracts documentation tags from source files
 
 ## <a id="chk"></a>Checks
 

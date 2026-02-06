@@ -2,12 +2,7 @@
 
 `~/Desktop/autoodocs/markdown.lua`
 
-## <a id="gen"></a>General
-
-### <a id="gen-1"></a>Markdown to HTML converter with GitHub-style callouts and TOC generation
-
-`~/Desktop/autoodocs/markdown.lua:2`
-
+Markdown to HTML converter with GitHub-style callouts and TOC generation
 
 ## <a id="chk"></a>Checks
 

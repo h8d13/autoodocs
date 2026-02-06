@@ -2,12 +2,7 @@
 
 `~/Desktop/autoodocs/build.lua`
 
-## <a id="gen"></a>General
-
-### <a id="gen-1"></a>Build script that runs autodocs and converts output to HTML
-
-`~/Desktop/autoodocs/build.lua:2`
-
+Build script that runs autodocs and converts output to HTML
 
 ## <a id="def"></a>Defines
 

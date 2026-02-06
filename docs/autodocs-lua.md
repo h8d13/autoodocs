@@ -2,29 +2,21 @@
 
 `~/Desktop/autoodocs/autodocs.lua`
 
-## <a id="gen"></a>General
+Documentation generator that extracts tagged comments from source files
 
-### <a id="gen-1"></a>Documentation generator that extracts tagged comments from source files
-
-`~/Desktop/autoodocs/autodocs.lua:2`
-
-
-### <a id="gen-2"></a>
-
-`~/Desktop/autoodocs/autodocs.lua:5`
+This library is built to generate docs from source code.
 
 It is also made for AI to auto document it's code in a structured human readable format.
 
-> This creates a pleasing flow to work with for docs/ pages.
+This creates a pleasing flow to work with for docs/ pages.
 
-> ########--
+########--
 
-> HLPARSER--
+HLPARSER--
 
-> Examples--
+Examples--
 
-> ########--
-
+########--
 
 ## <a id="chk"></a>Checks
 

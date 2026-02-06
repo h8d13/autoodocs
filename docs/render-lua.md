@@ -2,12 +2,7 @@
 
 `~/Desktop/autoodocs/lib/render.lua`
 
-## <a id="gen"></a>General
-
-### <a id="gen-1"></a>Markdown renderer that generates documentation pages with cross-references
-
-`~/Desktop/autoodocs/lib/render.lua:1`
-
+Markdown renderer that generates documentation pages with cross-references
 
 ## <a id="def"></a>Defines
 
@@ -96,21 +91,21 @@ end
 
 ### <a id="run-4"></a>Render index page
 
-`~/Desktop/autoodocs/lib/render.lua:115`
+`~/Desktop/autoodocs/lib/render.lua:124`
 
 
 ### <a id="run-5"></a>Render a single file's documentation page
 
-`~/Desktop/autoodocs/lib/render.lua:143`
+`~/Desktop/autoodocs/lib/render.lua:152`
 
 
 ### <a id="run-6"></a>Group records by file and assign indices
 
-`~/Desktop/autoodocs/lib/render.lua:172`
+`~/Desktop/autoodocs/lib/render.lua:183`
 
 
 ### <a id="run-7"></a>Get slug for a file path
 
-`~/Desktop/autoodocs/lib/render.lua:233`
+`~/Desktop/autoodocs/lib/render.lua:244`
 
 

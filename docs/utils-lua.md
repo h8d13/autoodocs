@@ -2,12 +2,7 @@
 
 `~/Desktop/autoodocs/lib/utils.lua`
 
-## <a id="gen"></a>General
-
-### <a id="gen-1"></a>String utilities, shell escaping, and language detection
-
-`~/Desktop/autoodocs/lib/utils.lua:1`
-
+String utilities, shell escaping, and language detection
 
 ## <a id="chk"></a>Checks
 
