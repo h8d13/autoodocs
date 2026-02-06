@@ -1298,6 +1298,12 @@ local function run_command_line(arg)
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 </head>
 <body>
+<div class="container">
+<nav class="sidebar">
+<h2>Contents</h2>
+<ul id="toc"></ul>
+</nav>
+<main class="content">
 ]]
             local title = options.title or s:match("<h1>(.-)</h1>") or s:match("<h2>(.-)</h2>") or
                 s:match("<h3>(.-)</h3>") or "Untitled"
@@ -1317,7 +1323,38 @@ local function run_command_line(arg)
             end
             header = header:gsub("CHARSET", options.charset)
         end
-        local footer = "<script>hljs.highlightAll();</script>\n</body></html>"
+        local footer = [[</main>
+</div>
+<script>
+hljs.highlightAll();
+// Build sidebar TOC from h2 headings
+document.querySelectorAll('.content h2').forEach(function(h2) {
+    var li = document.createElement('li');
+    var a = document.createElement('a');
+    a.href = '#' + h2.querySelector('a').id;
+    a.textContent = h2.textContent;
+    li.appendChild(a);
+    document.getElementById('toc').appendChild(li);
+});
+// Highlight active section on scroll
+var links = document.querySelectorAll('.sidebar a');
+var sections = document.querySelectorAll('.content h2');
+window.addEventListener('scroll', function() {
+    var current = '';
+    sections.forEach(function(section) {
+        if (window.scrollY >= section.offsetTop - 100) {
+            current = section.querySelector('a').id;
+        }
+    });
+    links.forEach(function(link) {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + current) {
+            link.classList.add('active');
+        }
+    });
+});
+</script>
+</body></html>]]
         if options.footer then
             local f = io.open(options.footer) or error("Could not open file: " .. options.footer)
             footer = f:read("*a")
@@ -1329,6 +1366,8 @@ local function run_command_line(arg)
     -- Generate output path name from input path name given options.
     local function outpath(path, options)
         if options.append then return path .. ".html" end
+        -- readme.md -> index.html for GitHub Pages
+        if path:match("[Rr][Ee][Aa][Dd][Mm][Ee]%.[Mm][Dd]$") then return "index.html" end
         local m = path:match("^(.+%.html)[^/\\]+$") if m then return m end
         m = path:match("^(.+%.)[^/\\]*$") if m and path ~= m .. "html" then return m .. "html" end
         return path .. ".html"

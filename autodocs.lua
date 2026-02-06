@@ -71,7 +71,7 @@ local function main()
     end
 
     local cmd = fmt(
-        'grep -rl -I --exclude-dir=.git --exclude="readme*" %s -e "@def" -e "@chk" -e "@run" -e "@err" %s 2>/dev/null',
+        'grep -rl -I --exclude-dir=.git --exclude="readme*" --exclude="index.html" %s -e "@def" -e "@chk" -e "@run" -e "@err" %s 2>/dev/null',
         gi, utils.shell_quote(SCAN_DIR)
     )
     local pipe = io.popen(cmd)
@@ -113,12 +113,12 @@ local function main()
         return
     end
 
-    -- @run:1 Group and index records
-    local grouped = render.group_records(records)
+    -- @run:1 Group and index records by file
+    local by_file, file_order = render.group_records(records)
 
     -- @chk:10 Render and compare against existing output
     -- skip write if content is unchanged
-    local markdown = render.render_markdown(grouped)
+    local markdown = render.render_markdown(by_file, file_order)
     local ef = open(OUTPUT, "r")
     if ef then
         local existing = ef:read("*a")
