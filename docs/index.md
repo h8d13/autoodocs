@@ -5,15 +5,17 @@
 A lightweight documentation generator that extracts tagged comments from source files.
 Inspired by @tsoding `nob.h` autodocs.
 
+Supports `--`, `//`, `#`, `;`, `%`, `/* */`, `<!-- -->`, `--[[ ]]`, `{- -}`, `"""`, `'''`
+
+Skips (and stores) the whole comment block until next code line
+
 ## Features
 
 - Extracts `@gen`, `@def`, `@chk`, `@run`, `@err` tagged comments
-- Supports `--`, `//`, `#`, `;`, `%`, `/* */`, `<!-- -->`, `--[[ ]]`, `{- -}`, `"""`, `'''`
-- Respects `.gitignore` and `.somefolder/` ignores
-- Skips the whole comment block until next code line
 - Cross-references with `@src:file:line` auto-resolving anchors
 - Subject line counts with `:N` syntax
 - GitHub-style callouts (`!n` NOTE, `!t` TIP, `!w` WARN, `!c` CAUTION)
+- Respects `.gitignore` and `.somefolder/` ignores
 - Generates markdown with HTML output via bundled converter
 
 ## Installation

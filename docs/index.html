@@ -33,16 +33,18 @@
 <p>A lightweight documentation generator that extracts tagged comments from source files.
 Inspired by @tsoding <code>nob.h</code> autodocs.</p>
 
+<p>Supports <code>--</code>, <code>//</code>, <code>#</code>, <code>;</code>, <code>%</code>, <code>/* */</code>, <code>&lt;!-- --&gt;</code>, <code>--[[ ]]</code>, <code>{- -}</code>, <code>"""</code>, <code>'''</code></p>
+
+<p>Skips (and stores) the whole comment block until next code line</p>
+
 <h2>Features</h2>
 
 <ul>
     <li>Extracts <code>@gen</code>, <code>@def</code>, <code>@chk</code>, <code>@run</code>, <code>@err</code> tagged comments</li>
-    <li>Supports <code>--</code>, <code>//</code>, <code>#</code>, <code>;</code>, <code>%</code>, <code>/* */</code>, <code>&lt;!-- --&gt;</code>, <code>--[[ ]]</code>, <code>{- -}</code>, <code>"""</code>, <code>'''</code></li>
-    <li>Respects <code>.gitignore</code> and <code>.somefolder/</code> ignores</li>
-    <li>Skips the whole comment block until next code line</li>
     <li>Cross-references with <code>@src:file:line</code> auto-resolving anchors</li>
     <li>Subject line counts with <code>:N</code> syntax</li>
     <li>GitHub-style callouts (<code>!n</code> NOTE, <code>!t</code> TIP, <code>!w</code> WARN, <code>!c</code> CAUTION)</li>
+    <li>Respects <code>.gitignore</code> and <code>.somefolder/</code> ignores</li>
     <li>Generates markdown with HTML output via bundled converter</li>
 </ul>
 

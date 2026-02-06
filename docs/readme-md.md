@@ -10,25 +10,25 @@ for obvious reasons README.md or readme.md only support minimal tags
 
 ### <a id="chk-1"></a>Requires Lua 5.x and git
 
-`~/Desktop/autoodocs/README.md:21`
+`~/Desktop/autoodocs/README.md:23`
 
 
 ## <a id="def"></a>Defines
 
 ### <a id="def-1"></a>Feature list
 
-`~/Desktop/autoodocs/README.md:9`
+`~/Desktop/autoodocs/README.md:13`
 
 
 ## <a id="run"></a>Runners
 
 ### <a id="run-1"></a>CLI usage
 
-`~/Desktop/autoodocs/README.md:31`
+`~/Desktop/autoodocs/README.md:33`
 
 
 ### <a id="run-2"></a>GitHub Pages deployment
 
-`~/Desktop/autoodocs/README.md:55`
+`~/Desktop/autoodocs/README.md:56`
 
 
