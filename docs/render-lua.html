@@ -10,10 +10,21 @@
 <body>
 <div class="container">
 <nav class="sidebar">
+<a href="index.html" class="sidebar-home">← Index</a>
 <h2>Contents</h2>
 <ul id="toc">
 <li><a href="#def">Defines</a></li>
+<li class="toc-sub"><a href="#def-1">Localize functions for performance</a></li>
+<li class="toc-sub"><a href="#def-2">Import utils for trim</a></li>
+<li class="toc-sub"><a href="#def-3">Module table</a></li>
+<li class="toc-sub"><a href="#def-4">Map tag prefixes to anchor slugs and section ti...</a></li>
 <li><a href="#run">Runners</a></li>
+<li class="toc-sub"><a href="#run-1">Generate a slug from a file path for anchors/fi...</a></li>
+<li class="toc-sub"><a href="#run-2">Render a single entry</a></li>
+<li class="toc-sub"><a href="#run-3">Render index page</a></li>
+<li class="toc-sub"><a href="#run-4">Render a single file's documentation page</a></li>
+<li class="toc-sub"><a href="#run-5">Group records by file and assign indices</a></li>
+<li class="toc-sub"><a href="#run-6">Get slug for a file path</a></li>
 </ul>
 </nav>
 <main class="content">
@@ -22,77 +33,73 @@
 
 <p><code>~/Desktop/autoodocs/lib/render.lua</code></p>
 
-<h2>Contents</h2>
-
-<ul>
-    <li><a href="#def">Defines</a></li>
-    <li><a href="#run">Runners</a></li>
-</ul>
-
 <h2><a id="def"></a>Defines</h2>
 
-<p><a id="def-1"></a><strong>1.</strong> <code>~/Desktop/autoodocs/lib/render.lua:1</code></p>
+<h3><a id="def-1"></a>Localize functions for performance</h3>
 
-<p>Localize functions for performance</p>
+<p><code>~/Desktop/autoodocs/lib/render.lua:1</code></p>
 
 <pre><code class="language-lua">local fmt    = string.format
 local gmatch = string.gmatch
 local concat = table.concat
+local gsub   = string.gsub
+local match  = string.match
 </code></pre>
 
-<p><a id="def-2"></a><strong>2.</strong> <code>~/Desktop/autoodocs/lib/render.lua:8</code></p>
+<h3><a id="def-2"></a>Import utils for trim</h3>
 
-<p>Import utils for trim</p>
+<p><code>~/Desktop/autoodocs/lib/render.lua:8</code></p>
 
 <pre><code class="language-lua">local utils = require("lib.utils")
 local trim = utils.trim
 </code></pre>
 
-<p><a id="def-3"></a><strong>3.</strong> <code>~/Desktop/autoodocs/lib/render.lua:12</code></p>
+<h3><a id="def-3"></a>Module table</h3>
 
-<p>Module table</p>
+<p><code>~/Desktop/autoodocs/lib/render.lua:12</code></p>
 
 <pre><code class="language-lua">local M = {}
 </code></pre>
 
-<p><a id="def-4"></a><strong>4.</strong> <code>~/Desktop/autoodocs/lib/render.lua:15</code></p>
+<h3><a id="def-4"></a>Map tag prefixes to anchor slugs and section ti...</h3>
 
-<p>Map tag prefixes to anchor slugs and section titles</p>
+<p><code>~/Desktop/autoodocs/lib/render.lua:15</code></p>
 
 <pre><code class="language-lua">M.TAG_SEC   = {CHK="chk", DEF="def", RUN="run", ERR="err"}
 M.TAG_TITLE = {CHK="Checks", DEF="Defines", RUN="Runners", ERR="Errors"}
+M.TAG_ORDER = {"CHK", "DEF", "RUN", "ERR"}
 </code></pre>
 
 <h2><a id="run"></a>Runners</h2>
 
-<p><a id="run-1"></a><strong>1.</strong> <code>~/Desktop/autoodocs/lib/render.lua:20</code></p>
+<h3><a id="run-1"></a>Generate a slug from a file path for anchors/fi...</h3>
 
-<p>Generate a slug from a file path for anchors/filenames</p>
-
-
-<p><a id="run-2"></a><strong>2.</strong> <code>~/Desktop/autoodocs/lib/render.lua:28</code></p>
-
-<p>Render a single entry</p>
+<p><code>~/Desktop/autoodocs/lib/render.lua:20</code></p>
 
 
-<p><a id="run-3"></a><strong>3.</strong> <code>~/Desktop/autoodocs/lib/render.lua:79</code></p>
+<h3><a id="run-2"></a>Render a single entry</h3>
 
-<p>Render index page with TOC</p>
-
-
-<p><a id="run-4"></a><strong>4.</strong> <code>~/Desktop/autoodocs/lib/render.lua:93</code></p>
-
-<p>Render a single file's documentation page</p>
+<p><code>~/Desktop/autoodocs/lib/render.lua:28</code></p>
 
 
-<p><a id="run-5"></a><strong>5.</strong> <code>~/Desktop/autoodocs/lib/render.lua:131</code></p>
+<h3><a id="run-3"></a>Render index page</h3>
 
-<p>Group records by file and assign indices</p>
+<p><code>~/Desktop/autoodocs/lib/render.lua:92</code></p>
 
 
-<p><a id="run-6"></a><strong>6.</strong> <code>~/Desktop/autoodocs/lib/render.lua:183</code></p>
+<h3><a id="run-4"></a>Render a single file's documentation page</h3>
 
-<p>Get slug for a file path</p>
+<p><code>~/Desktop/autoodocs/lib/render.lua:112</code></p>
+
+
+<h3><a id="run-5"></a>Group records by file and assign indices</h3>
+
+<p><code>~/Desktop/autoodocs/lib/render.lua:141</code></p>
+
+
+<h3><a id="run-6"></a>Get slug for a file path</h3>
+
+<p><code>~/Desktop/autoodocs/lib/render.lua:193</code></p>
 
 
 

@@ -1,6 +1,5 @@
 #!/usr/bin/env lua
--- @chk:1
--- `-s` outputs extra stats
+-- @chk `-s` outputs extra stats
 
 --########--
 --HLPARSER--
@@ -28,7 +27,7 @@ print('luadoc is awesome')
 --########--
 -- RUNNER
 
--- @def:4 Localize functions and load libraries
+-- @def:5 Localize functions and load libraries
 local match  = string.match
 local gsub   = string.gsub
 local sub    = string.sub
@@ -39,7 +38,7 @@ local utils  = require("lib.utils")
 local parser = require("lib.parser")
 local render = require("lib.render")
 
--- @def:10 Parse CLI args with defaults
+-- @def:12 Parse CLI args with defaults
 -- strip trailing slash, resolve absolute path via `/proc/self/environ`
 -- `US` separates multi-line text within record fields
 local SCAN_DIR = arg[1] or "."
@@ -100,18 +99,18 @@ local function main()
     end
     pipe:close()
 
-    -- @chk:1 Verify tagged files were discovered
+    -- @chk:4 Verify tagged files were discovered
     if #files == 0 then
         io.stderr:write(fmt("autodocs: no tags found under %s\n", SCAN_DIR))
         return
     end
 
-    -- @run:5 Process all discovered files into intermediate `records`
+    -- @run:3 Process all discovered files into intermediate `records`
     for _, fp in ipairs(files) do
         total_input = total_input + parser.process_file(fp, records, HOME, US)
     end
 
-    -- @chk:1 Verify extraction produced results
+    -- @chk:4 Verify extraction produced results
     if #records == 0 then
         io.stderr:write(fmt("autodocs: tags found but no extractable docs under %s\n", SCAN_DIR))
         return

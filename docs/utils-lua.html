@@ -10,11 +10,18 @@
 <body>
 <div class="container">
 <nav class="sidebar">
+<a href="index.html" class="sidebar-home">← Index</a>
 <h2>Contents</h2>
 <ul id="toc">
 <li><a href="#chk">Checks</a></li>
+<li class="toc-sub"><a href="#chk-1">Classify file language via extension or shebang</a></li>
 <li><a href="#def">Defines</a></li>
+<li class="toc-sub"><a href="#def-2">Shell-escape a string for safe interpolation in...</a></li>
+<li class="toc-sub"><a href="#def-3">Map file extension to fenced code block language</a></li>
+<li class="toc-sub"><a href="#def-4">Map shebang interpreters to fenced code block l...</a></li>
 <li><a href="#run">Runners</a></li>
+<li class="toc-sub"><a href="#run-1">Strip leading spaces and tabs via byte scan</a></li>
+<li class="toc-sub"><a href="#run-2">Strip trailing spaces and tabs via byte scan</a></li>
 </ul>
 </nav>
 <main class="content">
@@ -23,23 +30,13 @@
 
 <p><code>~/Desktop/autoodocs/lib/utils.lua</code></p>
 
-<h2>Contents</h2>
-
-<ul>
-    <li><a href="#chk">Checks</a></li>
-    <li><a href="#def">Defines</a></li>
-    <li><a href="#run">Runners</a></li>
-</ul>
-
 <h2><a id="chk"></a>Checks</h2>
 
-<p><a id="chk-1"></a><strong>1.</strong> <code>~/Desktop/autoodocs/lib/utils.lua:61</code></p>
+<h3><a id="chk-1"></a>Classify file language via extension or shebang</h3>
 
-<p>Classify file language via extension or shebang</p>
+<p><code>~/Desktop/autoodocs/lib/utils.lua:61</code></p>
 
-<blockquote>
-    <p>accepts <code>first_line</code> to avoid reopening the file</p>
-</blockquote>
+<p>accepts <code>first_line</code> to avoid reopening the file</p>
 
 <pre><code class="language-lua">function M.get_lang(filepath, first_line)
     local ext = match(filepath, "%.([^%.]+)$")
@@ -57,13 +54,11 @@ end
 
 <h2><a id="def"></a>Defines</h2>
 
-<p><a id="def-1"></a><strong>1.</strong> <code>~/Desktop/autoodocs/lib/utils.lua:1</code></p>
+<h3><a id="def-1"></a>Localize <code>string.*</code>, <code>table.*</code>, and <code>io.*</code> func...</h3>
 
-<p>Localize <code>string.*</code>, <code>table.*</code>, and <code>io.*</code> functions</p>
+<p><code>~/Desktop/autoodocs/lib/utils.lua:1</code></p>
 
-<blockquote>
-    <p>bypasses metatable and global lookups in the hot loop</p>
-</blockquote>
+<p>bypasses metatable and global lookups in the hot loop</p>
 
 <pre><code class="language-lua">local find   = string.find
 local sub    = string.sub
@@ -71,28 +66,25 @@ local byte   = string.byte
 local match  = string.match
 local gsub   = string.gsub
 local open   = io.open
-
-local M = {}
-
 </code></pre>
 
-<p><a id="def-2"></a><strong>2.</strong> <code>~/Desktop/autoodocs/lib/utils.lua:12</code></p>
+<h3><a id="def-2"></a>Shell-escape a string for safe interpolation in...</h3>
+
+<p><code>~/Desktop/autoodocs/lib/utils.lua:12</code></p>
 
 <div class="callout callout-note">
     <div class="callout-title">NOTE</div>
-    <p>Shell-escape a string for safe interpolation into <code>io.popen</code></p>
+    <p>prevents breakage from paths containing <code>"</code>, <code>$()</code>, or backticks</p>
 </div>
-
-<p>prevents breakage from paths containing <code>"</code>, <code>$()</code>, or backticks</p>
 
 <pre><code class="language-lua">function M.shell_quote(s)
     return "'" .. gsub(s, "'", "'\\''") .. "'"
 end
 </code></pre>
 
-<p><a id="def-3"></a><strong>3.</strong> <code>~/Desktop/autoodocs/lib/utils.lua:41</code></p>
+<h3><a id="def-3"></a>Map file extension to fenced code block language</h3>
 
-<p>Map file extension to fenced code block language</p>
+<p><code>~/Desktop/autoodocs/lib/utils.lua:41</code></p>
 
 <pre><code class="language-lua">M.ext_map = {
     sh="sh", bash="sh", py="python",
@@ -108,9 +100,9 @@ end
 }
 </code></pre>
 
-<p><a id="def-4"></a><strong>4.</strong> <code>~/Desktop/autoodocs/lib/utils.lua:55</code></p>
+<h3><a id="def-4"></a>Map shebang interpreters to fenced code block l...</h3>
 
-<p>Map shebang interpreters to fenced code block language</p>
+<p><code>~/Desktop/autoodocs/lib/utils.lua:55</code></p>
 
 <pre><code class="language-lua">M.shebang_map = {
     {"python", "python"}, {"node", "javascript"}, {"ruby", "ruby"},
@@ -120,13 +112,11 @@ end
 
 <h2><a id="run"></a>Runners</h2>
 
-<p><a id="run-1"></a><strong>1.</strong> <code>~/Desktop/autoodocs/lib/utils.lua:18</code></p>
+<h3><a id="run-1"></a>Strip leading spaces and tabs via byte scan</h3>
 
-<p>Strip leading spaces and tabs via byte scan</p>
+<p><code>~/Desktop/autoodocs/lib/utils.lua:18</code></p>
 
-<blockquote>
-    <p>returns original string when no trimming needed</p>
-</blockquote>
+<p>returns original string when no trimming needed</p>
 
 <pre><code class="language-lua">function M.trim_lead(s)
     local i = 1
@@ -136,13 +126,11 @@ end
 end
 </code></pre>
 
-<p><a id="run-2"></a><strong>2.</strong> <code>~/Desktop/autoodocs/lib/utils.lua:27</code></p>
+<h3><a id="run-2"></a>Strip trailing spaces and tabs via byte scan</h3>
 
-<p>Strip trailing spaces and tabs via byte scan</p>
+<p><code>~/Desktop/autoodocs/lib/utils.lua:27</code></p>
 
-<blockquote>
-    <p>returns original string when no trimming needed</p>
-</blockquote>
+<p>returns original string when no trimming needed</p>
 
 <pre><code class="language-lua">function M.trim_trail(s)
     local i = #s
@@ -152,9 +140,9 @@ end
 end
 </code></pre>
 
-<p><a id="run-3"></a><strong>3.</strong> <code>~/Desktop/autoodocs/lib/utils.lua:36</code></p>
+<h3><a id="run-3"></a>Trim both ends via <code>trim_lead</code> and <code>trim_trail</code></h3>
 
-<p>Trim both ends via <code>trim_lead</code> and <code>trim_trail</code></p>
+<p><code>~/Desktop/autoodocs/lib/utils.lua:36</code></p>
 
 <pre><code class="language-lua">function M.trim(s)
     return M.trim_trail(M.trim_lead(s))

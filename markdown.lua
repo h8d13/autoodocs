@@ -1300,6 +1300,7 @@ local function run_command_line(arg)
 <body>
 <div class="container">
 <nav class="sidebar">
+<a href="index.html" class="sidebar-home">← Index</a>
 <h2>Contents</h2>
 <ul id="toc"></ul>
 </nav>
@@ -1330,10 +1331,13 @@ local function run_command_line(arg)
             local class = level == 3 and ' class="toc-sub"' or ''
             toc[#toc + 1] = string.format('<li%s><a href="#%s">%s</a></li>', class, id, text)
         end
-        -- If no headers, extract links from list (for index page)
+        -- If no headers, extract links from NAV comment (for index page)
         if #toc == 0 then
-            for href, text in s:gmatch('<a href="([^"]+%.html)">([^<]+)</a>') do
-                toc[#toc + 1] = string.format('<li><a href="%s">%s</a></li>', href, text)
+            local nav = s:match("<!%-%- NAV%s*(.-)%-%->")
+            if nav then
+                for text, href in nav:gmatch("%[([^%]]+)%]%(([^%)]+)%)") do
+                    toc[#toc + 1] = string.format('<li><a href="%s">%s</a></li>', href, text)
+                end
             end
         end
         local toc_html = table.concat(toc, "\n")

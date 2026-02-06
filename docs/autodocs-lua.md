@@ -2,36 +2,45 @@
 
 `~/Desktop/autoodocs/autodocs.lua`
 
-## Contents
-
-- [Checks](#chk)
-- [Defines](#def)
-- [Runners](#run)
-
 ## <a id="chk"></a>Checks
 
-<a id="chk-1"></a>**1.** `~/Desktop/autoodocs/autodocs.lua:2`
+### <a id="chk-1"></a>`-s` outputs extra stats
 
-`-s` outputs extra stats
+`~/Desktop/autoodocs/autodocs.lua:2`
 
 
-<a id="chk-2"></a>**2. ~/Desktop/autoodocs/autodocs.lua:103**
+<a id="chk-2"></a>**2. ~/Desktop/autoodocs/autodocs.lua:102**
 *↳ [@run 2.](#run-2)*
 
 Verify tagged files were discovered
 
 ```lua
     if #files == 0 then
+        io.stderr:write(fmt("autodocs: no tags found under %s\n", SCAN_DIR))
+        return
+    end
+```
+
+<a id="chk-3"></a>**3. ~/Desktop/autoodocs/autodocs.lua:113**
+*↳ [@run 2.](#run-2)*
+
+Verify extraction produced results
+
+```lua
+    if #records == 0 then
+        io.stderr:write(fmt("autodocs: tags found but no extractable docs under %s\n", SCAN_DIR))
+        return
+    end
 ```
 
 ## <a id="def"></a>Defines
 
-<a id="def-1"></a>**1.** `~/Desktop/autoodocs/autodocs.lua:10`
+### <a id="def-1"></a>
+
+`~/Desktop/autoodocs/autodocs.lua:9`
 
 > [!IMPORTANT]
-> Defines with 9 line of subject
-
-And a important callout style
+> And a important callout style
 
 after the end of comment block
 
@@ -55,22 +64,23 @@ print('luadoc is awesome')
     ---- handle errors with more definitions
 ```
 
-<a id="def-2"></a>**2.** `~/Desktop/autoodocs/autodocs.lua:31`
+### <a id="def-2"></a>Localize functions and load libraries
 
-Localize functions and load libraries
+`~/Desktop/autoodocs/autodocs.lua:30`
 
 ```lua
 local match  = string.match
 local gsub   = string.gsub
 local sub    = string.sub
 local fmt    = string.format
+local open   = io.open
 ```
 
-<a id="def-3"></a>**3.** `~/Desktop/autoodocs/autodocs.lua:42`
+### <a id="def-3"></a>Parse CLI args with defaults
 
-Parse CLI args with defaults
+`~/Desktop/autoodocs/autodocs.lua:41`
 
-> strip trailing slash, resolve absolute path via `/proc/self/environ`
+strip trailing slash, resolve absolute path via `/proc/self/environ`
 
 > `US` separates multi-line text within record fields
 
@@ -85,11 +95,13 @@ if sub(SCAN_DIR, 1, 1) ~= "/" then
     if ef then ef:close() end
     SCAN_DIR = (SCAN_DIR == ".") and cwd or cwd .. "/" .. SCAN_DIR
 end
+local HOME = match(SCAN_DIR, "^(/[^/]+/[^/]+)")
+local US = "\031"
 ```
 
-<a id="def-4"></a>**4.** `~/Desktop/autoodocs/autodocs.lua:58`
+### <a id="def-4"></a>Global state for collected records and line count
 
-Global state for collected records and line count
+`~/Desktop/autoodocs/autodocs.lua:57`
 
 ```lua
 local records = {}
@@ -98,26 +110,26 @@ local total_input = 0
 
 ## <a id="run"></a>Runners
 
-<a id="run-1"></a>**1.** `~/Desktop/autoodocs/autodocs.lua:62`
+### <a id="run-1"></a>Write file if content changed
 
-Write file if content changed
+`~/Desktop/autoodocs/autodocs.lua:61`
 
 
-<a id="run-2"></a>**2.** `~/Desktop/autoodocs/autodocs.lua:78`
+### <a id="run-2"></a>Main function
 
-Main function
+`~/Desktop/autoodocs/autodocs.lua:77`
 
 ```lua
 local function main()
 ```
 
-<a id="run-2-1"></a>**2.1 ~/Desktop/autoodocs/autodocs.lua:80**
+<a id="run-2-1"></a>**2.1 ~/Desktop/autoodocs/autodocs.lua:79**
 *↳ [@run 2.](#run-2)*
 
 Create output directory
 
 
-<a id="run-2-2"></a>**2.2 ~/Desktop/autoodocs/autodocs.lua:83**
+<a id="run-2-2"></a>**2.2 ~/Desktop/autoodocs/autodocs.lua:82**
 *↳ [@run 2.](#run-2)*
 
 Discover files containing documentation tags
@@ -144,7 +156,7 @@ Discover files containing documentation tags
     pipe:close()
 ```
 
-<a id="run-2-3"></a>**2.3 ~/Desktop/autoodocs/autodocs.lua:109**
+<a id="run-2-3"></a>**2.3 ~/Desktop/autoodocs/autodocs.lua:108**
 *↳ [@run 2.](#run-2)*
 
 Process all discovered files into intermediate `records`
@@ -153,11 +165,9 @@ Process all discovered files into intermediate `records`
     for _, fp in ipairs(files) do
         total_input = total_input + parser.process_file(fp, records, HOME, US)
     end
-
-    -- @chk:1 Verify extraction produced results
 ```
 
-<a id="run-2-4"></a>**2.4 ~/Desktop/autoodocs/autodocs.lua:120**
+<a id="run-2-4"></a>**2.4 ~/Desktop/autoodocs/autodocs.lua:119**
 *↳ [@run 2.](#run-2)*
 
 Group and index records by file
@@ -166,21 +176,21 @@ Group and index records by file
     local by_file, file_order = render.group_records(records)
 ```
 
-<a id="run-2-5"></a>**2.5 ~/Desktop/autoodocs/autodocs.lua:123**
+<a id="run-2-5"></a>**2.5 ~/Desktop/autoodocs/autodocs.lua:122**
 *↳ [@run 2.](#run-2)*
 
 Write index page
 
 
-<a id="run-2-6"></a>**2.6 ~/Desktop/autoodocs/autodocs.lua:130**
+<a id="run-2-6"></a>**2.6 ~/Desktop/autoodocs/autodocs.lua:129**
 *↳ [@run 2.](#run-2)*
 
 Write individual file pages
 
 
-<a id="run-3"></a>**3.** `~/Desktop/autoodocs/autodocs.lua:145`
+### <a id="run-3"></a>Entry point
 
-Entry point
+`~/Desktop/autoodocs/autodocs.lua:144`
 
 ```lua
 main()

@@ -2,19 +2,13 @@
 
 `~/Desktop/autoodocs/lib/utils.lua`
 
-## Contents
-
-- [Checks](#chk)
-- [Defines](#def)
-- [Runners](#run)
-
 ## <a id="chk"></a>Checks
 
-<a id="chk-1"></a>**1.** `~/Desktop/autoodocs/lib/utils.lua:61`
+### <a id="chk-1"></a>Classify file language via extension or shebang
 
-Classify file language via extension or shebang
+`~/Desktop/autoodocs/lib/utils.lua:61`
 
-> accepts `first_line` to avoid reopening the file
+accepts `first_line` to avoid reopening the file
 
 ```lua
 function M.get_lang(filepath, first_line)
@@ -33,11 +27,11 @@ end
 
 ## <a id="def"></a>Defines
 
-<a id="def-1"></a>**1.** `~/Desktop/autoodocs/lib/utils.lua:1`
+### <a id="def-1"></a>Localize `string.*`, `table.*`, and `io.*` func...
 
-Localize `string.*`, `table.*`, and `io.*` functions
+`~/Desktop/autoodocs/lib/utils.lua:1`
 
-> bypasses metatable and global lookups in the hot loop
+bypasses metatable and global lookups in the hot loop
 
 ```lua
 local find   = string.find
@@ -46,17 +40,14 @@ local byte   = string.byte
 local match  = string.match
 local gsub   = string.gsub
 local open   = io.open
-
-local M = {}
-
 ```
 
-<a id="def-2"></a>**2.** `~/Desktop/autoodocs/lib/utils.lua:12`
+### <a id="def-2"></a>Shell-escape a string for safe interpolation in...
+
+`~/Desktop/autoodocs/lib/utils.lua:12`
 
 > [!NOTE]
-> Shell-escape a string for safe interpolation into `io.popen`
-
-prevents breakage from paths containing `"`, `$()`, or backticks
+> prevents breakage from paths containing `"`, `$()`, or backticks
 
 ```lua
 function M.shell_quote(s)
@@ -64,9 +55,9 @@ function M.shell_quote(s)
 end
 ```
 
-<a id="def-3"></a>**3.** `~/Desktop/autoodocs/lib/utils.lua:41`
+### <a id="def-3"></a>Map file extension to fenced code block language
 
-Map file extension to fenced code block language
+`~/Desktop/autoodocs/lib/utils.lua:41`
 
 ```lua
 M.ext_map = {
@@ -83,9 +74,9 @@ M.ext_map = {
 }
 ```
 
-<a id="def-4"></a>**4.** `~/Desktop/autoodocs/lib/utils.lua:55`
+### <a id="def-4"></a>Map shebang interpreters to fenced code block l...
 
-Map shebang interpreters to fenced code block language
+`~/Desktop/autoodocs/lib/utils.lua:55`
 
 ```lua
 M.shebang_map = {
@@ -96,11 +87,11 @@ M.shebang_map = {
 
 ## <a id="run"></a>Runners
 
-<a id="run-1"></a>**1.** `~/Desktop/autoodocs/lib/utils.lua:18`
+### <a id="run-1"></a>Strip leading spaces and tabs via byte scan
 
-Strip leading spaces and tabs via byte scan
+`~/Desktop/autoodocs/lib/utils.lua:18`
 
-> returns original string when no trimming needed
+returns original string when no trimming needed
 
 ```lua
 function M.trim_lead(s)
@@ -111,11 +102,11 @@ function M.trim_lead(s)
 end
 ```
 
-<a id="run-2"></a>**2.** `~/Desktop/autoodocs/lib/utils.lua:27`
+### <a id="run-2"></a>Strip trailing spaces and tabs via byte scan
 
-Strip trailing spaces and tabs via byte scan
+`~/Desktop/autoodocs/lib/utils.lua:27`
 
-> returns original string when no trimming needed
+returns original string when no trimming needed
 
 ```lua
 function M.trim_trail(s)
@@ -126,9 +117,9 @@ function M.trim_trail(s)
 end
 ```
 
-<a id="run-3"></a>**3.** `~/Desktop/autoodocs/lib/utils.lua:36`
+### <a id="run-3"></a>Trim both ends via `trim_lead` and `trim_trail`
 
-Trim both ends via `trim_lead` and `trim_trail`
+`~/Desktop/autoodocs/lib/utils.lua:36`
 
 ```lua
 function M.trim(s)

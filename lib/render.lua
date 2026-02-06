@@ -1,4 +1,4 @@
--- @def:3 Localize functions for performance
+-- @def:5 Localize functions for performance
 local fmt    = string.format
 local gmatch = string.gmatch
 local concat = table.concat
@@ -12,7 +12,7 @@ local trim = utils.trim
 -- @def:1 Module table
 local M = {}
 
--- @def:2 Map tag prefixes to anchor slugs and section titles
+-- @def:3 Map tag prefixes to anchor slugs and section titles
 M.TAG_SEC   = {CHK="chk", DEF="def", RUN="run", ERR="err"}
 M.TAG_TITLE = {CHK="Checks", DEF="Defines", RUN="Runners", ERR="Errors"}
 M.TAG_ORDER = {"CHK", "DEF", "RUN", "ERR"}
@@ -28,18 +28,29 @@ end
 -- @run Render a single entry
 local function render_entry(w, r)
     if r.parent then
+        -- Child entry: bold text
         w(fmt('<a id="%s"></a>**%s %s**\n', r.anchor, r.idx, r.loc))
         w(fmt("*↳ [@%s %s](#%s)*\n\n", M.TAG_SEC[r.parent.tag], r.parent.idx, r.parent.anchor))
     else
-        w(fmt('<a id="%s"></a>**%s** `%s`\n\n', r.anchor, r.idx, r.loc))
+        -- Top-level entry: h3 header (appears in TOC)
+        local title = r.text:match("^([^\031]+)") or ""
+        title = trim(title)
+        if #title > 50 then title = title:sub(1, 47) .. "..." end
+        w(fmt('### <a id="%s"></a>%s\n\n', r.anchor, title))
+        w(fmt('`%s`\n\n', r.loc))
     end
+
+    -- For top-level entries, skip first line (used as h3 title)
+    local skip_first = (not r.parent)
 
     if r.adm then
         local first_text = true
         for tline in gmatch(r.text, "[^\031]+") do
             local tr = trim(tline)
             if tr ~= "" then
-                if first_text then
+                if skip_first then
+                    skip_first = false
+                elseif first_text then
                     w(fmt("> [!%s]\n> %s\n\n", r.adm, tr))
                     first_text = false
                 else
@@ -52,7 +63,9 @@ local function render_entry(w, r)
         for tline in gmatch(r.text, "[^\031]+") do
             local tr = trim(tline)
             if tr ~= "" then
-                if first_text then
+                if skip_first then
+                    skip_first = false
+                elseif first_text then
                     w(tr .. "\n\n")
                     first_text = false
                 else
@@ -76,16 +89,22 @@ local function render_entry(w, r)
     w("\n")
 end
 
--- @run Render index page with TOC
+-- @run Render index page
 function M.render_index(file_order)
     local out = {}
     local function w(s) out[#out + 1] = s end
 
+    w("# Documentation\n\n")
+    w("Select a file from the sidebar to view its documentation.\n\n")
+
+    -- Hidden nav data for TOC extraction
+    w("<!-- NAV\n")
     for _, file in ipairs(file_order) do
         local slug = slugify(file)
         local basename = match(file, "([^/]+)$") or file
-        w(fmt("- [%s](%s.html)\n", basename, slug))
+        w(fmt("[%s](%s.html)\n", basename, slug))
     end
+    w("-->\n")
 
     return concat(out)
 end
@@ -104,15 +123,6 @@ function M.render_file_page(file, entries)
     for _, r in ipairs(entries) do
         by_tag[r.tag][#by_tag[r.tag] + 1] = r
     end
-
-    -- Build mini TOC for this file
-    w("## Contents\n\n")
-    for _, tag in ipairs(M.TAG_ORDER) do
-        if #by_tag[tag] > 0 then
-            w(fmt("- [%s](#%s)\n", M.TAG_TITLE[tag], M.TAG_SEC[tag]))
-        end
-    end
-    w("\n")
 
     -- Render each tag section
     for _, tag in ipairs(M.TAG_ORDER) do

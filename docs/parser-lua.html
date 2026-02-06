@@ -10,11 +10,17 @@
 <body>
 <div class="container">
 <nav class="sidebar">
+<a href="index.html" class="sidebar-home">← Index</a>
 <h2>Contents</h2>
 <ul id="toc">
 <li><a href="#chk">Checks</a></li>
+<li class="toc-sub"><a href="#chk-1">Test whether a line contains any documentation tag</a></li>
+<li class="toc-sub"><a href="#chk-5">Detect comment style via byte-level prefix check</a></li>
 <li><a href="#def">Defines</a></li>
+<li class="toc-sub"><a href="#def-1">Localize functions for hot loop performance</a></li>
 <li><a href="#run">Runners</a></li>
+<li class="toc-sub"><a href="#run-3">Strip comment delimiters and extract inner text</a></li>
+<li class="toc-sub"><a href="#run-4">Walk one file as a line-by-line state machine</a></li>
 </ul>
 </nav>
 <main class="content">
@@ -23,23 +29,13 @@
 
 <p><code>~/Desktop/autoodocs/lib/parser.lua</code></p>
 
-<h2>Contents</h2>
-
-<ul>
-    <li><a href="#chk">Checks</a></li>
-    <li><a href="#def">Defines</a></li>
-    <li><a href="#run">Runners</a></li>
-</ul>
-
 <h2><a id="chk"></a>Checks</h2>
 
-<p><a id="chk-1"></a><strong>1.</strong> <code>~/Desktop/autoodocs/lib/parser.lua:24</code></p>
+<h3><a id="chk-1"></a>Test whether a line contains any documentation tag</h3>
 
-<p>Test whether a line contains any documentation tag</p>
+<p><code>~/Desktop/autoodocs/lib/parser.lua:24</code></p>
 
-<blockquote>
-    <p>early <code>@</code> check short-circuits lines with no tags</p>
-</blockquote>
+<p>early <code>@</code> check short-circuits lines with no tags</p>
 
 <pre><code class="language-lua">function M.has_tag(line)
     if not find(line, "@", 1, true) then return nil end
@@ -48,9 +44,9 @@
 end
 </code></pre>
 
-<p><a id="chk-2"></a><strong>2.</strong> <code>~/Desktop/autoodocs/lib/parser.lua:32</code></p>
+<h3><a id="chk-2"></a>Classify a tagged line into <code>DEF</code>, <code>CHK</code>, <code>RUN</code>...</h3>
 
-<p>Classify a tagged line into <code>DEF</code>, <code>CHK</code>, <code>RUN</code>, or <code>ERR</code></p>
+<p><code>~/Desktop/autoodocs/lib/parser.lua:32</code></p>
 
 <pre><code class="language-lua">function M.get_tag(line)
     if     find(line, "@def", 1, true) then return "DEF"
@@ -61,13 +57,11 @@ end
 end
 </code></pre>
 
-<p><a id="chk-3"></a><strong>3.</strong> <code>~/Desktop/autoodocs/lib/parser.lua:41</code></p>
+<h3><a id="chk-3"></a>Extract the subject line count from <code>@tag:N</code> sy...</h3>
 
-<p>Extract the subject line count from <code>@tag:N</code> syntax</p>
+<p><code>~/Desktop/autoodocs/lib/parser.lua:41</code></p>
 
-<blockquote>
-    <p>using pattern capture after the colon</p>
-</blockquote>
+<p>using pattern capture after the colon</p>
 
 <pre><code class="language-lua">function M.get_subject_count(text)
     local n = match(text, "@def:(%d+)") or match(text, "@chk:(%d+)") or
@@ -76,9 +70,9 @@ end
 end
 </code></pre>
 
-<p><a id="chk-4"></a><strong>4.</strong> <code>~/Desktop/autoodocs/lib/parser.lua:61</code></p>
+<h3><a id="chk-4"></a>Extract <code>!x</code> admonition suffix from tag syntax</h3>
 
-<p>Extract <code>!x</code> admonition suffix from tag syntax</p>
+<p><code>~/Desktop/autoodocs/lib/parser.lua:61</code></p>
 
 <pre><code class="language-lua">function M.get_admonition(text)
     local code = match(text, "@%a+:?%d*!(%a)")
@@ -86,13 +80,11 @@ end
 end
 </code></pre>
 
-<p><a id="chk-5"></a><strong>5.</strong> <code>~/Desktop/autoodocs/lib/parser.lua:92</code></p>
+<h3><a id="chk-5"></a>Detect comment style via byte-level prefix check</h3>
 
-<p>Detect comment style via byte-level prefix check</p>
+<p><code>~/Desktop/autoodocs/lib/parser.lua:92</code></p>
 
-<blockquote>
-    <p>skips leading whitespace without allocating a trimmed copy</p>
-</blockquote>
+<p>skips leading whitespace without allocating a trimmed copy</p>
 
 <pre><code class="language-lua">function M.detect_style(line)
     local i = 1
@@ -233,27 +225,29 @@ end
 
 <h2><a id="def"></a>Defines</h2>
 
-<p><a id="def-1"></a><strong>1.</strong> <code>~/Desktop/autoodocs/lib/parser.lua:1</code></p>
+<h3><a id="def-1"></a>Localize functions for hot loop performance</h3>
 
-<p>Localize functions for hot loop performance</p>
+<p><code>~/Desktop/autoodocs/lib/parser.lua:1</code></p>
 
 <pre><code class="language-lua">local find   = string.find
 local sub    = string.sub
 local byte   = string.byte
 local match  = string.match
 local gmatch = string.gmatch
+local gsub   = string.gsub
+local open   = io.open
 </code></pre>
 
-<p><a id="def-2"></a><strong>2.</strong> <code>~/Desktop/autoodocs/lib/parser.lua:18</code></p>
+<h3><a id="def-2"></a>Hoisted <code>TAGS</code> table avoids per-call allocation...</h3>
 
-<p>Hoisted <code>TAGS</code> table avoids per-call allocation in <code>strip_tags</code></p>
+<p><code>~/Desktop/autoodocs/lib/parser.lua:18</code></p>
 
 <pre><code class="language-lua">local TAGS = {"@def", "@chk", "@run", "@err"}
 </code></pre>
 
-<p><a id="def-3"></a><strong>3.</strong> <code>~/Desktop/autoodocs/lib/parser.lua:21</code></p>
+<h3><a id="def-3"></a>Map <code>!x</code> suffixes to admonition types</h3>
 
-<p>Map <code>!x</code> suffixes to admonition types</p>
+<p><code>~/Desktop/autoodocs/lib/parser.lua:21</code></p>
 
 <pre><code class="language-lua">M.ADMONITIONS = {n="NOTE", t="TIP", i="IMPORTANT", w="WARNING", c="CAUTION"}
 </code></pre>
@@ -302,13 +296,11 @@ local gmatch = string.gmatch
 
 <h2><a id="run"></a>Runners</h2>
 
-<p><a id="run-1"></a><strong>1.</strong> <code>~/Desktop/autoodocs/lib/parser.lua:49</code></p>
+<h3><a id="run-1"></a>Strip <code>@tag:N</code> and trailing digits from text</h3>
 
-<p>Strip <code>@tag:N</code> and trailing digits from text</p>
+<p><code>~/Desktop/autoodocs/lib/parser.lua:49</code></p>
 
-<blockquote>
-    <p>rejoining prefix with remaining content</p>
-</blockquote>
+<p>rejoining prefix with remaining content</p>
 
 <pre><code class="language-lua">local function strip_tag_num(text, tag)
     local pos = find(text, tag .. ":", 1, true)
@@ -321,13 +313,11 @@ local gmatch = string.gmatch
 end
 </code></pre>
 
-<p><a id="run-2"></a><strong>2.</strong> <code>~/Desktop/autoodocs/lib/parser.lua:67</code></p>
+<h3><a id="run-2"></a>Remove <code>@tag</code>, <code>@tag:N</code>, or <code>@tag!x</code> syntax fro...</h3>
 
-<p>Remove <code>@tag</code>, <code>@tag:N</code>, or <code>@tag!x</code> syntax from comment text</p>
+<p><code>~/Desktop/autoodocs/lib/parser.lua:67</code></p>
 
-<blockquote>
-    <p>delegates to <code>strip_tag_num</code> for <code>:N</code> and <code>:N!x</code> variants</p>
-</blockquote>
+<p>delegates to <code>strip_tag_num</code> for <code>:N</code> and <code>:N!x</code> variants</p>
 
 <pre><code class="language-lua">function M.strip_tags(text)
     for _, tag in ipairs(TAGS) do
@@ -353,22 +343,18 @@ end
 end
 </code></pre>
 
-<p><a id="run-3"></a><strong>3.</strong> <code>~/Desktop/autoodocs/lib/parser.lua:116</code></p>
+<h3><a id="run-3"></a>Strip comment delimiters and extract inner text</h3>
 
-<p>Strip comment delimiters and extract inner text</p>
+<p><code>~/Desktop/autoodocs/lib/parser.lua:116</code></p>
 
-<blockquote>
-    <p>for all styles including block continuations</p>
-</blockquote>
+<p>for all styles including block continuations</p>
 
 
-<p><a id="run-4"></a><strong>4.</strong> <code>~/Desktop/autoodocs/lib/parser.lua:193</code></p>
+<h3><a id="run-4"></a>Walk one file as a line-by-line state machine</h3>
 
-<p>Walk one file as a line-by-line state machine</p>
+<p><code>~/Desktop/autoodocs/lib/parser.lua:193</code></p>
 
-<blockquote>
-    <p>extracting tagged comments into <code>records</code> table</p>
-</blockquote>
+<p>extracting tagged comments into <code>records</code> table</p>
 
 
 <p><a id="run-4-1"></a><strong>4.1 ~/Desktop/autoodocs/lib/parser.lua:221</strong>

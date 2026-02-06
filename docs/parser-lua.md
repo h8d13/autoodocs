@@ -2,19 +2,13 @@
 
 `~/Desktop/autoodocs/lib/parser.lua`
 
-## Contents
-
-- [Checks](#chk)
-- [Defines](#def)
-- [Runners](#run)
-
 ## <a id="chk"></a>Checks
 
-<a id="chk-1"></a>**1.** `~/Desktop/autoodocs/lib/parser.lua:24`
+### <a id="chk-1"></a>Test whether a line contains any documentation tag
 
-Test whether a line contains any documentation tag
+`~/Desktop/autoodocs/lib/parser.lua:24`
 
-> early `@` check short-circuits lines with no tags
+early `@` check short-circuits lines with no tags
 
 ```lua
 function M.has_tag(line)
@@ -24,9 +18,9 @@ function M.has_tag(line)
 end
 ```
 
-<a id="chk-2"></a>**2.** `~/Desktop/autoodocs/lib/parser.lua:32`
+### <a id="chk-2"></a>Classify a tagged line into `DEF`, `CHK`, `RUN`...
 
-Classify a tagged line into `DEF`, `CHK`, `RUN`, or `ERR`
+`~/Desktop/autoodocs/lib/parser.lua:32`
 
 ```lua
 function M.get_tag(line)
@@ -38,11 +32,11 @@ function M.get_tag(line)
 end
 ```
 
-<a id="chk-3"></a>**3.** `~/Desktop/autoodocs/lib/parser.lua:41`
+### <a id="chk-3"></a>Extract the subject line count from `@tag:N` sy...
 
-Extract the subject line count from `@tag:N` syntax
+`~/Desktop/autoodocs/lib/parser.lua:41`
 
-> using pattern capture after the colon
+using pattern capture after the colon
 
 ```lua
 function M.get_subject_count(text)
@@ -52,9 +46,9 @@ function M.get_subject_count(text)
 end
 ```
 
-<a id="chk-4"></a>**4.** `~/Desktop/autoodocs/lib/parser.lua:61`
+### <a id="chk-4"></a>Extract `!x` admonition suffix from tag syntax
 
-Extract `!x` admonition suffix from tag syntax
+`~/Desktop/autoodocs/lib/parser.lua:61`
 
 ```lua
 function M.get_admonition(text)
@@ -63,11 +57,11 @@ function M.get_admonition(text)
 end
 ```
 
-<a id="chk-5"></a>**5.** `~/Desktop/autoodocs/lib/parser.lua:92`
+### <a id="chk-5"></a>Detect comment style via byte-level prefix check
 
-Detect comment style via byte-level prefix check
+`~/Desktop/autoodocs/lib/parser.lua:92`
 
-> skips leading whitespace without allocating a trimmed copy
+skips leading whitespace without allocating a trimmed copy
 
 ```lua
 function M.detect_style(line)
@@ -208,9 +202,9 @@ Untagged single-quote docstring start
 
 ## <a id="def"></a>Defines
 
-<a id="def-1"></a>**1.** `~/Desktop/autoodocs/lib/parser.lua:1`
+### <a id="def-1"></a>Localize functions for hot loop performance
 
-Localize functions for hot loop performance
+`~/Desktop/autoodocs/lib/parser.lua:1`
 
 ```lua
 local find   = string.find
@@ -218,19 +212,21 @@ local sub    = string.sub
 local byte   = string.byte
 local match  = string.match
 local gmatch = string.gmatch
+local gsub   = string.gsub
+local open   = io.open
 ```
 
-<a id="def-2"></a>**2.** `~/Desktop/autoodocs/lib/parser.lua:18`
+### <a id="def-2"></a>Hoisted `TAGS` table avoids per-call allocation...
 
-Hoisted `TAGS` table avoids per-call allocation in `strip_tags`
+`~/Desktop/autoodocs/lib/parser.lua:18`
 
 ```lua
 local TAGS = {"@def", "@chk", "@run", "@err"}
 ```
 
-<a id="def-3"></a>**3.** `~/Desktop/autoodocs/lib/parser.lua:21`
+### <a id="def-3"></a>Map `!x` suffixes to admonition types
 
-Map `!x` suffixes to admonition types
+`~/Desktop/autoodocs/lib/parser.lua:21`
 
 ```lua
 M.ADMONITIONS = {n="NOTE", t="TIP", i="IMPORTANT", w="WARNING", c="CAUTION"}
@@ -278,11 +274,11 @@ Initialize per-file state machine variables
 
 ## <a id="run"></a>Runners
 
-<a id="run-1"></a>**1.** `~/Desktop/autoodocs/lib/parser.lua:49`
+### <a id="run-1"></a>Strip `@tag:N` and trailing digits from text
 
-Strip `@tag:N` and trailing digits from text
+`~/Desktop/autoodocs/lib/parser.lua:49`
 
-> rejoining prefix with remaining content
+rejoining prefix with remaining content
 
 ```lua
 local function strip_tag_num(text, tag)
@@ -296,11 +292,11 @@ local function strip_tag_num(text, tag)
 end
 ```
 
-<a id="run-2"></a>**2.** `~/Desktop/autoodocs/lib/parser.lua:67`
+### <a id="run-2"></a>Remove `@tag`, `@tag:N`, or `@tag!x` syntax fro...
 
-Remove `@tag`, `@tag:N`, or `@tag!x` syntax from comment text
+`~/Desktop/autoodocs/lib/parser.lua:67`
 
-> delegates to `strip_tag_num` for `:N` and `:N!x` variants
+delegates to `strip_tag_num` for `:N` and `:N!x` variants
 
 ```lua
 function M.strip_tags(text)
@@ -327,18 +323,18 @@ function M.strip_tags(text)
 end
 ```
 
-<a id="run-3"></a>**3.** `~/Desktop/autoodocs/lib/parser.lua:116`
+### <a id="run-3"></a>Strip comment delimiters and extract inner text
 
-Strip comment delimiters and extract inner text
+`~/Desktop/autoodocs/lib/parser.lua:116`
 
-> for all styles including block continuations
+for all styles including block continuations
 
 
-<a id="run-4"></a>**4.** `~/Desktop/autoodocs/lib/parser.lua:193`
+### <a id="run-4"></a>Walk one file as a line-by-line state machine
 
-Walk one file as a line-by-line state machine
+`~/Desktop/autoodocs/lib/parser.lua:193`
 
-> extracting tagged comments into `records` table
+extracting tagged comments into `records` table
 
 
 <a id="run-4-1"></a>**4.1 ~/Desktop/autoodocs/lib/parser.lua:221**

@@ -1,4 +1,4 @@
--- @def:5 Localize functions for hot loop performance
+-- @def:7 Localize functions for hot loop performance
 local find   = string.find
 local sub    = string.sub
 local byte   = string.byte
