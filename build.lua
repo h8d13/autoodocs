@@ -2,10 +2,11 @@
 -- @gen Build script that runs autoodocs and converts output to HTML
 -- @run Build pipeline: generate docs and convert to HTML
 
--- @def:9 Resolve script directory and mtime helper
+-- @def:2 Resolve script directory for portable paths
 local fmt = string.format
 local dir = arg[0]:match("^(.-)[^/]*$") or "./"
 
+-- @chk:6 Get file modification time via stat
 local function mtime(path)
     local p = io.popen(fmt("stat -c %%Y %s 2>/dev/null", path))
     local t = p and tonumber(p:read("*l"))

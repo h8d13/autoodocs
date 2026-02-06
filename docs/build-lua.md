@@ -4,22 +4,30 @@
 
 Build script that runs autoodocs and converts output to HTML
 
-## <a id="def"></a>Defines
+## <a id="chk"></a>Checks
 
-### <a id="def-1"></a>Resolve script directory and mtime helper
+### <a id="chk-1"></a>Get file modification time via stat
 
-`~/Desktop/autoodocs/build.lua:5`
+`~/Desktop/autoodocs/build.lua:9`
 
 ```lua
-local fmt = string.format
-local dir = arg[0]:match("^(.-)[^/]*$") or "./"
-
 local function mtime(path)
     local p = io.popen(fmt("stat -c %%Y %s 2>/dev/null", path))
     local t = p and tonumber(p:read("*l"))
     if p then p:close() end
     return t or 0
 end
+```
+
+## <a id="def"></a>Defines
+
+### <a id="def-1"></a>Resolve script directory for portable paths
+
+`~/Desktop/autoodocs/build.lua:5`
+
+```lua
+local fmt = string.format
+local dir = arg[0]:match("^(.-)[^/]*$") or "./"
 ```
 
 ## <a id="run"></a>Runners
@@ -31,7 +39,7 @@ end
 
 ### <a id="run-2"></a>Generate markdown documentation
 
-`~/Desktop/autoodocs/build.lua:16`
+`~/Desktop/autoodocs/build.lua:17`
 
 With all flags enabled
 
@@ -44,7 +52,7 @@ os.execute(fmt("lua %sautoodocs.lua . docs -s -c", dir))
 
 ### <a id="run-3"></a>Copy stylesheet to output directory
 
-`~/Desktop/autoodocs/build.lua:22`
+`~/Desktop/autoodocs/build.lua:23`
 
 *↳ [default.css](default-css.html)*
 
@@ -55,7 +63,7 @@ os.execute(fmt("cp %sdefault.css docs/", dir))
 
 ### <a id="run-4"></a>Convert changed markdown files to HTML
 
-`~/Desktop/autoodocs/build.lua:27`
+`~/Desktop/autoodocs/build.lua:28`
 
 *↳ [markdown.lua:1264](markdown-lua.html#run-9)*
 

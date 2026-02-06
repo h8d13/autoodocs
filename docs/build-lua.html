@@ -12,8 +12,10 @@
 <nav class="sidebar">
 <h2>Contents <a href="index.html" class="sidebar-home" title="Home">⌂</a></h2>
 <ul id="toc">
+<li><a href="#chk">Checks</a></li>
+<li class="toc-sub"><a href="#chk-1">Get file modification time via stat</a></li>
 <li><a href="#def">Defines</a></li>
-<li class="toc-sub"><a href="#def-1">Resolve script directory and mtime helper</a></li>
+<li class="toc-sub"><a href="#def-1">Resolve script directory for portable paths</a></li>
 <li><a href="#run">Runners</a></li>
 <li class="toc-sub"><a href="#run-1">Build pipeline: generate docs and convert to HTML</a></li>
 <li class="toc-sub"><a href="#run-2">Generate markdown documentation</a></li>
@@ -29,21 +31,28 @@
 
 <p>Build script that runs autoodocs and converts output to HTML</p>
 
-<h2><a id="def"></a>Defines</h2>
+<h2><a id="chk"></a>Checks</h2>
 
-<h3><a id="def-1"></a>Resolve script directory and mtime helper</h3>
+<h3><a id="chk-1"></a>Get file modification time via stat</h3>
 
-<p><code>~/Desktop/autoodocs/build.lua:5</code></p>
+<p><code>~/Desktop/autoodocs/build.lua:9</code></p>
 
-<pre><code class="language-lua">local fmt = string.format
-local dir = arg[0]:match("^(.-)[^/]*$") or "./"
-
-local function mtime(path)
+<pre><code class="language-lua">local function mtime(path)
     local p = io.popen(fmt("stat -c %%Y %s 2&gt;/dev/null", path))
     local t = p and tonumber(p:read("*l"))
     if p then p:close() end
     return t or 0
 end
+</code></pre>
+
+<h2><a id="def"></a>Defines</h2>
+
+<h3><a id="def-1"></a>Resolve script directory for portable paths</h3>
+
+<p><code>~/Desktop/autoodocs/build.lua:5</code></p>
+
+<pre><code class="language-lua">local fmt = string.format
+local dir = arg[0]:match("^(.-)[^/]*$") or "./"
 </code></pre>
 
 <h2><a id="run"></a>Runners</h2>
@@ -55,7 +64,7 @@ end
 
 <h3><a id="run-2"></a>Generate markdown documentation</h3>
 
-<p><code>~/Desktop/autoodocs/build.lua:16</code></p>
+<p><code>~/Desktop/autoodocs/build.lua:17</code></p>
 
 <p>With all flags enabled</p>
 
@@ -69,7 +78,7 @@ os.execute(fmt("lua %sautoodocs.lua . docs -s -c", dir))
 
 <h3><a id="run-3"></a>Copy stylesheet to output directory</h3>
 
-<p><code>~/Desktop/autoodocs/build.lua:22</code></p>
+<p><code>~/Desktop/autoodocs/build.lua:23</code></p>
 
 <p><em>↳ <a href="default-css.html">default.css</a></em></p>
 
@@ -79,7 +88,7 @@ os.execute(fmt("cp %sdefault.css docs/", dir))
 
 <h3><a id="run-4"></a>Convert changed markdown files to HTML</h3>
 
-<p><code>~/Desktop/autoodocs/build.lua:27</code></p>
+<p><code>~/Desktop/autoodocs/build.lua:28</code></p>
 
 <p><em>↳ <a href="markdown-lua.html#run-9">markdown.lua:1264</a></em></p>
 
