@@ -20,7 +20,7 @@
 <li class="toc-sub"><a href="#def-4">Map tag prefixes to anchor slugs and section titles</a></li>
 <li><a href="#run">Runners</a></li>
 <li class="toc-sub"><a href="#run-1">Generate a slug from a file path for anchors/filenames</a></li>
-<li class="toc-sub"><a href="#run-2">Convert @src:filepath:line to clickable markdown links</a></li>
+<li class="toc-sub"><a href="#run-2">Convert @src:filepath#anchor to clickable markdown links</a></li>
 <li class="toc-sub"><a href="#run-3">Render a single entry</a></li>
 <li class="toc-sub"><a href="#run-4">Render index page</a></li>
 <li class="toc-sub"><a href="#run-5">Render a single file's documentation page</a></li>
@@ -79,39 +79,39 @@ M.TAG_ORDER = {"CHK", "DEF", "RUN", "ERR"}
 <p><code>~/Desktop/autoodocs/lib/render.lua:21</code></p>
 
 
-<h3><a id="run-2"></a>Convert @src:filepath:line to clickable markdown links</h3>
+<h3><a id="run-2"></a>Convert @src:filepath#anchor to clickable markdown links</h3>
 
 <p><code>~/Desktop/autoodocs/lib/render.lua:29</code></p>
 
 <pre><code class="language-lua">local function link_sources(text)
-    return gsub(text, "@src:([^%s:]+):?(%d*)", function(path, line)
+    return gsub(text, "@src:([^%s#]+)#?([^%s]*)", function(path, anchor)
         local slug = slugify(path)
-        local display = line ~= "" and (path .. ":" .. line) or path
+        local display = anchor ~= "" and (path .. "#" .. anchor) or path
 </code></pre>
 
 <h3><a id="run-3"></a>Render a single entry</h3>
 
-<p><code>~/Desktop/autoodocs/lib/render.lua:38</code></p>
+<p><code>~/Desktop/autoodocs/lib/render.lua:39</code></p>
 
 
 <h3><a id="run-4"></a>Render index page</h3>
 
-<p><code>~/Desktop/autoodocs/lib/render.lua:102</code></p>
+<p><code>~/Desktop/autoodocs/lib/render.lua:103</code></p>
 
 
 <h3><a id="run-5"></a>Render a single file's documentation page</h3>
 
-<p><code>~/Desktop/autoodocs/lib/render.lua:130</code></p>
+<p><code>~/Desktop/autoodocs/lib/render.lua:131</code></p>
 
 
 <h3><a id="run-6"></a>Group records by file and assign indices</h3>
 
-<p><code>~/Desktop/autoodocs/lib/render.lua:159</code></p>
+<p><code>~/Desktop/autoodocs/lib/render.lua:160</code></p>
 
 
 <h3><a id="run-7"></a>Get slug for a file path</h3>
 
-<p><code>~/Desktop/autoodocs/lib/render.lua:211</code></p>
+<p><code>~/Desktop/autoodocs/lib/render.lua:212</code></p>
 
 
 

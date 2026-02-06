@@ -26,12 +26,13 @@ local function slugify(path)
     return s:lower()
 end
 
--- @run:4 Convert @src:filepath:line to clickable markdown links
+-- @run:4 Convert @src:filepath#anchor to clickable markdown links
 local function link_sources(text)
-    return gsub(text, "@src:([^%s:]+):?(%d*)", function(path, line)
+    return gsub(text, "@src:([^%s#]+)#?([^%s]*)", function(path, anchor)
         local slug = slugify(path)
-        local display = line ~= "" and (path .. ":" .. line) or path
-        return fmt("[%s](%s.html)", display, slug)
+        local display = anchor ~= "" and (path .. "#" .. anchor) or path
+        local href = anchor ~= "" and fmt("%s.html#%s", slug, anchor) or (slug .. ".html")
+        return fmt("[%s](%s)", display, href)
     end)
 end
 

@@ -51,39 +51,39 @@ M.TAG_ORDER = {"CHK", "DEF", "RUN", "ERR"}
 `~/Desktop/autoodocs/lib/render.lua:21`
 
 
-### <a id="run-2"></a>Convert @src:filepath:line to clickable markdown links
+### <a id="run-2"></a>Convert @src:filepath#anchor to clickable markdown links
 
 `~/Desktop/autoodocs/lib/render.lua:29`
 
 ```lua
 local function link_sources(text)
-    return gsub(text, "@src:([^%s:]+):?(%d*)", function(path, line)
+    return gsub(text, "@src:([^%s#]+)#?([^%s]*)", function(path, anchor)
         local slug = slugify(path)
-        local display = line ~= "" and (path .. ":" .. line) or path
+        local display = anchor ~= "" and (path .. "#" .. anchor) or path
 ```
 
 ### <a id="run-3"></a>Render a single entry
 
-`~/Desktop/autoodocs/lib/render.lua:38`
+`~/Desktop/autoodocs/lib/render.lua:39`
 
 
 ### <a id="run-4"></a>Render index page
 
-`~/Desktop/autoodocs/lib/render.lua:102`
+`~/Desktop/autoodocs/lib/render.lua:103`
 
 
 ### <a id="run-5"></a>Render a single file's documentation page
 
-`~/Desktop/autoodocs/lib/render.lua:130`
+`~/Desktop/autoodocs/lib/render.lua:131`
 
 
 ### <a id="run-6"></a>Group records by file and assign indices
 
-`~/Desktop/autoodocs/lib/render.lua:159`
+`~/Desktop/autoodocs/lib/render.lua:160`
 
 
 ### <a id="run-7"></a>Get slug for a file path
 
-`~/Desktop/autoodocs/lib/render.lua:211`
+`~/Desktop/autoodocs/lib/render.lua:212`
 
 
