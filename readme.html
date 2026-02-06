@@ -2,14 +2,12 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>Autodocs</title>
+    <title>Checks (@chk)</title>
     <link rel="stylesheet" type="text/css" href="default.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 </head>
 <body>
-
-<h1>Autodocs</h1>
 
 <h2>Checks (@chk)</h2>
 
@@ -219,24 +217,24 @@ end
 <p><code>-s</code> outputs extra stats</p>
 
 
-<p><a id="chk-24"></a><strong>24. ~/Desktop/autoodocs/autodocs.lua:85</strong>
-<em>↳ <a href="#run-10">@run 10.</a></em></p>
+<p><a id="chk-24"></a><strong>24. ~/Desktop/autoodocs/autodocs.lua:84</strong>
+<em>↳ <a href="#run-9">@run 9.</a></em></p>
 
 <p>Verify tagged files were discovered</p>
 
 <pre><code class="language-lua">    if #files == 0 then
 </code></pre>
 
-<p><a id="chk-25"></a><strong>25. ~/Desktop/autoodocs/autodocs.lua:106</strong>
-<em>↳ <a href="#run-10">@run 10.</a></em></p>
+<p><a id="chk-25"></a><strong>25. ~/Desktop/autoodocs/autodocs.lua:105</strong>
+<em>↳ <a href="#run-9">@run 9.</a></em></p>
 
 <p>Verify extraction produced results</p>
 
 <pre><code class="language-lua">    if #records == 0 then
 </code></pre>
 
-<p><a id="chk-26"></a><strong>26. ~/Desktop/autoodocs/autodocs.lua:120</strong>
-<em>↳ <a href="#run-10">@run 10.</a></em></p>
+<p><a id="chk-26"></a><strong>26. ~/Desktop/autoodocs/autodocs.lua:119</strong>
+<em>↳ <a href="#run-9">@run 9.</a></em></p>
 
 <p>Render and compare against existing output</p>
 
@@ -244,7 +242,7 @@ end
     <p>skip write if content is unchanged</p>
 </blockquote>
 
-<pre><code class="language-lua">    local markdown = render.render_markdown(grouped, TITLE)
+<pre><code class="language-lua">    local markdown = render.render_markdown(grouped)
     local ef = open(OUTPUT, "r")
     if ef then
         local existing = ef:read("*a")
@@ -412,8 +410,7 @@ local fmt    = string.format
     <p><code>US</code> separates multi-line text within record fields</p>
 </blockquote>
 
-<pre><code class="language-lua">local TITLE    = "Autodocs"
-local SCAN_DIR = arg[1] or "."
+<pre><code class="language-lua">local SCAN_DIR = arg[1] or "."
 local OUTPUT   = arg[2] or "readme.md"
 local STATS    = arg[3] == "-s"
 SCAN_DIR = gsub(SCAN_DIR, "/$", "")
@@ -425,9 +422,10 @@ if sub(SCAN_DIR, 1, 1) ~= "/" then
 end
 local HOME = match(SCAN_DIR, "^(/[^/]+/[^/]+)")
 local US = "\031"
+
 </code></pre>
 
-<h3><a id="def-15"></a>15. ~/Desktop/autoodocs/autodocs.lua:59</h3>
+<h3><a id="def-15"></a>15. ~/Desktop/autoodocs/autodocs.lua:58</h3>
 <p>Global state for collected records and line count</p>
 
 <pre><code class="language-lua">local records = {}
@@ -766,11 +764,9 @@ end
     <p>parentless entries become headings; children use bold anchors</p>
 </blockquote>
 
-<pre><code class="language-lua">function M.render_markdown(grouped, title)
+<pre><code class="language-lua">function M.render_markdown(grouped)
     local out = {}
     local function w(s) out[#out + 1] = s end
-
-    w(fmt("# %s\n\n", title))
 
     local function render_section(entries, prefix)
         if #entries == 0 then return end
@@ -834,56 +830,18 @@ end
 
     return concat(out)
 end
+
+-- @run:35 Resolve parents, assign per-tag indices, group (single pass)
 </code></pre>
 
-<h3><a id="run-9"></a>9. ~/Desktop/autoodocs/lib/render.lua:86</h3>
-<p>Resolve parents, assign per-tag indices, group (single pass)</p>
-
-<pre><code class="language-lua">function M.group_records(records)
-    local TAG_SEC = M.TAG_SEC
-    local mi = {CHK=0, DEF=0, RUN=0, ERR=0}
-    local grouped = {CHK={}, DEF={}, RUN={}, ERR={}}
-    local scope = {}
-    local scope_file = ""
-    for _, r in ipairs(records) do
-        if r.file ~= scope_file then
-            scope_file = r.file
-            scope = {}
-        end
-        if r.indent &gt; 0 then
-            for d = r.indent - 1, 0, -1 do
-                if scope[d] then r.parent = scope[d]; break end
-            end
-        end
-        scope[r.indent] = r
-        local t = r.tag
-        local g = grouped[t]
-        g[#g + 1] = r
-        if r.parent and r.parent.tag == t then
-            r.parent._cc = (r.parent._cc or 0) + 1
-            local cc = r.parent._cc
-            if r.parent.depth == 0 then
-                r.idx = fmt("%s%d", r.parent.idx, cc)
-            else
-                r.idx = fmt("%s.%d", r.parent.idx, cc)
-            end
-            r.anchor = fmt("%s-%d", r.parent.anchor, cc)
-            r.depth = r.parent.depth + 1
-        else
-            mi[t] = mi[t] + 1
-            r.idx = fmt("%d.", mi[t])
-            r.anchor = fmt("%s-%d", TAG_SEC[t], mi[t])
-            r.depth = 0
-</code></pre>
-
-<h3><a id="run-10"></a>10. ~/Desktop/autoodocs/autodocs.lua:63</h3>
+<h3><a id="run-9"></a>9. ~/Desktop/autoodocs/autodocs.lua:62</h3>
 <p>Main function</p>
 
 <pre><code class="language-lua">local function main()
 </code></pre>
 
-<p><a id="run-10-1"></a><strong>10.1 ~/Desktop/autoodocs/autodocs.lua:65</strong>
-<em>↳ <a href="#run-10">@run 10.</a></em></p>
+<p><a id="run-9-1"></a><strong>9.1 ~/Desktop/autoodocs/autodocs.lua:64</strong>
+<em>↳ <a href="#run-9">@run 9.</a></em></p>
 
 <p>Discover files containing documentation tags</p>
 
@@ -910,8 +868,8 @@ end
     pipe:close()
 </code></pre>
 
-<p><a id="run-10-2"></a><strong>10.2 ~/Desktop/autoodocs/autodocs.lua:99</strong>
-<em>↳ <a href="#run-10">@run 10.</a></em></p>
+<p><a id="run-9-2"></a><strong>9.2 ~/Desktop/autoodocs/autodocs.lua:98</strong>
+<em>↳ <a href="#run-9">@run 9.</a></em></p>
 
 <p>Process all discovered files into intermediate <code>records</code></p>
 
@@ -922,16 +880,16 @@ end
     end
 </code></pre>
 
-<p><a id="run-10-3"></a><strong>10.3 ~/Desktop/autoodocs/autodocs.lua:117</strong>
-<em>↳ <a href="#run-10">@run 10.</a></em></p>
+<p><a id="run-9-3"></a><strong>9.3 ~/Desktop/autoodocs/autodocs.lua:116</strong>
+<em>↳ <a href="#run-9">@run 9.</a></em></p>
 
 <p>Group and index records</p>
 
 <pre><code class="language-lua">    local grouped = render.group_records(records)
 </code></pre>
 
-<p><a id="run-10-4"></a><strong>10.4 ~/Desktop/autoodocs/autodocs.lua:133</strong>
-<em>↳ <a href="#run-10">@run 10.</a></em></p>
+<p><a id="run-9-4"></a><strong>9.4 ~/Desktop/autoodocs/autodocs.lua:132</strong>
+<em>↳ <a href="#run-9">@run 9.</a></em></p>
 
 <p>Write output and report ratio</p>
 
@@ -947,8 +905,8 @@ end
         OUTPUT, ol, total_input, total_input &gt; 0 and math.floor(ol * 100 / total_input) or 0))
 </code></pre>
 
-<p><a id="run-10-5"></a><strong>10.5 ~/Desktop/autoodocs/autodocs.lua:142</strong>
-<em>↳ <a href="#run-10">@run 10.</a></em></p>
+<p><a id="run-9-5"></a><strong>9.5 ~/Desktop/autoodocs/autodocs.lua:141</strong>
+<em>↳ <a href="#run-9">@run 9.</a></em></p>
 
 <p>Run <code>stats.awk</code> on the output if <code>-s</code> flag is set</p>
 
@@ -963,7 +921,7 @@ end
     end
 </code></pre>
 
-<h3><a id="run-11"></a>11. ~/Desktop/autoodocs/autodocs.lua:154</h3>
+<h3><a id="run-10"></a>10. ~/Desktop/autoodocs/autodocs.lua:153</h3>
 <p>Entry point</p>
 
 <pre><code class="language-lua">main()
@@ -971,7 +929,7 @@ end
 
 <h2>Errors (@err)</h2>
 
-<p><a id="err-1"></a><strong>1. ~/Desktop/autoodocs/autodocs.lua:87</strong>
+<p><a id="err-1"></a><strong>1. ~/Desktop/autoodocs/autodocs.lua:86</strong>
 <em>↳ <a href="#chk-24">@chk 24.</a></em></p>
 
 <p>Handle missing tagged files</p>
@@ -981,13 +939,13 @@ end
 </blockquote>
 
 <pre><code class="language-lua">        local f = open(OUTPUT, "w")
-        f:write(fmt("# %s\n\nNo tagged documentation found.\n", TITLE))
+        f:write("No tagged documentation found.\n")
         f:close()
         io.stderr:write(fmt("autodocs: no tags found under %s\n", SCAN_DIR))
         return
 </code></pre>
 
-<p><a id="err-2"></a><strong>2. ~/Desktop/autoodocs/autodocs.lua:108</strong>
+<p><a id="err-2"></a><strong>2. ~/Desktop/autoodocs/autodocs.lua:107</strong>
 <em>↳ <a href="#chk-25">@chk 25.</a></em></p>
 
 <p>Handle extraction failure</p>
@@ -997,7 +955,7 @@ end
 </blockquote>
 
 <pre><code class="language-lua">        local f = open(OUTPUT, "w")
-        f:write(fmt("# %s\n\nNo tagged documentation found.\n", TITLE))
+        f:write("No tagged documentation found.\n")
         f:close()
         io.stderr:write(fmt("autodocs: tags found but no extractable docs under %s\n", SCAN_DIR))
         return
