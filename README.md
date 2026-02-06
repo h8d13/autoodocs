@@ -49,4 +49,4 @@ Create a branch named `pages` or directly from `master | main`.
 
 Go to repo `Settings` > `Pages` > `Deploy from branch` > `pages` > `/docs`
 
-Or directly from root `/`
+Or directly from root `/` or without a specific branch.
