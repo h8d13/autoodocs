@@ -46,15 +46,18 @@
 <h2>Installation</h2>
 
 <p>Copy to a hidden folder so autodocs doesn't document itself:</p>
+<blockquote>
+    <p>From <code>/yourprojectroot/</code></p>
+</blockquote>
 
-<pre><code class="language-sh">mkdir -p /myproject/.autodocs
-cp autodocs.lua markdown.lua default.css build.lua stats.awk /myproject/.autodocs/
+<pre><code class="language-sh">git clone https://github.com/h8d13/autoodocs .autoodocs/
+cp autodocs.lua markdown.lua default.css build.lua stats.awk /myproject/.autoodocs/
 </code></pre>
 
 <h2>Usage</h2>
 
-<pre><code class="language-sh">lua .autodocs/autodocs.lua . docs (-s)  # generate markdown optional stats
-lua .autodocs/markdown.lua docs/*.md    # convert to HTML
+<pre><code class="language-sh">lua .autoodocs/autodocs.lua . docs (-s)  # generate markdown optional stats
+lua .autoodocs/markdown.lua docs/*.md    # convert to HTML
 </code></pre>
 
 <p>Or create a build script / pre-commit hook:</p>
@@ -63,9 +66,9 @@ lua .autodocs/markdown.lua docs/*.md    # convert to HTML
 repos:
   - repo: local
     hooks:
-      - id: autodocs
-        name: autodocs
-        entry: bash -c 'lua .autodocs/build.lua &amp;&amp; git add docs/'
+      - id: autoodocs
+        name: autoodocs
+        entry: bash -c 'lua .autoodocs/build.lua &amp;&amp; git add docs/'
         language: system
         pass_filenames: false
         always_run: true
