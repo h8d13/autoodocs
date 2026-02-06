@@ -1,5 +1,5 @@
 #!/usr/bin/env lua
--- @gen Build script that runs autodocs and converts output to HTML
+-- @gen Build script that runs autoodocs and converts output to HTML
 -- @run Build pipeline: generate docs and convert to HTML
 
 -- @def:2 Resolve script directory for portable paths
@@ -7,9 +7,9 @@ local fmt = string.format
 local dir = arg[0]:match("^(.-)[^/]*$") or "./"
 
 -- @run:2 Generate markdown documentation
--- @src:autodocs.lua:82
+-- @src:autoodocs.lua:82
 print("Generating markdown...")
-os.execute(fmt("lua %sautodocs.lua . docs -s", dir))
+os.execute(fmt("lua %sautoodocs.lua . docs -s", dir))
 
 -- @run:2 Copy stylesheet to output directory
 -- @src:default.css

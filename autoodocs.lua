@@ -109,7 +109,7 @@ local function main()
 
     -- @err:4 No tagged files found
     if #files == 0 then
-        io.stderr:write(fmt("autodocs: no tags found under %s\n", SCAN_DIR))
+        io.stderr:write(fmt("autoodocs: no tags found under %s\n", SCAN_DIR))
         return
     end
 
@@ -120,7 +120,7 @@ local function main()
 
     -- @err:4 No extractable documentation
     if #records == 0 then
-        io.stderr:write(fmt("autodocs: tags found but no extractable docs under %s\n", SCAN_DIR))
+        io.stderr:write(fmt("autoodocs: tags found but no extractable docs under %s\n", SCAN_DIR))
         return
     end
 
@@ -131,7 +131,7 @@ local function main()
     local index_md = render.render_index(file_order, SCAN_DIR)
     local index_path = OUT_DIR .. "/index.md"
     if write_if_changed(index_path, index_md) then
-        io.stderr:write(fmt("autodocs: wrote %s\n", index_path))
+        io.stderr:write(fmt("autoodocs: wrote %s\n", index_path))
     end
 
     -- @run Write individual file pages
@@ -142,11 +142,11 @@ local function main()
         local page_path = fmt("%s/%s.md", OUT_DIR, slug)
         if write_if_changed(page_path, page_md) then
             pages_written = pages_written + 1
-            io.stderr:write(fmt("autodocs: wrote %s\n", page_path))
+            io.stderr:write(fmt("autoodocs: wrote %s\n", page_path))
         end
     end
 
-    io.stderr:write(fmt("autodocs: %d files documented\n", #file_order))
+    io.stderr:write(fmt("autoodocs: %d files documented\n", #file_order))
 
     -- @run:2 Output stats if requested
     if STATS then

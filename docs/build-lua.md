@@ -2,7 +2,7 @@
 
 `~/Desktop/autoodocs/build.lua`
 
-Build script that runs autodocs and converts output to HTML
+Build script that runs autoodocs and converts output to HTML
 
 ## <a id="def"></a>Defines
 
@@ -24,11 +24,11 @@ local dir = arg[0]:match("^(.-)[^/]*$") or "./"
 
 ### <a id="run-2"></a>Generate markdown documentation
 
-`~/Desktop/autoodocs/build.lua:9` *↳ [autodocs.lua:82](autodocs-lua.html#run-1)*
+`~/Desktop/autoodocs/build.lua:9` *↳ [autoodocs.lua:82](autoodocs-lua.html#run-1)*
 
 ```lua
 print("Generating markdown...")
-os.execute(fmt("lua %sautodocs.lua . docs -s", dir))
+os.execute(fmt("lua %sautoodocs.lua . docs -s", dir))
 ```
 
 ### <a id="run-3"></a>Copy stylesheet to output directory

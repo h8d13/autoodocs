@@ -14,8 +14,8 @@
 <ul id="toc">
 <li><a href="build-lua.html">build.lua</a></li>
 <li><a href="markdown-lua.html">markdown.lua</a></li>
-<li><a href="autodocs-lua.html">autodocs.lua</a></li>
 <li><a href="default-css.html">default.css</a></li>
+<li><a href="autoodocs-lua.html">autoodocs.lua</a></li>
 <li class="toc-dir"><details><summary>lib/</summary><ul>
 <li><a href="parser-lua.html">parser.lua</a></li>
 <li><a href="utils-lua.html">utils.lua</a></li>
@@ -45,18 +45,18 @@
 
 <h2>Installation</h2>
 
-<p>Copy to a hidden folder so autodocs doesn't document itself:</p>
+<p>Copy to a hidden folder so autoodocs doesn't document itself:</p>
 <blockquote>
     <p>From <code>/yourprojectroot/</code></p>
 </blockquote>
 
 <pre><code class="language-sh">git clone https://github.com/h8d13/autoodocs .autoodocs/
-cp autodocs.lua markdown.lua default.css build.lua stats.awk /myproject/.autoodocs/
+cp autoodocs.lua markdown.lua default.css build.lua stats.awk /myproject/.autoodocs/
 </code></pre>
 
 <h2>Usage</h2>
 
-<pre><code class="language-sh">lua .autoodocs/autodocs.lua . docs (-s)  # generate markdown optional stats
+<pre><code class="language-sh">lua .autoodocs/autoodocs.lua . docs (-s)  # generate markdown optional stats
 lua .autoodocs/markdown.lua docs/*.md    # convert to HTML
 </code></pre>
 
@@ -87,8 +87,8 @@ repos:
 <!-- NAV
 [build.lua](build-lua.html)
 [markdown.lua](markdown-lua.html)
-[autodocs.lua](autodocs-lua.html)
 [default.css](default-css.html)
+[autoodocs.lua](autoodocs-lua.html)
 [>lib]
 [parser.lua](parser-lua.html)
 [utils.lua](utils-lua.html)

@@ -27,7 +27,7 @@
 
 <p><code>~/Desktop/autoodocs/build.lua</code></p>
 
-<p>Build script that runs autodocs and converts output to HTML</p>
+<p>Build script that runs autoodocs and converts output to HTML</p>
 
 <h2><a id="def"></a>Defines</h2>
 
@@ -48,10 +48,10 @@ local dir = arg[0]:match("^(.-)[^/]*$") or "./"
 
 <h3><a id="run-2"></a>Generate markdown documentation</h3>
 
-<p><code>~/Desktop/autoodocs/build.lua:9</code> <em>↳ <a href="autodocs-lua.html#run-1">autodocs.lua:82</a></em></p>
+<p><code>~/Desktop/autoodocs/build.lua:9</code> <em>↳ <a href="autoodocs-lua.html#run-1">autoodocs.lua:82</a></em></p>
 
 <pre><code class="language-lua">print("Generating markdown...")
-os.execute(fmt("lua %sautodocs.lua . docs -s", dir))
+os.execute(fmt("lua %sautoodocs.lua . docs -s", dir))
 </code></pre>
 
 <h3><a id="run-3"></a>Copy stylesheet to output directory</h3>

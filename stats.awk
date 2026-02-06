@@ -1,5 +1,5 @@
 #!/usr/bin/awk -f
-# stats.awk — Autodocs readme statistics
+# stats.awk — autoodocs readme statistics
 # Usage: awk -f stats.awk readme.md
 
 /^## / {

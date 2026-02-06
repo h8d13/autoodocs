@@ -14,18 +14,18 @@ A lightweight documentation generator that extracts tagged comments from source 
 
 ## Installation
 
-Copy to a hidden folder so autodocs doesn't document itself:
+Copy to a hidden folder so autoodocs doesn't document itself:
 > From `/yourprojectroot/`
 
 ```sh
 git clone https://github.com/h8d13/autoodocs .autoodocs/
-cp autodocs.lua markdown.lua default.css build.lua stats.awk /myproject/.autoodocs/
+cp autoodocs.lua markdown.lua default.css build.lua stats.awk /myproject/.autoodocs/
 ```
 
 ## Usage
 
 ```sh
-lua .autoodocs/autodocs.lua . docs (-s)  # generate markdown optional stats
+lua .autoodocs/autoodocs.lua . docs (-s)  # generate markdown optional stats
 lua .autoodocs/markdown.lua docs/*.md    # convert to HTML
 ```
 
