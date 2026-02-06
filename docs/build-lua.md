@@ -45,7 +45,7 @@ os.execute("cp default.css docs/")
 
 `~/Desktop/autoodocs/build.lua:17`
 
-[markdown.lua:1264](markdown-lua.html#run-10)
+[markdown.lua:1264](markdown-lua.html#run-9)
 
 ```lua
 print("Converting to HTML...")

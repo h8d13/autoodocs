@@ -1040,9 +1040,15 @@ local function auto_links(text)
         local text = encode_email_address(s)
         return add_escape("<a href=\"" .. address .. "\">") .. text .. "</a>"
     end
-    -- links
+    -- links (angle brackets)
     text = text:gsub("<(https?:[^'\">%s]+)>", link)
     text = text:gsub("<(ftp:[^'\">%s]+)>", link)
+
+    -- bare URLs (not already in a link or angle brackets)
+    text = text:gsub("([^\"'<>])((https?://)([%w%-%.]+[%w])([%w%-%./_%?=&#%%+:~]*))", function(prefix, url)
+        return prefix .. add_escape("<a href=\"" .. url .. "\">") .. url .. "</a>"
+    end)
+    text = text:gsub("^((https?://)([%w%-%.]+[%w])([%w%-%./_%?=&#%%+:~]*))", link)
 
     -- mail
     text = text:gsub("<mailto:([^'\">%s]+)>", mail)

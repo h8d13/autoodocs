@@ -174,12 +174,12 @@ end
 
 ### <a id="run-8"></a>Normalize line endings, tabs, and whitespace
 
-`~/Desktop/autoodocs/markdown.lua:1116`
+`~/Desktop/autoodocs/markdown.lua:1122`
 
 
 ### <a id="run-9"></a>Main markdown processing pipeline
 
-`~/Desktop/autoodocs/markdown.lua:1161`
+`~/Desktop/autoodocs/markdown.lua:1167`
 
 ```lua
 local function markdown(text)
@@ -196,36 +196,36 @@ local function markdown(text)
 
 ### <a id="run-10"></a>CLI handler with HTML wrapping and TOC generation
 
-`~/Desktop/autoodocs/markdown.lua:1264`
+`~/Desktop/autoodocs/markdown.lua:1270`
 
 
 ## <a id="err"></a>Errors
 
-<a id="err-1"></a>**1. ~/Desktop/autoodocs/markdown.lua:1271**
+<a id="err-1"></a>**1. ~/Desktop/autoodocs/markdown.lua:1277**
 *↳ [@run 10.](#run-10)*
 
 Header file not found
 
 
-<a id="err-1-1"></a>**1.1 ~/Desktop/autoodocs/markdown.lua:1299**
+<a id="err-1-1"></a>**1.1 ~/Desktop/autoodocs/markdown.lua:1305**
 *↳ [@err 1.](#err-1)*
 
 Stylesheet file not found for inline inclusion
 
 
-<a id="err-2"></a>**2. ~/Desktop/autoodocs/markdown.lua:1372**
+<a id="err-2"></a>**2. ~/Desktop/autoodocs/markdown.lua:1378**
 *↳ [@run 10.](#run-10)*
 
 Footer file not found
 
 
-<a id="err-3"></a>**3. ~/Desktop/autoodocs/markdown.lua:1435**
+<a id="err-3"></a>**3. ~/Desktop/autoodocs/markdown.lua:1441**
 *↳ [@run 10.](#run-10)*
 
 Test file not found
 
 
-<a id="err-4"></a>**4. ~/Desktop/autoodocs/markdown.lua:1445**
+<a id="err-4"></a>**4. ~/Desktop/autoodocs/markdown.lua:1451**
 *↳ [@run 10.](#run-10)*
 
 Input or output file cannot be opened
