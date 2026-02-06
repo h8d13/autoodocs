@@ -67,7 +67,6 @@ Or directly from root `/` or without a specific branch.
 [build.lua](build-lua.html)
 [markdown.lua](markdown-lua.html)
 [default.css](default-css.html)
-[README.md](readme-md.html)
 [autoodocs.lua](autoodocs-lua.html)
 [>lib]
 [parser.lua](parser-lua.html)

@@ -105,7 +105,7 @@ local function main()
     end
 
     local cmd = fmt(
-        'grep -rl -I --exclude-dir=".*" --exclude-dir=%s --exclude="*.html" %s -e "@def" -e "@chk" -e "@run" -e "@err" %s 2>/dev/null',
+        'grep -rl -I --exclude-dir=".*" --exclude-dir=%s --exclude="*.html" --exclude="[Rr][Ee][Aa][Dd][Mm][Ee].[Mm][Dd]" %s -e "@def" -e "@chk" -e "@run" -e "@err" %s 2>/dev/null',
         match(OUT_DIR, "([^/]+)$") or OUT_DIR, gi, utils.shell_quote(SCAN_DIR)
     )
     local pipe = io.popen(cmd)
