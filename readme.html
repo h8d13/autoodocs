@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Autodocs</title>
+    <link rel="stylesheet" type="text/css" href="default.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+
+<h1>Autodocs</h1>
+
+<h2>Checks (@chk)</h2>
+
+<h3><a id="chk-1"></a>1. ~/Desktop/autoodocs/readme.html:534</h3>
+<p>shell type comments</p>
+
+
+<h3><a id="chk-2"></a>2. ~/Desktop/autoodocs/readme.html:539</h3>
+<p>double-slash comments</p>
+
+
+<h3><a id="chk-3"></a>3. ~/Desktop/autoodocs/lib/parser.lua:24</h3>
+<p>Test whether a line contains any documentation tag</p>
+
+<blockquote>
+    <p>early <code>@</code> check short-circuits lines with no tags</p>
+</blockquote>
+
+<pre><code class="language-lua">function M.has_tag(line)
+    if not find(line, "@", 1, true) then return nil end
+    return find(line, "@def", 1, true) or find(line, "@chk", 1, true) or
+           find(line, "@run", 1, true) or find(line, "@err", 1, true)
+end
+</code></pre>
+
+<h3><a id="chk-4"></a>4. ~/Desktop/autoodocs/lib/parser.lua:32</h3>
+<p>Classify a tagged line into <code>DEF</code>, <code>CHK</code>, <code>RUN</code>, or <code>ERR</code></p>
+
+<pre><code class="language-lua">function M.get_tag(line)
+    if     find(line, "@def", 1, true) then return "DEF"
+    elseif find(line, "@chk", 1, true) then return "CHK"
+    elseif find(line, "@run", 1, true) then return "RUN"
+    elseif find(line, "@err", 1, true) then return "ERR"
+    end
+end
+</code></pre>
+
+<h3><a id="chk-5"></a>5. ~/Desktop/autoodocs/lib/parser.lua:41</h3>
+<p>Extract the subject line count from <code>@tag:N</code> syntax</p>
+
+<blockquote>
+    <p>using pattern capture after the colon</p>
+</blockquote>
+
+<pre><code class="language-lua">function M.get_subject_count(text)
+    local n = match(text, "@def:(%d+)") or match(text, "@chk:(%d+)") or
+              match(text, "@run:(%d+)") or match(text, "@err:(%d+)")
+    return tonumber(n) or 0
+end
+</code></pre>
+
+<h3><a id="chk-6"></a>6. ~/Desktop/autoodocs/lib/parser.lua:61</h3>
+<p>Extract <code>!x</code> admonition suffix from tag syntax</p>
+
+<pre><code class="language-lua">function M.get_admonition(text)
+    local code = match(text, "@%a+:?%d*!(%a)")
+    if code then return M.ADMONITIONS[code] end
+end
+</code></pre>
+
+<h3><a id="chk-7"></a>7. ~/Desktop/autoodocs/lib/parser.lua:92</h3>
+<p>Detect comment style via byte-level prefix check</p>
+
+<blockquote>
+    <p>skips leading whitespace without allocating a trimmed copy</p>
+</blockquote>
+
+<pre><code class="language-lua">function M.detect_style(line)
+    local i = 1
+    while byte(line, i) == 32 or byte(line, i) == 9 do i = i + 1 end
+    local b = byte(line, i)
+    if not b then return "none" end
+    if b == 60 then -- '&lt;'
+        if sub(line, i, i + 3) == "&lt;!--" then return "html" end
+    elseif b == 47 then -- '/'
+        local b2 = byte(line, i + 1)
+        if b2 == 42 then return "cblock" end
+        if b2 == 47 then return "dslash" end
+    elseif b == 35 then return "hash"
+    elseif b == 34 then -- '"'
+        if sub(line, i, i + 2) == '"""' then return "dquote" end
+    elseif b == 39 then -- "'"
+        if sub(line, i, i + 2) == "'''" then return "squote" end
+    elseif b == 45 then -- '-'
+        if byte(line, i + 1) == 45 then return "ddash" end
+    end
+    return "none"
+end
+</code></pre>
+
+<p><a id="chk-8"></a><strong>8. ~/Desktop/autoodocs/lib/parser.lua:129</strong>
+<em>↳ <a href="#run-3">@run 3.</a></em></p>
+
+<p>double-dash comments</p>
+
+
+<p><a id="chk-9"></a><strong>9. ~/Desktop/autoodocs/lib/parser.lua:134</strong>
+<em>↳ <a href="#run-3">@run 3.</a></em></p>
+
+<p>C-style block opening</p>
+
+
+<p><a id="chk-10"></a><strong>10. ~/Desktop/autoodocs/lib/parser.lua:141</strong>
+<em>↳ <a href="#run-3">@run 3.</a></em></p>
+
+<p>HTML comment opening</p>
+
+
+<p><a id="chk-11"></a><strong>11. ~/Desktop/autoodocs/lib/parser.lua:148</strong>
+<em>↳ <a href="#run-3">@run 3.</a></em></p>
+
+<p>block comment continuation lines</p>
+
+
+<p><a id="chk-12"></a><strong>12. ~/Desktop/autoodocs/lib/parser.lua:159</strong>
+<em>↳ <a href="#run-3">@run 3.</a></em></p>
+
+<p>html closing</p>
+
+
+<p><a id="chk-13"></a><strong>13. ~/Desktop/autoodocs/lib/parser.lua:165</strong>
+<em>↳ <a href="#run-3">@run 3.</a></em></p>
+
+<p>triple-quote docstring styles</p>
+
+
+<p><a id="chk-14"></a><strong>14. ~/Desktop/autoodocs/lib/parser.lua:172</strong>
+<em>↳ <a href="#run-3">@run 3.</a></em></p>
+
+<p>single-quote docstring style</p>
+
+
+<p><a id="chk-15"></a><strong>15. ~/Desktop/autoodocs/lib/parser.lua:179</strong>
+<em>↳ <a href="#run-3">@run 3.</a></em></p>
+
+<p>docstring continuation lines</p>
+
+<blockquote>
+    <p>no opening delimiter to strip; checks both <code>"""</code> and <code>'''</code> closers</p>
+</blockquote>
+
+
+<p><a id="chk-16"></a><strong>16. ~/Desktop/autoodocs/lib/parser.lua:319</strong>
+<em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
+
+<p>Scan untagged block comment for tags</p>
+
+
+<p><a id="chk-17"></a><strong>17. ~/Desktop/autoodocs/lib/parser.lua:338</strong>
+<em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
+
+<p>Scan untagged HTML comment for tags</p>
+
+
+<p><a id="chk-18"></a><strong>18. ~/Desktop/autoodocs/lib/parser.lua:371</strong>
+<em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
+
+<p>Scan untagged docstring for tags</p>
+
+
+<p><a id="chk-19"></a><strong>19. ~/Desktop/autoodocs/lib/parser.lua:396</strong>
+<em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
+
+<p>Detect comment style of current line</p>
+
+<pre><code class="language-lua">        local style = M.detect_style(line)
+</code></pre>
+
+<p><a id="chk-20"></a><strong>20. ~/Desktop/autoodocs/lib/parser.lua:438</strong>
+<em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
+
+<p>Untagged block comment start - scan for tags</p>
+
+
+<p><a id="chk-21"></a><strong>21. ~/Desktop/autoodocs/lib/parser.lua:441</strong>
+<em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
+
+<p>Untagged HTML comment start</p>
+
+
+<p><a id="chk-22"></a><strong>22. ~/Desktop/autoodocs/lib/parser.lua:444</strong>
+<em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
+
+<p>Untagged double-quote docstring start</p>
+
+
+<p><a id="chk-23"></a><strong>23. ~/Desktop/autoodocs/lib/parser.lua:448</strong>
+<em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
+
+<p>Untagged single-quote docstring start</p>
+
+
+<h3><a id="chk-24"></a>24. ~/Desktop/autoodocs/lib/utils.lua:61</h3>
+<p>Classify file language via extension or shebang</p>
+
+<blockquote>
+    <p>accepts <code>first_line</code> to avoid reopening the file</p>
+</blockquote>
+
+<pre><code class="language-lua">function M.get_lang(filepath, first_line)
+    local ext = match(filepath, "%.([^%.]+)$")
+    if ext and M.ext_map[ext] then return M.ext_map[ext] end
+    if first_line and sub(first_line, 1, 3) == "#!/" then
+        for _, pair in ipairs(M.shebang_map) do
+            if find(first_line, pair[1], 1, true) then
+                return pair[2]
+            end
+        end
+    end
+    return ""
+end
+</code></pre>
+
+<h3><a id="chk-25"></a>25. ~/Desktop/autoodocs/autodocs.lua:2</h3>
+<p><code>-s</code> outputs extra stats</p>
+
+
+<p><a id="chk-26"></a><strong>26. ~/Desktop/autoodocs/autodocs.lua:85</strong>
+<em>↳ <a href="#run-10">@run 10.</a></em></p>
+
+<p>Verify tagged files were discovered</p>
+
+<pre><code class="language-lua">    if #files == 0 then
+</code></pre>
+
+<p><a id="chk-27"></a><strong>27. ~/Desktop/autoodocs/autodocs.lua:106</strong>
+<em>↳ <a href="#run-10">@run 10.</a></em></p>
+
+<p>Verify extraction produced results</p>
+
+<pre><code class="language-lua">    if #records == 0 then
+</code></pre>
+
+<p><a id="chk-28"></a><strong>28. ~/Desktop/autoodocs/autodocs.lua:120</strong>
+<em>↳ <a href="#run-10">@run 10.</a></em></p>
+
+<p>Render and compare against existing output</p>
+
+<blockquote>
+    <p>skip write if content is unchanged</p>
+</blockquote>
+
+<pre><code class="language-lua">    local markdown = render.render_markdown(grouped, TITLE)
+    local ef = open(OUTPUT, "r")
+    if ef then
+        local existing = ef:read("*a")
+        ef:close()
+        if existing == markdown then
+            io.stderr:write(fmt("autodocs: %s unchanged\n", OUTPUT))
+            return
+        end
+    end
+</code></pre>
+
+<h2>Defines (@def)</h2>
+
+<h3><a id="def-1"></a>1. ~/Desktop/autoodocs/readme.html:552</h3>
+<div class="callout callout-note">
+    <div class="callout-title">NOTE</div>
+    <p>Bulk-read file first so <code>get_lang</code> reuses the buffer</p>
+</div>
+
+<p>avoids a second <code>open</code>+<code>read</code> just for shebang detection</p>
+
+<pre><code class="language-html">    local f = open(filepath, "r")
+    if not f then return 0 end
+    local content = f:read("*a")
+    f:close()
+</code></pre>
+
+<h3><a id="def-2"></a>2. ~/Desktop/autoodocs/readme.html:559</h3>
+<p>Initialize per-file state machine variables</p>
+
+<pre><code class="language-html">&lt;/code&gt;&lt;/pre&gt;
+
+HASH019X
+
+HASH018X
+
+HASH020X
+
+&lt;pre&gt;&lt;code class="language-lua"&gt;    local function emit()
+        if tag ~= "" and text ~= "" then
+            local tr = trim(text)
+</code></pre>
+
+<h3><a id="def-3"></a>3. ~/Desktop/autoodocs/lib/parser.lua:1</h3>
+<p>Localize functions for hot loop performance</p>
+
+<pre><code class="language-lua">local find   = string.find
+local sub    = string.sub
+local byte   = string.byte
+local match  = string.match
+local gmatch = string.gmatch
+</code></pre>
+
+<h3><a id="def-4"></a>4. ~/Desktop/autoodocs/lib/parser.lua:18</h3>
+<p>Hoisted <code>TAGS</code> table avoids per-call allocation in <code>strip_tags</code></p>
+
+<pre><code class="language-lua">local TAGS = {"@def", "@chk", "@run", "@err"}
+</code></pre>
+
+<h3><a id="def-5"></a>5. ~/Desktop/autoodocs/lib/parser.lua:21</h3>
+<p>Map <code>!x</code> suffixes to admonition types</p>
+
+<pre><code class="language-lua">M.ADMONITIONS = {n="NOTE", t="TIP", i="IMPORTANT", w="WARNING", c="CAUTION"}
+</code></pre>
+
+<h3><a id="def-6"></a>6. ~/Desktop/autoodocs/lib/utils.lua:1</h3>
+<p>Localize <code>string.*</code>, <code>table.*</code>, and <code>io.*</code> functions</p>
+
+<blockquote>
+    <p>bypasses metatable and global lookups in the hot loop</p>
+</blockquote>
+
+<pre><code class="language-lua">local find   = string.find
+local sub    = string.sub
+local byte   = string.byte
+local match  = string.match
+local gsub   = string.gsub
+local open   = io.open
+
+local M = {}
+
+</code></pre>
+
+<h3><a id="def-7"></a>7. ~/Desktop/autoodocs/lib/utils.lua:12</h3>
+<div class="callout callout-note">
+    <div class="callout-title">NOTE</div>
+    <p>Shell-escape a string for safe interpolation into <code>io.popen</code></p>
+</div>
+
+<p>prevents breakage from paths containing <code>"</code>, <code>$()</code>, or backticks</p>
+
+<pre><code class="language-lua">function M.shell_quote(s)
+    return "'" .. gsub(s, "'", "'\\''") .. "'"
+end
+</code></pre>
+
+<h3><a id="def-8"></a>8. ~/Desktop/autoodocs/lib/utils.lua:41</h3>
+<p>Map file extension to fenced code block language</p>
+
+<pre><code class="language-lua">M.ext_map = {
+    sh="sh", bash="sh", py="python",
+    js="javascript", mjs="javascript", cjs="javascript",
+    ts="typescript", mts="typescript", cts="typescript",
+    jsx="jsx", tsx="tsx", rb="ruby", go="go", rs="rust",
+    c="c", h="c", cpp="cpp", hpp="cpp", cc="cpp", cxx="cpp",
+    java="java", cs="csharp", swift="swift", kt="kotlin", kts="kotlin",
+    lua="lua", sql="sql", html="html", htm="html", css="css", xml="xml",
+    yaml="yaml", yml="yaml", toml="toml", json="json",
+    php="php", pl="perl", pm="perl", zig="zig",
+    hs="haskell", ex="elixir", exs="elixir", erl="erlang",
+}
+</code></pre>
+
+<h3><a id="def-9"></a>9. ~/Desktop/autoodocs/lib/utils.lua:55</h3>
+<p>Map shebang interpreters to fenced code block language</p>
+
+<pre><code class="language-lua">M.shebang_map = {
+    {"python", "python"}, {"node", "javascript"}, {"ruby", "ruby"},
+    {"perl", "perl"}, {"lua", "lua"}, {"php", "php"}, {"sh", "sh"},
+}
+</code></pre>
+
+<h3><a id="def-10"></a>10. ~/Desktop/autoodocs/lib/render.lua:1</h3>
+<p>Localize functions for performance</p>
+
+<pre><code class="language-lua">local fmt    = string.format
+local gmatch = string.gmatch
+local concat = table.concat
+</code></pre>
+
+<h3><a id="def-11"></a>11. ~/Desktop/autoodocs/lib/render.lua:5</h3>
+<p>Import utils for trim</p>
+
+<pre><code class="language-lua">local utils = require("lib.utils")
+local trim = utils.trim
+</code></pre>
+
+<h3><a id="def-12"></a>12. ~/Desktop/autoodocs/lib/render.lua:8</h3>
+<p>Define map</p>
+
+<pre><code class="language-lua">local M = {}
+</code></pre>
+
+<h3><a id="def-13"></a>13. ~/Desktop/autoodocs/lib/render.lua:11</h3>
+<p>Map tag prefixes to anchor slugs and section titles</p>
+
+<pre><code class="language-lua">M.TAG_SEC   = {CHK="chk", DEF="def", RUN="run", ERR="err"}
+M.TAG_TITLE = {CHK="Checks", DEF="Defines", RUN="Runners", ERR="Errors"}
+</code></pre>
+
+<h3><a id="def-14"></a>14. ~/Desktop/autoodocs/autodocs.lua:10</h3>
+<div class="callout callout-important">
+    <div class="callout-title">IMPORTANT</div>
+    <p>Defines with 9 line of subject</p>
+</div>
+
+<p>And a important callout style</p>
+
+<p>after the end of comment block</p>
+
+<p><code>!n</code> NOTE</p>
+
+<p><code>!t</code> TIP</p>
+
+<p><code>!w</code> WARN</p>
+
+<p><code>!c</code> CAUTION</p>
+
+<pre><code class="language-lua">print('luadoc is awesome')
+    -- Check  -&gt; Early checks
+    ---- guard the entry, bail early if preconditions fail
+    -- Define -&gt; Gives instructions to
+    ---- define the state/config the rest depends on
+    -- Run    -&gt; Use the instructions
+    ---- do the actual work using those definitions
+    -- Error  -&gt; Handle what went wrong
+    ---- handle errors with more definitions
+</code></pre>
+
+<h3><a id="def-15"></a>15. ~/Desktop/autoodocs/autodocs.lua:31</h3>
+<p>Localize functions and load libraries</p>
+
+<pre><code class="language-lua">local match  = string.match
+local gsub   = string.gsub
+local sub    = string.sub
+local fmt    = string.format
+</code></pre>
+
+<h3><a id="def-16"></a>16. ~/Desktop/autoodocs/autodocs.lua:42</h3>
+<p>Parse CLI args with defaults</p>
+
+<blockquote>
+    <p>strip trailing slash, resolve absolute path via <code>/proc/self/environ</code></p>
+    
+    <p><code>US</code> separates multi-line text within record fields</p>
+</blockquote>
+
+<pre><code class="language-lua">local TITLE    = "Autodocs"
+local SCAN_DIR = arg[1] or "."
+local OUTPUT   = arg[2] or "readme.md"
+local STATS    = arg[3] == "-s"
+SCAN_DIR = gsub(SCAN_DIR, "/$", "")
+if sub(SCAN_DIR, 1, 1) ~= "/" then
+    local ef = open("/proc/self/environ", "rb")
+    local cwd = ef and match(ef:read("*a"), "PWD=([^%z]+)")
+    if ef then ef:close() end
+    SCAN_DIR = (SCAN_DIR == ".") and cwd or cwd .. "/" .. SCAN_DIR
+end
+local HOME = match(SCAN_DIR, "^(/[^/]+/[^/]+)")
+local US = "\031"
+</code></pre>
+
+<h3><a id="def-17"></a>17. ~/Desktop/autoodocs/autodocs.lua:59</h3>
+<p>Global state for collected records and line count</p>
+
+<pre><code class="language-lua">local records = {}
+local total_input = 0
+</code></pre>
+
+<h2>Runners (@run)</h2>
+
+<h3><a id="run-1"></a>1. ~/Desktop/autoodocs/lib/parser.lua:49</h3>
+<p>Strip <code>@tag:N</code> and trailing digits from text</p>
+
+<blockquote>
+    <p>rejoining prefix with remaining content</p>
+</blockquote>
+
+<pre><code class="language-lua">local function strip_tag_num(text, tag)
+    local pos = find(text, tag .. ":", 1, true)
+    if not pos then return text end
+    local prefix = sub(text, 1, pos - 1)
+    local rest = sub(text, pos + #tag + 1)
+    rest = gsub(rest, "^%d+!?%a?", "")
+    rest = gsub(rest, "^ ", "", 1)
+    return prefix .. rest
+end
+</code></pre>
+
+<h3><a id="run-2"></a>2. ~/Desktop/autoodocs/lib/parser.lua:67</h3>
+<p>Remove <code>@tag</code>, <code>@tag:N</code>, or <code>@tag!x</code> syntax from comment text</p>
+
+<blockquote>
+    <p>delegates to <code>strip_tag_num</code> for <code>:N</code> and <code>:N!x</code> variants</p>
+</blockquote>
+
+<pre><code class="language-lua">function M.strip_tags(text)
+    for _, tag in ipairs(TAGS) do
+        if find(text, tag .. ":%d") then
+            return strip_tag_num(text, tag)
+        end
+        local epos = find(text, tag .. "!%a")
+        if epos then
+            local rest = sub(text, epos + #tag + 2)
+            rest = gsub(rest, "^ ", "", 1)
+            return sub(text, 1, epos - 1) .. rest
+        end
+        local spos = find(text, tag .. " ", 1, true)
+        if spos then
+            return sub(text, 1, spos - 1) .. sub(text, spos + #tag + 1)
+        end
+        local bpos = find(text, tag, 1, true)
+        if bpos then
+            return sub(text, 1, bpos - 1) .. sub(text, bpos + #tag)
+        end
+    end
+    return text
+end
+</code></pre>
+
+<h3><a id="run-3"></a>3. ~/Desktop/autoodocs/lib/parser.lua:116</h3>
+<p>Strip comment delimiters and extract inner text</p>
+
+<blockquote>
+    <p>for all styles including block continuations</p>
+</blockquote>
+
+<pre><code class="language-lua">function M.strip_comment(line, style)
+    -- @chk shell type comments
+    if style == "hash" then
+        local sc = match(line, "#(.*)") or ""
+        return trim_lead(sc)
+
+    -- @chk double-slash comments
+    elseif style == "dslash" then
+        local sc = match(line, "//(.*)") or ""
+</code></pre>
+
+<h3><a id="run-4"></a>4. ~/Desktop/autoodocs/lib/parser.lua:193</h3>
+<p>Walk one file as a line-by-line state machine</p>
+
+<blockquote>
+    <p>extracting tagged comments into <code>records</code> table</p>
+</blockquote>
+
+<pre><code class="language-lua">function M.process_file(filepath, records, HOME, US)
+    -- @def:4!n Bulk-read file first so `get_lang` reuses the buffer
+    -- avoids a second `open`+`read` just for shebang detection
+    local f = open(filepath, "r")
+    if not f then return 0 end
+    local content = f:read("*a")
+    f:close()
+
+    -- @def:15 Initialize per-file state machine variables
+</code></pre>
+
+<p><a id="run-4-1"></a><strong>4.1 ~/Desktop/autoodocs/lib/parser.lua:221</strong>
+<em>↳ <a href="#run-4">@run 4.</a></em></p>
+
+<div class="callout callout-note">
+    <div class="callout-title">NOTE</div>
+    <p>Emit a documentation record or defer for subject capture</p>
+</div>
+
+<p><code>lang</code> is passed through as-is, empty string means no fence label</p>
+
+<pre><code class="language-lua">    local function emit()
+        if tag ~= "" and text ~= "" then
+            local tr = trim(text)
+            if tr ~= "" then
+                if nsubj &gt; 0 then
+                    pending = {
+                        tag  = tag,
+                        file = rel,
+                        loc  = rel .. ":" .. start,
+                        text = tr,
+                        lang = lang,
+                        adm  = adm,
+                        indent = tag_indent,
+                    }
+                    cap_want = nsubj
+                    subj = ""
+                else
+                    records[#records + 1] = {
+                        tag  = tag,
+                        file = rel,
+                        loc  = rel .. ":" .. start,
+                        text = tr,
+                        lang = lang,
+                        subj = "",
+                        adm  = adm,
+                        indent = tag_indent,
+                    }
+                end
+            end
+        end
+        state = ""
+        tag   = ""
+        start = ""
+        text  = ""
+        nsubj = 0
+        adm   = nil
+    end
+</code></pre>
+
+<p><a id="run-4-2"></a><strong>4.2 ~/Desktop/autoodocs/lib/parser.lua:261</strong>
+<em>↳ <a href="#run-4">@run 4.</a></em></p>
+
+<p>Flush deferred record with captured <code>subj</code> lines</p>
+
+<pre><code class="language-lua">    local function flush_pending()
+        if pending then
+            pending.subj = subj
+            records[#records + 1] = pending
+            pending = nil
+            subj    = ""
+            capture = 0
+        end
+    end
+</code></pre>
+
+<p><a id="run-4-2-1"></a><strong>4.2.1 ~/Desktop/autoodocs/lib/parser.lua:281</strong>
+<em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
+
+<p>Subject line capture mode</p>
+
+<pre><code class="language-lua">        if capture &gt; 0 then
+            if subj ~= "" then
+                subj = subj .. US .. line
+            else
+                subj = line
+            end
+            capture = capture - 1
+            if capture == 0 then flush_pending() end
+            goto continue
+        end
+</code></pre>
+
+<p><a id="run-4-2-2"></a><strong>4.2.2 ~/Desktop/autoodocs/lib/parser.lua:293</strong>
+<em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
+
+<p>Accumulate C-style block comment with tag</p>
+
+<pre><code class="language-lua">        if state == "cblock" then
+            if find(line, "*/", 1, true) then
+                local sc = M.strip_comment(line, "cblock_cont")
+                if sc ~= "" then text = text .. US .. sc end
+                emit()
+            else
+                local sc = M.strip_comment(line, "cblock_cont")
+                text = text .. US .. sc
+            end
+            goto continue
+        end
+</code></pre>
+
+<p><a id="run-4-2-3"></a><strong>4.2.3 ~/Desktop/autoodocs/lib/parser.lua:306</strong>
+<em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
+
+<p>Accumulate HTML comment with tag</p>
+
+<pre><code class="language-lua">        if state == "html" then
+            if find(line, "--&gt;", 1, true) then
+                local sc = M.strip_comment(line, "html_cont")
+                if sc ~= "" then text = text .. US .. sc end
+                emit()
+            else
+                local sc = M.strip_comment(line, "html_cont")
+                text = text .. US .. sc
+            end
+            goto continue
+        end
+</code></pre>
+
+<p><a id="run-4-2-4"></a><strong>4.2.4 ~/Desktop/autoodocs/lib/parser.lua:357</strong>
+<em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
+
+<p>Accumulate docstring with tag</p>
+
+<pre><code class="language-lua">        if state == "dquote" or state == "squote" then
+            local close = (state == "dquote") and '"""' or "'''"
+            if find(line, close, 1, true) then
+                local sc = M.strip_comment(line, "docstring_cont")
+                if sc ~= "" then text = text .. US .. sc end
+                emit()
+            else
+                local sc = M.strip_comment(line, "docstring_cont")
+                text = text .. US .. sc
+            end
+            goto continue
+        end
+</code></pre>
+
+<p><a id="run-4-2-5"></a><strong>4.2.5 ~/Desktop/autoodocs/lib/parser.lua:399</strong>
+<em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
+
+<p>Continue or close existing single-line comment block</p>
+
+<pre><code class="language-lua">        if state ~= "" then
+            if style == state then
+                if M.has_tag(line) then
+                    emit()
+                else
+                    local sc = M.strip_comment(line, style)
+                    text = text .. US .. sc
+                    goto continue
+                end
+            else
+                emit()
+            end
+        end
+</code></pre>
+
+<p><a id="run-4-2-6"></a><strong>4.2.6 ~/Desktop/autoodocs/lib/parser.lua:414</strong>
+<em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
+
+<p>Dispatch new tagged comment by style</p>
+
+<pre><code class="language-lua">        if M.has_tag(line) and style ~= "none" then
+            tag   = M.get_tag(line)
+            start = tostring(ln)
+            local ti = 1; while byte(line,ti) == 32 or byte(line,ti) == 9 do ti = ti+1 end; tag_indent = ti-1
+            local sc = M.strip_comment(line, style)
+            nsubj = M.get_subject_count(sc)
+            adm   = M.get_admonition(sc)
+            text  = M.strip_tags(sc)
+
+            if style == "hash" or style == "dslash" or style == "ddash" then
+                state = style
+            elseif style == "cblock" then
+                if find(line, "*/", 1, true) then emit() else state = "cblock" end
+            elseif style == "html" then
+                if find(line, "--&gt;", 1, true) then emit() else state = "html" end
+            elseif style == "dquote" then
+                local rest = match(line, '"""(.*)')
+                if rest and find(rest, '"""', 1, true) then emit() else state = "dquote" end
+            elseif style == "squote" then
+                local rest = match(line, "'''(.*)")
+                if rest and find(rest, "'''", 1, true) then emit() else state = "squote" end
+            end
+</code></pre>
+
+<p><a id="run-4-2-7"></a><strong>4.2.7 ~/Desktop/autoodocs/lib/parser.lua:454</strong>
+<em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
+
+<p>Begin subject capture if waiting and hit a code line</p>
+
+<pre><code class="language-lua">        if cap_want &gt; 0 and style == "none" then
+            capture  = cap_want
+            cap_want = 0
+            subj     = line
+            capture  = capture - 1
+            if capture == 0 then flush_pending() end
+        end
+</code></pre>
+
+<h3><a id="run-5"></a>5. ~/Desktop/autoodocs/lib/utils.lua:18</h3>
+<p>Strip leading spaces and tabs via byte scan</p>
+
+<blockquote>
+    <p>returns original string when no trimming needed</p>
+</blockquote>
+
+<pre><code class="language-lua">function M.trim_lead(s)
+    local i = 1
+    while byte(s, i) == 32 or byte(s, i) == 9 do i = i + 1 end
+    if i == 1 then return s end
+    return sub(s, i)
+end
+</code></pre>
+
+<h3><a id="run-6"></a>6. ~/Desktop/autoodocs/lib/utils.lua:27</h3>
+<p>Strip trailing spaces and tabs via byte scan</p>
+
+<blockquote>
+    <p>returns original string when no trimming needed</p>
+</blockquote>
+
+<pre><code class="language-lua">function M.trim_trail(s)
+    local i = #s
+    while i &gt; 0 and (byte(s, i) == 32 or byte(s, i) == 9) do i = i - 1 end
+    if i == #s then return s end
+    return sub(s, 1, i)
+end
+</code></pre>
+
+<h3><a id="run-7"></a>7. ~/Desktop/autoodocs/lib/utils.lua:36</h3>
+<p>Trim both ends via <code>trim_lead</code> and <code>trim_trail</code></p>
+
+<pre><code class="language-lua">function M.trim(s)
+    return M.trim_trail(M.trim_lead(s))
+end
+</code></pre>
+
+<h3><a id="run-8"></a>8. ~/Desktop/autoodocs/lib/render.lua:15</h3>
+<p>Render <code>records</code> into sectioned markdown</p>
+
+<blockquote>
+    <p>parentless entries become headings; children use bold anchors</p>
+</blockquote>
+
+<pre><code class="language-lua">function M.render_markdown(grouped, title)
+    local out = {}
+    local function w(s) out[#out + 1] = s end
+
+    w(fmt("# %s\n\n", title))
+
+    local function render_section(entries, prefix)
+        if #entries == 0 then return end
+        w(fmt("## %s (@%s)\n\n", M.TAG_TITLE[prefix], M.TAG_SEC[prefix]))
+
+        for _, r in ipairs(entries) do
+            if r.parent then
+                w(fmt('&lt;a id="%s"&gt;&lt;/a&gt;**%s %s**\n', r.anchor, r.idx, r.loc))
+                w(fmt("*↳ [@%s %s](#%s)*\n\n", M.TAG_SEC[r.parent.tag], r.parent.idx, r.parent.anchor))
+            else
+                w(fmt('### &lt;a id="%s"&gt;&lt;/a&gt;%s %s\n', r.anchor, r.idx, r.loc))
+            end
+
+            if r.adm then
+                local first_text = true
+                for tline in gmatch(r.text, "[^\031]+") do
+                    local tr = trim(tline)
+                    if tr ~= "" then
+                        if first_text then
+                            w(fmt("&gt; [!%s]\n&gt; %s\n\n", r.adm, tr))
+                            first_text = false
+                        else
+                            w(tr .. "\n\n")
+                        end
+                    end
+                end
+            else
+                local first_text = true
+                for tline in gmatch(r.text, "[^\031]+") do
+                    local tr = trim(tline)
+                    if tr ~= "" then
+                        if first_text then
+                            w(tr .. "\n\n")
+                            first_text = false
+                        else
+                            w(fmt("&gt; %s\n\n", tr))
+                        end
+                    end
+                end
+            end
+
+            if r.subj and r.subj ~= "" then
+                if r.lang and r.lang ~= "" then
+                    w(fmt("```%s\n", r.lang))
+                else
+                    w("```\n")
+                end
+                for sline in gmatch(r.subj .. "\031", "(.-)\031") do
+                    w(sline .. "\n")
+                end
+                w("```\n")
+            end
+            w("\n")
+        end
+    end
+
+    render_section(grouped.CHK, "CHK")
+    render_section(grouped.DEF, "DEF")
+    render_section(grouped.RUN, "RUN")
+    render_section(grouped.ERR, "ERR")
+
+    return concat(out)
+end
+</code></pre>
+
+<h3><a id="run-9"></a>9. ~/Desktop/autoodocs/lib/render.lua:86</h3>
+<p>Resolve parents, assign per-tag indices, group (single pass)</p>
+
+<pre><code class="language-lua">function M.group_records(records)
+    local TAG_SEC = M.TAG_SEC
+    local mi = {CHK=0, DEF=0, RUN=0, ERR=0}
+    local grouped = {CHK={}, DEF={}, RUN={}, ERR={}}
+    local scope = {}
+    local scope_file = ""
+    for _, r in ipairs(records) do
+        if r.file ~= scope_file then
+            scope_file = r.file
+            scope = {}
+        end
+        if r.indent &gt; 0 then
+            for d = r.indent - 1, 0, -1 do
+                if scope[d] then r.parent = scope[d]; break end
+            end
+        end
+        scope[r.indent] = r
+        local t = r.tag
+        local g = grouped[t]
+        g[#g + 1] = r
+        if r.parent and r.parent.tag == t then
+            r.parent._cc = (r.parent._cc or 0) + 1
+            local cc = r.parent._cc
+            if r.parent.depth == 0 then
+                r.idx = fmt("%s%d", r.parent.idx, cc)
+            else
+                r.idx = fmt("%s.%d", r.parent.idx, cc)
+            end
+            r.anchor = fmt("%s-%d", r.parent.anchor, cc)
+            r.depth = r.parent.depth + 1
+        else
+            mi[t] = mi[t] + 1
+            r.idx = fmt("%d.", mi[t])
+            r.anchor = fmt("%s-%d", TAG_SEC[t], mi[t])
+            r.depth = 0
+</code></pre>
+
+<h3><a id="run-10"></a>10. ~/Desktop/autoodocs/autodocs.lua:63</h3>
+<p>Main function</p>
+
+<pre><code class="language-lua">local function main()
+</code></pre>
+
+<p><a id="run-10-1"></a><strong>10.1 ~/Desktop/autoodocs/autodocs.lua:65</strong>
+<em>↳ <a href="#run-10">@run 10.</a></em></p>
+
+<p>Discover files containing documentation tags</p>
+
+<blockquote>
+    <p>respect <code>.gitignore</code> patterns via <code>grep --exclude-from</code></p>
+</blockquote>
+
+<pre><code class="language-lua">    local gi = ""
+    local gf = open(SCAN_DIR .. "/.gitignore", "r")
+    if gf then
+        gf:close()
+        gi = "--exclude-from=" .. utils.shell_quote(SCAN_DIR .. "/.gitignore")
+    end
+
+    local cmd = fmt(
+        'grep -rl -I --exclude-dir=.git %s -e "@def" -e "@chk" -e "@run" -e "@err" %s 2&gt;/dev/null',
+        gi, utils.shell_quote(SCAN_DIR)
+    )
+    local pipe = io.popen(cmd)
+    local files = {}
+    for line in pipe:lines() do
+        files[#files + 1] = line
+    end
+    pipe:close()
+</code></pre>
+
+<p><a id="run-10-2"></a><strong>10.2 ~/Desktop/autoodocs/autodocs.lua:99</strong>
+<em>↳ <a href="#run-10">@run 10.</a></em></p>
+
+<p>Process all discovered files into intermediate <code>records</code></p>
+
+<pre><code class="language-lua">    for _, fp in ipairs(files) do
+        if not match(fp, "/" .. out_base_escaped .. "$") then
+            total_input = total_input + parser.process_file(fp, records, HOME, US)
+        end
+    end
+</code></pre>
+
+<p><a id="run-10-3"></a><strong>10.3 ~/Desktop/autoodocs/autodocs.lua:117</strong>
+<em>↳ <a href="#run-10">@run 10.</a></em></p>
+
+<p>Group and index records</p>
+
+<pre><code class="language-lua">    local grouped = render.group_records(records)
+</code></pre>
+
+<p><a id="run-10-4"></a><strong>10.4 ~/Desktop/autoodocs/autodocs.lua:133</strong>
+<em>↳ <a href="#run-10">@run 10.</a></em></p>
+
+<p>Write output and report ratio</p>
+
+<blockquote>
+    <p>wraps across two lines so <code>:N</code> count must include the continuation</p>
+</blockquote>
+
+<pre><code class="language-lua">    local f = open(OUTPUT, "w")
+    f:write(markdown)
+    f:close()
+    local ol = select(2, gsub(markdown, "\n", "")) + 1
+    io.stderr:write(fmt("autodocs: wrote %s (%d/%d = %d%%)\n",
+        OUTPUT, ol, total_input, total_input &gt; 0 and math.floor(ol * 100 / total_input) or 0))
+</code></pre>
+
+<p><a id="run-10-5"></a><strong>10.5 ~/Desktop/autoodocs/autodocs.lua:142</strong>
+<em>↳ <a href="#run-10">@run 10.</a></em></p>
+
+<p>Run <code>stats.awk</code> on the output if <code>-s</code> flag is set</p>
+
+<pre><code class="language-lua">    if STATS then
+        local script_dir = match(arg[0], "^(.*/)") or "./"
+        local stats_awk = script_dir .. "stats.awk"
+        local sf = open(stats_awk, "r")
+        if sf then
+            sf:close()
+            os.execute(fmt("awk -f %s %s &gt;&amp;2", utils.shell_quote(stats_awk), utils.shell_quote(OUTPUT)))
+        end
+    end
+</code></pre>
+
+<h3><a id="run-11"></a>11. ~/Desktop/autoodocs/autodocs.lua:154</h3>
+<p>Entry point</p>
+
+<pre><code class="language-lua">main()
+</code></pre>
+
+<h2>Errors (@err)</h2>
+
+<p><a id="err-1"></a><strong>1. ~/Desktop/autoodocs/autodocs.lua:87</strong>
+<em>↳ <a href="#chk-26">@chk 26.</a></em></p>
+
+<p>Handle missing tagged files</p>
+
+<blockquote>
+    <p>with empty output and <code>stderr</code> warning</p>
+</blockquote>
+
+<pre><code class="language-lua">        local f = open(OUTPUT, "w")
+        f:write(fmt("# %s\n\nNo tagged documentation found.\n", TITLE))
+        f:close()
+        io.stderr:write(fmt("autodocs: no tags found under %s\n", SCAN_DIR))
+        return
+</code></pre>
+
+<p><a id="err-2"></a><strong>2. ~/Desktop/autoodocs/autodocs.lua:108</strong>
+<em>↳ <a href="#chk-27">@chk 27.</a></em></p>
+
+<p>Handle extraction failure</p>
+
+<blockquote>
+    <p>with empty output and <code>stderr</code> warning</p>
+</blockquote>
+
+<pre><code class="language-lua">        local f = open(OUTPUT, "w")
+        f:write(fmt("# %s\n\nNo tagged documentation found.\n", TITLE))
+        f:close()
+        io.stderr:write(fmt("autodocs: tags found but no extractable docs under %s\n", SCAN_DIR))
+        return
+</code></pre>
+
+
+<script>hljs.highlightAll();</script>
+</body></html>
