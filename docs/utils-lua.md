@@ -44,7 +44,6 @@ local gsub   = string.gsub
 local open   = io.open
 
 local M = {}
-
 ```
 
 ### <a id="def-2"></a>Shell-escape a string for safe interpolation into `io.popen`

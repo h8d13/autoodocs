@@ -35,7 +35,7 @@ print('luadoc is awesome')
 
 --########--
 
--- @def:8 Localize functions and load libraries
+-- @def:9 Localize functions and load libraries
 local match  = string.match
 local gsub   = string.gsub
 local sub    = string.sub
@@ -50,12 +50,14 @@ local utils  = require("lib.utils")
 local parser = require("lib.parser")
 local render = require("lib.render")
 
--- @def:12 Parse CLI args with defaults
+-- @def:13 Parse CLI args with defaults
 -- strip trailing slash, resolve absolute path via `/proc/self/environ`
 -- `US` separates multi-line text within record fields
+-- `-c` enables subject count validation
 local SCAN_DIR = arg[1] or "."
 local OUT_DIR  = arg[2] or "docs"
-local STATS    = arg[3] == "-s"
+local STATS    = arg[3] == "-s" or arg[4] == "-s"
+local CHECK    = arg[3] == "-c" or arg[4] == "-c"
 SCAN_DIR = gsub(SCAN_DIR, "/$", "")
 if sub(SCAN_DIR, 1, 1) ~= "/" then
     local ef = open("/proc/self/environ", "rb")
@@ -66,9 +68,10 @@ end
 local HOME = match(SCAN_DIR, "^(/[^/]+/[^/]+)")
 local US = "\031"
 
--- @def:2 Global state for collected records and line count
+-- @def:3 Global state for collected records, warnings, and line count
 -- see @src:lib/parser.lua:195 for file processing
 local records = {}
+local warnings = {}
 local total_input = 0
 
 -- @run Write file if content changed
@@ -120,7 +123,7 @@ local function main()
 
     -- @run:3 Process all discovered files into intermediate `records`
     for _, fp in ipairs(files) do
-        total_input = total_input + parser.process_file(fp, records, HOME, US)
+        total_input = total_input + parser.process_file(fp, records, HOME, US, CHECK and warnings)
     end
 
     -- @err:4 No extractable documentation
@@ -153,7 +156,15 @@ local function main()
 
     io.stderr:write(fmt("autoodocs: %d files documented\n", #file_order))
 
-    -- @run:2 Output stats if requested
+    -- @run:6 Output subject count warnings if check mode enabled
+    if CHECK and #warnings > 0 then
+        io.stderr:write(fmt("autoodocs: %d subject count warnings:\n", #warnings))
+        for _, w in ipairs(warnings) do
+            io.stderr:write(fmt("  %s:%s @%s:%d ends mid-block\n", w.file, w.line, w.tag, w.count))
+        end
+    end
+
+    -- @run:4 Output stats if requested
     if STATS then
         os.execute(fmt("awk -f " .. script_dir .. "stats.awk %s/*.md", OUT_DIR))
     end

@@ -95,7 +95,7 @@ function M.strip_tags(text)
     return text
 end
 
--- @chk:21 Detect comment style via byte-level prefix check
+-- @chk:26 Detect comment style via byte-level prefix check
 -- skips leading whitespace without allocating a trimmed copy
 function M.detect_style(line)
     local i = 1
@@ -239,7 +239,8 @@ end
 
 -- @run Walk one file as a line-by-line state machine
 -- extracting tagged comments into `records` table
-function M.process_file(filepath, records, HOME, US)
+-- `warnings` table receives subject count validation errors when provided
+function M.process_file(filepath, records, HOME, US, warnings)
     -- @def:4!n Bulk-read file first so `get_lang` reuses the buffer
     -- avoids a second `open`+`read` just for shebang detection
     local f = open(filepath, "r")
@@ -247,7 +248,7 @@ function M.process_file(filepath, records, HOME, US)
     local content = f:read("*a")
     f:close()
 
-    -- @def:15 Initialize per-file state machine variables
+    -- @def:16 Initialize per-file state machine variables
     -- `get_lang` receives first line to avoid reopening the file
     local first   = match(content, "^([^\n]*)")
     local rel     = HOME and sub(filepath, 1, #HOME) == HOME and "~" .. sub(filepath, #HOME + 1) or filepath
@@ -264,8 +265,9 @@ function M.process_file(filepath, records, HOME, US)
     local adm     = nil
     local pending = nil
     local tag_indent = 0
+    local check_next = nil  -- holds {tag, line, count} when validating
 
-    -- @run:37!n Emit a documentation record or defer for subject capture
+    -- @run:38!n Emit a documentation record or defer for subject capture
     -- `lang` is passed through as-is, empty string means no fence label
     local function emit()
         if tag ~= "" and text ~= "" then
@@ -280,6 +282,7 @@ function M.process_file(filepath, records, HOME, US)
                         lang = lang,
                         adm  = adm,
                         indent = tag_indent,
+                        _nsubj = nsubj,
                     }
                     cap_want = nsubj
                     subj = ""
@@ -325,7 +328,16 @@ function M.process_file(filepath, records, HOME, US)
         pos = nl + 1
         ln = ln + 1
 
-        -- @run:10 Subject line capture mode
+        -- @chk:7 Validate previous subject ended at blank line
+        if check_next then
+            local trimmed = match(line, "^%s*$")
+            if not trimmed and warnings then
+                warnings[#warnings + 1] = check_next
+            end
+            check_next = nil
+        end
+
+        -- @run:15 Subject line capture mode
         if capture > 0 then
             if subj ~= "" then
                 subj = subj .. US .. line
@@ -333,7 +345,12 @@ function M.process_file(filepath, records, HOME, US)
                 subj = line
             end
             capture = capture - 1
-            if capture == 0 then flush_pending() end
+            if capture == 0 then
+                if warnings and pending then
+                    check_next = {file = rel, line = pending.loc:match(":(%d+)$"), tag = pending.tag:lower(), count = pending._nsubj}
+                end
+                flush_pending()
+            end
             goto continue
         end
 
@@ -484,7 +501,7 @@ function M.process_file(filepath, records, HOME, US)
             end
         end
 
-        -- @run:22 Dispatch new tagged comment by style
+        -- @run:26 Dispatch new tagged comment by style
         if M.has_tag(line) and style ~= "none" then
             tag   = M.get_tag(line)
             start = tostring(ln)

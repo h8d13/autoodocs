@@ -34,8 +34,8 @@ git clone https://github.com/h8d13/autoodocs .autoodocs/
 ## Usage
 
 ```sh
-lua .autoodocs/autoodocs.lua . docs (-s)  # generate markdown optional stats
-lua .autoodocs/markdown.lua docs/*.md    # convert to HTML
+lua .autoodocs/autoodocs.lua . docs (-s) (-c)  # -s stats, -c validate counts
+lua .autoodocs/markdown.lua docs/*.md          # convert to HTML
 ```
 
 Or create a build script / pre-commit hook:

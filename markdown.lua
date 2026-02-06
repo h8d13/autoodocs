@@ -385,7 +385,7 @@ end
 
 -- @run Block-level text transforms working with arrays of lines
 
--- @chk:6 Returns true if line is a ruler of repeated characters
+-- @chk:5 Returns true if line is a ruler of repeated characters
 -- The line must contain at least three char characters and contain only spaces and
 -- char characters.
 local function is_ruler_of(line, char)
@@ -1164,7 +1164,7 @@ end
 
 link_database = {}
 
--- @run:10 Main markdown processing pipeline
+-- @run:11 Main markdown processing pipeline
 local function markdown(text)
     init_hash(text)
     init_escape_table()

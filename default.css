@@ -132,7 +132,7 @@ body {
     max-width: 900px;
 }
 
-/* @def:16 Heading styles */
+/* @def:15 Heading styles */
 h1, h2, h3, h4, h5, h6 {
     margin-top: 0.3em;
     margin-bottom: 0.5em;
@@ -177,7 +177,7 @@ blockquote p {
     margin: 0;
 }
 
-/* @def:12 Code and pre blocks */
+/* @def:19 Code and pre blocks */
 code {
     font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
     font-size: 0.9em;
@@ -242,7 +242,7 @@ th {
 strong { font-weight: 600; }
 em { font-style: italic; }
 
-/* @def:44 GitHub-style callout boxes */
+/* @def:43 GitHub-style callout boxes */
 .callout {
     border-left: 4px solid;
     margin: 1em 0;

@@ -22,7 +22,6 @@ local function is_ruler_of(line, char)
     if not line:match("%" .. char .. ".*%" .. char .. ".*%" .. char) then return false end
     return true
 end
-
 ```
 
 ### <a id="chk-2"></a>Classify block-level formatting in a line
@@ -192,6 +191,7 @@ local function markdown(text)
     text = block_transform(text)
     text = unescape_special_chars(text)
     return text
+end
 ```
 
 ### <a id="run-10"></a>CLI handler with HTML wrapping and TOC generation

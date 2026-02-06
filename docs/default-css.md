@@ -79,7 +79,6 @@ h4 { font-size: 1em; }
 .content > h2:first-child {
     margin-top: 0;
 }
-
 ```
 
 ### <a id="def-6"></a>Code and pre blocks
@@ -99,6 +98,13 @@ pre {
     background: #f4f4f4;
     padding: 1em;
     overflow-x: auto;
+    border-radius: 4px;
+}
+
+pre code {
+    background: none;
+    padding: 0;
+}
 ```
 
 ### <a id="def-7"></a>GitHub-style callout boxes
@@ -149,7 +155,6 @@ pre {
     background: #ffebe9;
 }
 .callout-caution .callout-title { color: #cf222e; }
-
 ```
 
 ### <a id="def-8"></a>Mobile responsive breakpoint
