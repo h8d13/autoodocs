@@ -1,0 +1,10 @@
+repos:
+  - repo: local
+    hooks:
+      - id: autodocs
+        name: autodocs
+        entry: bash -c '[ "$(git branch --show-current)" = "pages" ] && lua build.lua && git add docs/ || true'
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [pre-commit]

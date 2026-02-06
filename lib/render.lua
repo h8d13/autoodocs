@@ -1,0 +1,306 @@
+-- @gen Markdown renderer that generates documentation pages with cross-references
+-- @def:6 Localize functions for performance
+local fmt    = string.format
+local gmatch = string.gmatch
+local concat = table.concat
+local gsub   = string.gsub
+local match  = string.match
+local sub    = string.sub
+
+-- @def:2 Import utils for trim
+local utils = require("lib.utils")
+local trim = utils.trim
+
+-- @def:1 Module table
+local M = {}
+
+-- @def:3 Map tag prefixes to anchor slugs and section titles
+M.TAG_SEC   = {GEN="gen", CHK="chk", DEF="def", RUN="run", ERR="err"}
+M.TAG_TITLE = {GEN="General", CHK="Checks", DEF="Defines", RUN="Runners", ERR="Errors"}
+M.TAG_ORDER = {"GEN", "CHK", "DEF", "RUN", "ERR"}
+
+-- @run Generate a slug from a file path for anchors/filenames
+local function slugify(path)
+    local s = gsub(path, "^.*/", "")  -- basename
+    s = gsub(s, "%.", "-")
+    s = gsub(s, "[^%w%-]", "")
+    return s:lower()
+end
+
+-- @def:1 Line-to-anchor mapping built during grouping
+M.line_map = {}
+
+-- @run:16 Convert @src:filepath:line to clickable markdown links
+local function link_sources(text)
+    return gsub(text, "@src:([^%s:]+):?(%d*)", function(path, line)
+        local slug = slugify(path)
+        local anchor = ""
+        if line ~= "" and M.line_map[slug] then
+            local ln = tonumber(line)
+            for _, entry in ipairs(M.line_map[slug]) do
+                if entry.line <= ln then anchor = entry.anchor
+                else break end
+            end
+        end
+        local display = line ~= "" and (path .. ":" .. line) or path
+        local href = anchor ~= "" and fmt("%s.html#%s", slug, anchor) or (slug .. ".html")
+        return fmt("*↳ [%s](%s)*", display, href)
+    end)
+end
+
+-- @run Render a single entry
+local function render_entry(w, r)
+    -- GEN entries: just plain text at top, no header
+    if r.tag == "GEN" then
+        for tline in gmatch(r.text, "[^\031]+") do
+            local tr = link_sources(trim(tline))
+            if tr ~= "" then w(tr .. "\n\n") end
+        end
+        return
+    end
+
+    -- Check for @src tag in text to inline with location
+    local src_link = ""
+    local text_without_src = gsub(r.text, "@src:([^%s:]+):?(%d*)", function(path, line)
+        local slug = slugify(path)
+        local anchor = ""
+        if line ~= "" and M.line_map[slug] then
+            local ln = tonumber(line)
+            for _, entry in ipairs(M.line_map[slug]) do
+                if entry.line <= ln then anchor = entry.anchor
+                else break end
+            end
+        end
+        local display = line ~= "" and (path .. ":" .. line) or path
+        local href = anchor ~= "" and fmt("%s.html#%s", slug, anchor) or (slug .. ".html")
+        src_link = fmt(" *↳ [%s](%s)*", display, href)
+        return ""
+    end)
+
+    if r.parent then
+        -- Child entry: bold text
+        w(fmt('<a id="%s"></a>**%s %s**%s\n', r.anchor, r.idx, r.loc, src_link))
+        w(fmt("*↳ [@%s %s](#%s)*\n\n", M.TAG_SEC[r.parent.tag], r.parent.idx, r.parent.anchor))
+    else
+        -- Top-level entry: h3 header (appears in TOC)
+        local title = text_without_src:match("^([^\031]+)") or ""
+        title = trim(title)
+        if #title > 90 then title = title:sub(1, 87) .. "..." end
+        w(fmt('### <a id="%s"></a>%s\n\n', r.anchor, title))
+        w(fmt('`%s`%s\n\n', r.loc, src_link))
+    end
+    r.text = text_without_src
+
+    -- For top-level entries, skip first line (used as h3 title)
+    local skip_first = (not r.parent)
+
+    if r.adm then
+        local first_text = true
+        for tline in gmatch(r.text, "[^\031]+") do
+            local tr = link_sources(trim(tline))
+            if tr ~= "" then
+                if skip_first then
+                    skip_first = false
+                elseif first_text then
+                    w(fmt("> [!%s]\n> %s\n\n", r.adm, tr))
+                    first_text = false
+                else
+                    w(tr .. "\n\n")
+                end
+            end
+        end
+    else
+        local first_text = true
+        for tline in gmatch(r.text, "[^\031]+") do
+            local tr = link_sources(trim(tline))
+            if tr ~= "" then
+                if skip_first then
+                    skip_first = false
+                elseif first_text then
+                    w(tr .. "\n\n")
+                    first_text = false
+                else
+                    w(fmt("> %s\n\n", tr))
+                end
+            end
+        end
+    end
+
+    if r.subj and r.subj ~= "" then
+        if r.lang and r.lang ~= "" then
+            w(fmt("```%s\n", r.lang))
+        else
+            w("```\n")
+        end
+        for sline in gmatch(r.subj .. "\031", "(.-)\031") do
+            w(sline .. "\n")
+        end
+        w("```\n")
+    end
+    w("\n")
+end
+
+-- @run Render index page
+function M.render_index(file_order, scan_dir)
+    local out = {}
+    local function w(s) out[#out + 1] = s end
+
+    w("# Documentation\n\n")
+
+    -- Check for README.md or readme.md
+    local readme_content = nil
+    for _, name in ipairs({"README.md", "readme.md"}) do
+        local f = io.open((scan_dir or ".") .. "/" .. name, "r")
+        if f then
+            readme_content = f:read("*a")
+            f:close()
+            break
+        end
+    end
+
+    if readme_content then
+        w(readme_content .. "\n\n")
+    else
+        w("Select a file from the sidebar to view its documentation.\n\n")
+    end
+
+    -- Find common path prefix across all files
+    local prefix = match(file_order[1] or "", "^(.*/)") or ""
+    for _, file in ipairs(file_order) do
+        while #prefix > 0 and sub(file, 1, #prefix) ~= prefix do
+            prefix = match(sub(prefix, 1, -2), "^(.*/)") or ""
+        end
+    end
+
+    -- Group files: root files first, then by subdirectory
+    local root_files = {}
+    local dir_files = {}
+    for _, file in ipairs(file_order) do
+        local rel = sub(file, #prefix + 1)
+        local dir = match(rel, "^([^/]+)/")
+        if dir then
+            dir_files[dir] = dir_files[dir] or {}
+            dir_files[dir][#dir_files[dir] + 1] = {file = file, rel = rel}
+        else
+            root_files[#root_files + 1] = {file = file, rel = rel}
+        end
+    end
+
+    -- Hidden nav data for TOC extraction
+    w("<!-- NAV\n")
+    -- Root files first
+    for _, f in ipairs(root_files) do
+        local slug = slugify(f.file)
+        w(fmt("[%s](%s.html)\n", f.rel, slug))
+    end
+    -- Then grouped subdirectories
+    for dir, files in pairs(dir_files) do
+        w(fmt("[>%s]\n", dir))
+        for _, f in ipairs(files) do
+            local slug = slugify(f.file)
+            local basename = match(f.rel, "/(.+)$") or f.rel
+            w(fmt("[%s](%s.html)\n", basename, slug))
+        end
+        w("[<]\n")
+    end
+    w("-->\n")
+
+    return concat(out)
+end
+
+-- @run Render a single file's documentation page
+function M.render_file_page(file, entries)
+    local out = {}
+    local function w(s) out[#out + 1] = s end
+
+    local basename = match(file, "([^/]+)$") or file
+    w(fmt("# %s\n\n", basename))
+    w(fmt("`%s`\n\n", file))
+
+    -- Group entries by tag type
+    local by_tag = {GEN={}, CHK={}, DEF={}, RUN={}, ERR={}}
+    for _, r in ipairs(entries) do
+        by_tag[r.tag][#by_tag[r.tag] + 1] = r
+    end
+
+    -- Render each tag section (GEN has no header)
+    for _, tag in ipairs(M.TAG_ORDER) do
+        local tag_entries = by_tag[tag]
+        if #tag_entries > 0 then
+            if tag ~= "GEN" then
+                w(fmt('## <a id="%s"></a>%s\n\n', M.TAG_SEC[tag], M.TAG_TITLE[tag]))
+            end
+            for _, r in ipairs(tag_entries) do
+                render_entry(w, r)
+            end
+        end
+    end
+
+    return concat(out)
+end
+
+-- @run Group records by file and assign indices
+function M.group_records(records)
+    local TAG_SEC = M.TAG_SEC
+    local by_file = {}
+    local file_order = {}
+    local file_seen = {}
+    M.line_map = {}
+
+    for _, r in ipairs(records) do
+        if not file_seen[r.file] then
+            file_seen[r.file] = true
+            file_order[#file_order + 1] = r.file
+            by_file[r.file] = {}
+        end
+        by_file[r.file][#by_file[r.file] + 1] = r
+    end
+
+    for _, file in ipairs(file_order) do
+        local entries = by_file[file]
+        local mi = {GEN=0, CHK=0, DEF=0, RUN=0, ERR=0}
+        local scope = {}
+        local slug = slugify(file)
+        M.line_map[slug] = {}
+
+        for _, r in ipairs(entries) do
+            if r.indent > 0 then
+                for d = r.indent - 1, 0, -1 do
+                    if scope[d] then r.parent = scope[d]; break end
+                end
+            end
+            scope[r.indent] = r
+
+            local t = r.tag
+            if r.parent and r.parent.tag == t then
+                r.parent._cc = (r.parent._cc or 0) + 1
+                local cc = r.parent._cc
+                if r.parent.depth == 0 then
+                    r.idx = fmt("%s%d", r.parent.idx, cc)
+                else
+                    r.idx = fmt("%s.%d", r.parent.idx, cc)
+                end
+                r.anchor = fmt("%s-%d", r.parent.anchor, cc)
+                r.depth = r.parent.depth + 1
+            else
+                mi[t] = mi[t] + 1
+                r.idx = fmt("%d.", mi[t])
+                r.anchor = fmt("%s-%d", TAG_SEC[t], mi[t])
+                r.depth = 0
+            end
+
+            -- Build line-to-anchor mapping
+            local ln = tonumber(match(r.loc, ":(%d+)$"))
+            if ln then
+                M.line_map[slug][#M.line_map[slug] + 1] = {line = ln, anchor = r.anchor}
+            end
+        end
+    end
+
+    return by_file, file_order
+end
+
+-- @run Get slug for a file path
+M.slugify = slugify
+
+return M

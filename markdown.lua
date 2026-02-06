@@ -1,14 +1,12 @@
 #!/usr/bin/env lua
+-- @gen Markdown to HTML converter with GitHub-style callouts and TOC generation
+-- Mostly stolen from https://github.com/speedata/luamarkdown with minor modifications for our parsers.
 
 --[[
 # markdown.lua -- version 0.40
 
 **Author:** Niklas Frykholm, <niklas@frykholm.se>
 **Date:** 31 May 2008
-
-See the following page for changes to the original file
-https://github.com/speedata/luamarkdown
-
 
 This is an implementation of the popular text markup language Markdown in pure Lua.
 Markdown can convert documents written in a simple and easy to read text format
@@ -121,28 +119,27 @@ THE SOFTWARE.
 ]]
 
 
-local unpack = unpack or table.unpack
-
-local span_transform, encode_backslash_escapes, block_transform, blocks_to_html, blocks_to_html
+-- @def:1 Forward declarations for mutually recursive functions
+local span_transform, encode_backslash_escapes, block_transform, blocks_to_html
 
 ----------------------------------------------------------------------
 -- Utility functions
 ----------------------------------------------------------------------
 
--- Returns the result of mapping the values in table t through the function f
+-- @def:5 Map values in table through function f
 local function map(t, f)
     local out = {}
     for k,v in pairs(t) do out[k] = f(v,k) end
     return out
 end
 
--- The identity function, useful as a placeholder.
+-- @def:1 Identity function, useful as a placeholder
 local function identity(text) return text end
 
--- Functional style if statement. (NOTE: no short circuit evaluation)
+-- @def:1 Functional style ternary (no short circuit)
 local function iff(t, a, b) if t then return a else return b end end
 
--- Splits the text into an array of separate lines.
+-- @run:12 Split text into array of lines by separator
 local function split(text, sep)
     sep = sep or "\n"
     local lines = {}
@@ -175,7 +172,7 @@ local function find_first(s, patterns, index)
         local match = {s:find(p, index)}
         if #match>0 and (#res==0 or match[1] < res[1]) then res = match end
     end
-    return unpack(res)
+    return table.unpack(res)
 end
 
 -- If a replacement array is specified, the range [start, stop] in the array is replaced
@@ -253,11 +250,8 @@ end
 -- Hash
 ----------------------------------------------------------------------
 
--- This is used to "hash" data into alphanumeric strings that are unique
--- in the document. (Note that this is not cryptographic hash, the hash
--- function is not one-way.) The hash procedure is used to protect parts
--- of the document from further processing.
-
+-- @def:15!n Hash data into unique alphanumeric strings
+-- not cryptographic - used to protect parts from further processing
 local HASH = {
     -- Has the hash been inited.
     inited = false,
@@ -308,11 +302,8 @@ end
 -- Protection
 ----------------------------------------------------------------------
 
--- The protection module is used to "protect" parts of a document
--- so that they are not modified by subsequent processing steps.
--- Protected parts are saved in a table for later unprotection
-
--- Protection data
+-- @def:9!n Protect document parts from modification
+-- saved in table for later unprotection
 local PD = {
     -- Saved blocks that have been converted
     blocks = {},
@@ -392,11 +383,9 @@ end
 -- Block transform
 ----------------------------------------------------------------------
 
--- The block transform functions transform the text on the block level.
--- They work with the text as an array of lines rather than as individual
--- characters.
+-- @run Block-level text transforms working with arrays of lines
 
--- Returns true if the line is a ruler of (char) characters.
+-- @chk:6 Returns true if line is a ruler of repeated characters
 -- The line must contain at least three char characters and contain only spaces and
 -- char characters.
 local function is_ruler_of(line, char)
@@ -405,7 +394,7 @@ local function is_ruler_of(line, char)
     return true
 end
 
--- Identifies the block level formatting present in the line
+-- @chk Classify block-level formatting in a line
 local function classify(line)
     local info = {line = line, text = line}
 
@@ -470,8 +459,7 @@ local function classify(line)
     return info
 end
 
--- Find headers constisting of a normal line followed by a ruler and converts them to
--- header entries.
+-- @run Convert normal + ruler lines to header entries
 local function headers(array)
     local i = 1
     while i <= #array - 1 do
@@ -489,7 +477,7 @@ local function headers(array)
     return array
 end
 
--- Find list blocks and convert them to protected data blocks
+-- @run Convert list blocks to protected HTML
 local function lists(array, sublist)
     local function process_list(arr)
         local function any_blanks(arr)
@@ -612,7 +600,7 @@ local function lists(array, sublist)
     return array
 end
 
--- Find and convert blockquote markers.
+-- @run Convert blockquote markers with GitHub callout support
 local function blockquotes(lines)
     local function find_blockquote(lines)
         local start
@@ -674,7 +662,7 @@ local function blockquotes(lines)
     return lines
 end
 
--- Find and convert fenced code blocks (``` or ~~~) with optional language hint
+-- @run Convert fenced code blocks with language hints
 local function fenced_codeblocks(lines)
     local function find_fenced_codeblock(lines)
         local start, fence_char, fence_len, lang
@@ -835,10 +823,9 @@ end
 -- Span transform
 ----------------------------------------------------------------------
 
--- Functions for transforming the text at the span level.
+-- @run Span-level text transforms for inline formatting
 
--- These characters may need to be escaped because they have a special
--- meaning in markdown.
+-- @def:2 Characters with special markdown meaning needing escape
 escape_chars = "'\\`*_{}[]()>#+-.!'"
 escape_table = {}
 
@@ -1053,9 +1040,15 @@ local function auto_links(text)
         local text = encode_email_address(s)
         return add_escape("<a href=\"" .. address .. "\">") .. text .. "</a>"
     end
-    -- links
+    -- links (angle brackets)
     text = text:gsub("<(https?:[^'\">%s]+)>", link)
     text = text:gsub("<(ftp:[^'\">%s]+)>", link)
+
+    -- bare URLs (not already in a link or angle brackets)
+    text = text:gsub("([^\"'<>])((https?://)([%w%-%.]+[%w])([%w%-%./_%?=&#%%+:~]*))", function(prefix, url)
+        return prefix .. add_escape("<a href=\"" .. url .. "\">") .. url .. "</a>"
+    end)
+    text = text:gsub("^((https?://)([%w%-%.]+[%w])([%w%-%./_%?=&#%%+:~]*))", link)
 
     -- mail
     text = text:gsub("<mailto:([^'\">%s]+)>", mail)
@@ -1126,8 +1119,7 @@ end
 -- Markdown
 ----------------------------------------------------------------------
 
--- Cleanup the text by normalizing some possible variations to make further
--- processing easier.
+-- @run Normalize line endings, tabs, and whitespace
 local function cleanup(text)
     -- Standardize line endings
     text = text:gsub("\r\n", "\n")  -- DOS to UNIX
@@ -1172,7 +1164,7 @@ end
 
 link_database = {}
 
--- Main markdown processing function
+-- @run:10 Main markdown processing pipeline
 local function markdown(text)
     init_hash(text)
     init_escape_table()
@@ -1275,13 +1267,14 @@ function OptionParser:run(args)
     return true
 end
 
--- Handles the case when markdown is run from the command line
+-- @run CLI handler with HTML wrapping and TOC generation
 local function run_command_line(arg)
     -- Generate output for input s given options
     local function run(s, options)
         s = markdown(s)
         if not options.wrap_header then return s end
         local header = ""
+        -- @err Header file not found
         if options.header then
             local f = io.open(options.header) or error("Could not open file: " .. options.header)
             header = f:read("*a")
@@ -1298,10 +1291,17 @@ local function run_command_line(arg)
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 </head>
 <body>
+<div class="container">
+<nav class="sidebar">
+<h2>Contents <a href="index.html" class="sidebar-home" title="Home">⌂</a></h2>
+<ul id="toc"></ul>
+</nav>
+<main class="content">
 ]]
             local title = options.title or s:match("<h1>(.-)</h1>") or s:match("<h2>(.-)</h2>") or
                 s:match("<h3>(.-)</h3>") or "Untitled"
             header = header:gsub("TITLE", title)
+            -- @err Stylesheet file not found for inline inclusion
             if options.inline_style then
                 local style = ""
                 local f = io.open(options.stylesheet)
@@ -1317,7 +1317,69 @@ local function run_command_line(arg)
             end
             header = header:gsub("CHARSET", options.charset)
         end
-        local footer = "<script>hljs.highlightAll();</script>\n</body></html>"
+        -- Build TOC from h2/h3 headers in content
+        local toc = {}
+        for tag, id, text in s:gmatch("<(h[23])><a id=\"([^\"]+)\"></a>([^<]+)</h") do
+            local level = tonumber(tag:sub(2))
+            local class = level == 3 and ' class="toc-sub"' or ''
+            toc[#toc + 1] = string.format('<li%s><a href="#%s">%s</a></li>', class, id, text)
+        end
+        -- If no headers, extract links from NAV comment (for index page)
+        if #toc == 0 then
+            local nav = s:match("<!%-%- NAV%s*(.-)%-%->")
+            if nav then
+                local in_group = false
+                for line in nav:gmatch("[^\n]+") do
+                    local dir = line:match("^%[>([^%]]+)%]$")
+                    local close = line:match("^%[<%]$")
+                    local text, href = line:match("^%[([^%]]+)%]%(([^%)]+)%)")
+                    if dir then
+                        toc[#toc + 1] = string.format('<li class="toc-dir"><details><summary>%s/</summary><ul>', dir)
+                        in_group = true
+                    elseif close then
+                        toc[#toc + 1] = '</ul></details></li>'
+                        in_group = false
+                    elseif text and href then
+                        toc[#toc + 1] = string.format('<li><a href="%s">%s</a></li>', href, text)
+                    end
+                end
+            end
+        end
+        local toc_html = table.concat(toc, "\n")
+
+        -- Replace TOC placeholder
+        header = header:gsub('<ul id="toc"></ul>', '<ul id="toc">\n' .. toc_html .. '\n</ul>')
+
+        local footer = [[</main>
+</div>
+<script>
+hljs.highlightAll();
+// Hide home icon on index page
+if (location.pathname.endsWith('index.html') || location.pathname.endsWith('/')) {
+    var home = document.querySelector('.sidebar-home');
+    if (home) home.style.display = 'none';
+}
+// Highlight active section on scroll
+var links = document.querySelectorAll('.sidebar a');
+var sections = document.querySelectorAll('.content h2, .content h3');
+window.addEventListener('scroll', function() {
+    var current = '';
+    sections.forEach(function(section) {
+        var anchor = section.querySelector('a');
+        if (anchor && window.scrollY >= section.offsetTop - 100) {
+            current = anchor.id;
+        }
+    });
+    links.forEach(function(link) {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + current) {
+            link.classList.add('active');
+        }
+    });
+});
+</script>
+</body></html>]]
+        -- @err Footer file not found
         if options.footer then
             local f = io.open(options.footer) or error("Could not open file: " .. options.footer)
             footer = f:read("*a")
@@ -1329,6 +1391,8 @@ local function run_command_line(arg)
     -- Generate output path name from input path name given options.
     local function outpath(path, options)
         if options.append then return path .. ".html" end
+        -- readme.md -> index.html for GitHub Pages
+        if path:match("[Rr][Ee][Aa][Dd][Mm][Ee]%.[Mm][Dd]$") then return "index.html" end
         local m = path:match("^(.+%.html)[^/\\]+$") if m then return m end
         m = path:match("^(.+%.)[^/\\]*$") if m and path ~= m .. "html" then return m .. "html" end
         return path .. ".html"
@@ -1378,6 +1442,7 @@ Other options:
     op:flag("a", "append", function() options.append = true end)
     op:flag("t", "test", function()
         local n = arg[0]:gsub("markdown.lua", "markdown-tests.lua")
+        -- @err Test file not found
         local f = io.open(n)
         if f then
             f:close() dofile(n)
@@ -1387,6 +1452,7 @@ Other options:
         run_stdin = false
     end)
     op:flag("h", "help", function() print(help) run_stdin = false end)
+    -- @err Input or output file cannot be opened
     op:arg(function(path)
             local file = io.open(path) or error("Could not open file: " .. path)
             local s = file:read("*a")
