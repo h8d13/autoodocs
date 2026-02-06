@@ -1,3 +1,5 @@
+# Autoodocs
+
 A lightweight documentation generator that extracts tagged comments from source files.
 
 ## Features
