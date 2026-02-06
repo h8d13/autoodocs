@@ -34,7 +34,7 @@ local trim = utils.trim
 local M = {}
 ```
 
-### <a id="def-4"></a>Map tag prefixes to anchor slugs and section ti...
+### <a id="def-4"></a>Map tag prefixes to anchor slugs and section titles
 
 `~/Desktop/autoodocs/lib/render.lua:16`
 
@@ -46,7 +46,7 @@ M.TAG_ORDER = {"CHK", "DEF", "RUN", "ERR"}
 
 ## <a id="run"></a>Runners
 
-### <a id="run-1"></a>Generate a slug from a file path for anchors/fi...
+### <a id="run-1"></a>Generate a slug from a file path for anchors/filenames
 
 `~/Desktop/autoodocs/lib/render.lua:21`
 

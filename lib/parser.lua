@@ -1,4 +1,4 @@
--- @def:5 Localize functions for hot loop performance
+-- @def:7 Localize functions for hot loop perf
 local find   = string.find
 local sub    = string.sub
 local byte   = string.byte
@@ -7,12 +7,14 @@ local gmatch = string.gmatch
 local gsub   = string.gsub
 local open   = io.open
 
+-- @def:5 Localize utils for hoot loop perf
 local utils = require("lib.utils")
 local trim = utils.trim
 local trim_lead = utils.trim_lead
 local trim_trail = utils.trim_trail
 local get_lang = utils.get_lang
 
+-- @def:1 Localize map
 local M = {}
 
 -- @def:1 Hoisted `TAGS` table avoids per-call allocation in `strip_tags`

@@ -27,7 +27,7 @@ end
 
 ## <a id="def"></a>Defines
 
-### <a id="def-1"></a>Localize `string.*`, `table.*`, and `io.*` func...
+### <a id="def-1"></a>Localize `string.*`, `table.*`, and `io.*` functions
 
 `~/Desktop/autoodocs/lib/utils.lua:1`
 
@@ -45,7 +45,7 @@ local M = {}
 
 ```
 
-### <a id="def-2"></a>Shell-escape a string for safe interpolation in...
+### <a id="def-2"></a>Shell-escape a string for safe interpolation into `io.popen`
 
 `~/Desktop/autoodocs/lib/utils.lua:12`
 
@@ -77,7 +77,7 @@ M.ext_map = {
 }
 ```
 
-### <a id="def-4"></a>Map shebang interpreters to fenced code block l...
+### <a id="def-4"></a>Map shebang interpreters to fenced code block language
 
 `~/Desktop/autoodocs/lib/utils.lua:53`
 
@@ -90,7 +90,7 @@ M.shebang_map = {
 
 ## <a id="run"></a>Runners
 
-### <a id="run-1"></a>Strip leading whitespace, returns original if u...
+### <a id="run-1"></a>Strip leading whitespace, returns original if unchanged
 
 `~/Desktop/autoodocs/lib/utils.lua:18`
 
@@ -103,7 +103,7 @@ function M.trim_lead(s)
 end
 ```
 
-### <a id="run-2"></a>Strip trailing whitespace, returns original if ...
+### <a id="run-2"></a>Strip trailing whitespace, returns original if unchanged
 
 `~/Desktop/autoodocs/lib/utils.lua:26`
 

@@ -16,12 +16,11 @@
 <li><a href="#chk">Checks</a></li>
 <li class="toc-sub"><a href="#chk-1">Classify file language via extension or shebang</a></li>
 <li><a href="#def">Defines</a></li>
-<li class="toc-sub"><a href="#def-2">Shell-escape a string for safe interpolation in...</a></li>
 <li class="toc-sub"><a href="#def-3">Map file extension to fenced code block language</a></li>
-<li class="toc-sub"><a href="#def-4">Map shebang interpreters to fenced code block l...</a></li>
+<li class="toc-sub"><a href="#def-4">Map shebang interpreters to fenced code block language</a></li>
 <li><a href="#run">Runners</a></li>
-<li class="toc-sub"><a href="#run-1">Strip leading whitespace, returns original if u...</a></li>
-<li class="toc-sub"><a href="#run-2">Strip trailing whitespace, returns original if ...</a></li>
+<li class="toc-sub"><a href="#run-1">Strip leading whitespace, returns original if unchanged</a></li>
+<li class="toc-sub"><a href="#run-2">Strip trailing whitespace, returns original if unchanged</a></li>
 </ul>
 </nav>
 <main class="content">
@@ -54,7 +53,7 @@ end
 
 <h2><a id="def"></a>Defines</h2>
 
-<h3><a id="def-1"></a>Localize <code>string.*</code>, <code>table.*</code>, and <code>io.*</code> func...</h3>
+<h3><a id="def-1"></a>Localize <code>string.*</code>, <code>table.*</code>, and <code>io.*</code> functions</h3>
 
 <p><code>~/Desktop/autoodocs/lib/utils.lua:1</code></p>
 
@@ -71,7 +70,7 @@ local M = {}
 
 </code></pre>
 
-<h3><a id="def-2"></a>Shell-escape a string for safe interpolation in...</h3>
+<h3><a id="def-2"></a>Shell-escape a string for safe interpolation into <code>io.popen</code></h3>
 
 <p><code>~/Desktop/autoodocs/lib/utils.lua:12</code></p>
 
@@ -103,7 +102,7 @@ end
 }
 </code></pre>
 
-<h3><a id="def-4"></a>Map shebang interpreters to fenced code block l...</h3>
+<h3><a id="def-4"></a>Map shebang interpreters to fenced code block language</h3>
 
 <p><code>~/Desktop/autoodocs/lib/utils.lua:53</code></p>
 
@@ -115,7 +114,7 @@ end
 
 <h2><a id="run"></a>Runners</h2>
 
-<h3><a id="run-1"></a>Strip leading whitespace, returns original if u...</h3>
+<h3><a id="run-1"></a>Strip leading whitespace, returns original if unchanged</h3>
 
 <p><code>~/Desktop/autoodocs/lib/utils.lua:18</code></p>
 
@@ -127,7 +126,7 @@ end
 end
 </code></pre>
 
-<h3><a id="run-2"></a>Strip trailing whitespace, returns original if ...</h3>
+<h3><a id="run-2"></a>Strip trailing whitespace, returns original if unchanged</h3>
 
 <p><code>~/Desktop/autoodocs/lib/utils.lua:26</code></p>
 
