@@ -153,13 +153,13 @@ end
 <p><a id="chk-11"></a><strong>11. ~/Desktop/autoodocs/lib/parser.lua:155</strong>
 <em>↳ <a href="#run-3">@run 3.</a></em></p>
 
-<p>Lua block comment opening --[[</p>
+<p>Lua block comment opening</p>
 
 
 <p><a id="chk-12"></a><strong>12. ~/Desktop/autoodocs/lib/parser.lua:162</strong>
 <em>↳ <a href="#run-3">@run 3.</a></em></p>
 
-<p>Haskell block comment opening {-</p>
+<p>Haskell block comment opening</p>
 
 
 <p><a id="chk-13"></a><strong>13. ~/Desktop/autoodocs/lib/parser.lua:169</strong>
@@ -215,12 +215,8 @@ end
 
 <p>docstring continuation lines</p>
 
-<blockquote>
-    <p>no opening delimiter to strip; checks both <code>"""</code> and <code>'''</code> closers</p>
-</blockquote>
 
-
-<p><a id="chk-22"></a><strong>22. ~/Desktop/autoodocs/lib/parser.lua:331</strong>
+<p><a id="chk-22"></a><strong>22. ~/Desktop/autoodocs/lib/parser.lua:330</strong>
 <em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
 
 <p>Validate previous subject ended at blank line</p>
@@ -234,25 +230,25 @@ end
         end
 </code></pre>
 
-<p><a id="chk-23"></a><strong>23. ~/Desktop/autoodocs/lib/parser.lua:409</strong>
+<p><a id="chk-23"></a><strong>23. ~/Desktop/autoodocs/lib/parser.lua:408</strong>
 <em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
 
 <p>Scan untagged block comment for tags</p>
 
 
-<p><a id="chk-24"></a><strong>24. ~/Desktop/autoodocs/lib/parser.lua:428</strong>
+<p><a id="chk-24"></a><strong>24. ~/Desktop/autoodocs/lib/parser.lua:427</strong>
 <em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
 
 <p>Scan untagged HTML comment for tags</p>
 
 
-<p><a id="chk-25"></a><strong>25. ~/Desktop/autoodocs/lib/parser.lua:461</strong>
+<p><a id="chk-25"></a><strong>25. ~/Desktop/autoodocs/lib/parser.lua:460</strong>
 <em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
 
 <p>Scan untagged docstring for tags</p>
 
 
-<p><a id="chk-26"></a><strong>26. ~/Desktop/autoodocs/lib/parser.lua:486</strong>
+<p><a id="chk-26"></a><strong>26. ~/Desktop/autoodocs/lib/parser.lua:485</strong>
 <em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
 
 <p>Detect comment style of current line</p>
@@ -260,25 +256,25 @@ end
 <pre><code class="language-lua">        local style = M.detect_style(line)
 </code></pre>
 
-<p><a id="chk-27"></a><strong>27. ~/Desktop/autoodocs/lib/parser.lua:532</strong>
+<p><a id="chk-27"></a><strong>27. ~/Desktop/autoodocs/lib/parser.lua:531</strong>
 <em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
 
 <p>Untagged block comment start - scan for tags</p>
 
 
-<p><a id="chk-28"></a><strong>28. ~/Desktop/autoodocs/lib/parser.lua:535</strong>
+<p><a id="chk-28"></a><strong>28. ~/Desktop/autoodocs/lib/parser.lua:534</strong>
 <em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
 
 <p>Untagged HTML comment start</p>
 
 
-<p><a id="chk-29"></a><strong>29. ~/Desktop/autoodocs/lib/parser.lua:538</strong>
+<p><a id="chk-29"></a><strong>29. ~/Desktop/autoodocs/lib/parser.lua:537</strong>
 <em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
 
 <p>Untagged double-quote docstring start</p>
 
 
-<p><a id="chk-30"></a><strong>30. ~/Desktop/autoodocs/lib/parser.lua:542</strong>
+<p><a id="chk-30"></a><strong>30. ~/Desktop/autoodocs/lib/parser.lua:541</strong>
 <em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
 
 <p>Untagged single-quote docstring start</p>
@@ -331,7 +327,7 @@ local get_lang = utils.get_lang
 <pre><code class="language-lua">M.ADMONITIONS = {n="NOTE", t="TIP", i="IMPORTANT", w="WARNING", c="CAUTION"}
 </code></pre>
 
-<p><a id="def-6"></a><strong>6. ~/Desktop/autoodocs/lib/parser.lua:244</strong>
+<p><a id="def-6"></a><strong>6. ~/Desktop/autoodocs/lib/parser.lua:243</strong>
 <em>↳ <a href="#run-4">@run 4.</a></em></p>
 
 <div class="callout callout-note">
@@ -347,7 +343,7 @@ local get_lang = utils.get_lang
     f:close()
 </code></pre>
 
-<p><a id="def-7"></a><strong>7. ~/Desktop/autoodocs/lib/parser.lua:251</strong>
+<p><a id="def-7"></a><strong>7. ~/Desktop/autoodocs/lib/parser.lua:250</strong>
 <em>↳ <a href="#run-4">@run 4.</a></em></p>
 
 <p>Initialize per-file state machine variables</p>
@@ -432,7 +428,7 @@ end
 
 <h3><a id="run-4"></a>Walk one file as a line-by-line state machine</h3>
 
-<p><code>~/Desktop/autoodocs/lib/parser.lua:240</code></p>
+<p><code>~/Desktop/autoodocs/lib/parser.lua:239</code></p>
 
 <p>extracting tagged comments into <code>records</code> table</p>
 
@@ -441,7 +437,7 @@ end
 </blockquote>
 
 
-<p><a id="run-4-1"></a><strong>4.1 ~/Desktop/autoodocs/lib/parser.lua:270</strong>
+<p><a id="run-4-1"></a><strong>4.1 ~/Desktop/autoodocs/lib/parser.lua:269</strong>
 <em>↳ <a href="#run-4">@run 4.</a></em></p>
 
 <div class="callout callout-note">
@@ -491,7 +487,7 @@ end
     end
 </code></pre>
 
-<p><a id="run-4-2"></a><strong>4.2 ~/Desktop/autoodocs/lib/parser.lua:311</strong>
+<p><a id="run-4-2"></a><strong>4.2 ~/Desktop/autoodocs/lib/parser.lua:310</strong>
 <em>↳ <a href="#run-4">@run 4.</a></em></p>
 
 <p>Flush deferred record with captured <code>subj</code> lines</p>
@@ -507,7 +503,7 @@ end
     end
 </code></pre>
 
-<p><a id="run-4-2-1"></a><strong>4.2.1 ~/Desktop/autoodocs/lib/parser.lua:340</strong>
+<p><a id="run-4-2-1"></a><strong>4.2.1 ~/Desktop/autoodocs/lib/parser.lua:339</strong>
 <em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
 
 <p>Subject line capture mode</p>
@@ -529,7 +525,7 @@ end
         end
 </code></pre>
 
-<p><a id="run-4-2-2"></a><strong>4.2.2 ~/Desktop/autoodocs/lib/parser.lua:357</strong>
+<p><a id="run-4-2-2"></a><strong>4.2.2 ~/Desktop/autoodocs/lib/parser.lua:356</strong>
 <em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
 
 <p>Accumulate C-style block comment with tag</p>
@@ -547,7 +543,7 @@ end
         end
 </code></pre>
 
-<p><a id="run-4-2-3"></a><strong>4.2.3 ~/Desktop/autoodocs/lib/parser.lua:370</strong>
+<p><a id="run-4-2-3"></a><strong>4.2.3 ~/Desktop/autoodocs/lib/parser.lua:369</strong>
 <em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
 
 <p>Accumulate HTML comment with tag</p>
@@ -565,19 +561,19 @@ end
         end
 </code></pre>
 
-<p><a id="run-4-2-4"></a><strong>4.2.4 ~/Desktop/autoodocs/lib/parser.lua:383</strong>
+<p><a id="run-4-2-4"></a><strong>4.2.4 ~/Desktop/autoodocs/lib/parser.lua:382</strong>
 <em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
 
 <p>Accumulate Lua block comment with tag</p>
 
 
-<p><a id="run-4-2-5"></a><strong>4.2.5 ~/Desktop/autoodocs/lib/parser.lua:396</strong>
+<p><a id="run-4-2-5"></a><strong>4.2.5 ~/Desktop/autoodocs/lib/parser.lua:395</strong>
 <em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
 
 <p>Accumulate Haskell block comment with tag</p>
 
 
-<p><a id="run-4-2-6"></a><strong>4.2.6 ~/Desktop/autoodocs/lib/parser.lua:447</strong>
+<p><a id="run-4-2-6"></a><strong>4.2.6 ~/Desktop/autoodocs/lib/parser.lua:446</strong>
 <em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
 
 <p>Accumulate docstring with tag</p>
@@ -596,7 +592,7 @@ end
         end
 </code></pre>
 
-<p><a id="run-4-2-7"></a><strong>4.2.7 ~/Desktop/autoodocs/lib/parser.lua:489</strong>
+<p><a id="run-4-2-7"></a><strong>4.2.7 ~/Desktop/autoodocs/lib/parser.lua:488</strong>
 <em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
 
 <p>Continue or close existing single-line comment block</p>
@@ -616,7 +612,7 @@ end
         end
 </code></pre>
 
-<p><a id="run-4-2-8"></a><strong>4.2.8 ~/Desktop/autoodocs/lib/parser.lua:504</strong>
+<p><a id="run-4-2-8"></a><strong>4.2.8 ~/Desktop/autoodocs/lib/parser.lua:503</strong>
 <em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
 
 <p>Dispatch new tagged comment by style</p>
@@ -649,7 +645,7 @@ end
             end
 </code></pre>
 
-<p><a id="run-4-2-9"></a><strong>4.2.9 ~/Desktop/autoodocs/lib/parser.lua:548</strong>
+<p><a id="run-4-2-9"></a><strong>4.2.9 ~/Desktop/autoodocs/lib/parser.lua:547</strong>
 <em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
 
 <p>Begin subject capture if waiting and hit a code line</p>

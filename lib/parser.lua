@@ -152,14 +152,14 @@ function M.strip_comment(line, style)
         local sc = match(line, "%%(.*)") or ""
         return trim_lead(sc)
 
-    -- @chk Lua block comment opening --[[
+    -- @chk Lua block comment opening
     elseif style == "luablock" then
         local sc = match(line, "%-%-%[%[(.*)") or ""
         sc = trim_trail(sc)
         if sub(sc, -2) == "]]" then sc = sub(sc, 1, -3) end
         return trim(sc)
 
-    -- @chk Haskell block comment opening {-
+    -- @chk Haskell block comment opening
     elseif style == "hblock" then
         local sc = match(line, "{%-(.*)") or ""
         sc = trim_trail(sc)
@@ -224,7 +224,6 @@ function M.strip_comment(line, style)
         return trim(sc)
 
     -- @chk docstring continuation lines
-    -- no opening delimiter to strip; checks both `"""` and `'''` closers
     elseif style == "docstring_cont" then
         local sc = trim_trail(line)
         if sub(sc, -3) == '"""' then
