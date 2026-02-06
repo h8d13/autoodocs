@@ -8,7 +8,7 @@ Inspired by @tsoding `nob.h` autodocs.
 
 Supports `--`, `//`, `#`, `;`, `%`, `/* */`, `<!-- -->`, `--[[ ]]`, `{- -}`, `"""`, `'''`
 
-Skips (and stores) the whole comment block until next code line
+Skips (and stores) the whole comment block until next code line.
 
 <!-- @def Feature list -->
 ## Features
@@ -38,6 +38,8 @@ lua .autoodocs/autoodocs.lua . docs (-s) (-c)  # -s stats, -c validate counts
 lua .autoodocs/markdown.lua docs/*.md          # convert to HTML
 ```
 
+> Max comment length `87` chars, `-c` check needs a blank line at subject `n+1`
+
 Or create a build script / pre-commit hook:
 
 ```yaml
@@ -61,3 +63,6 @@ Create a branch named `pages` or directly from `master | main`.
 Go to repo `Settings` > `Pages` > `Deploy from branch` > `pages` > `/docs`
 
 Or directly from root `/` or without a specific branch.
+
+---
+

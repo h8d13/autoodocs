@@ -35,7 +35,7 @@ Inspired by @tsoding <code>nob.h</code> autodocs.</p>
 
 <p>Supports <code>--</code>, <code>//</code>, <code>#</code>, <code>;</code>, <code>%</code>, <code>/* */</code>, <code>&lt;!-- --&gt;</code>, <code>--[[ ]]</code>, <code>{- -}</code>, <code>"""</code>, <code>'''</code></p>
 
-<p>Skips (and stores) the whole comment block until next code line</p>
+<p>Skips (and stores) the whole comment block until next code line.</p>
 
 <h2>Features</h2>
 
@@ -62,6 +62,10 @@ git clone https://github.com/h8d13/autoodocs .autoodocs/
 lua .autoodocs/markdown.lua docs/*.md          # convert to HTML
 </code></pre>
 
+<blockquote>
+    <p>Max comment length <code>87</code> chars, <code>-c</code> check needs a blank line at subject <code>n+1</code></p>
+</blockquote>
+
 <p>Or create a build script / pre-commit hook:</p>
 
 <pre><code class="language-yaml"># .pre-commit-config.yaml
@@ -83,6 +87,9 @@ repos:
 <p>Go to repo <code>Settings</code> > <code>Pages</code> > <code>Deploy from branch</code> > <code>pages</code> > <code>/docs</code></p>
 
 <p>Or directly from root <code>/</code> or without a specific branch.</p>
+
+<hr/>
+
 
 
 
