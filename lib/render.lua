@@ -36,7 +36,7 @@ local function render_entry(w, r)
         -- Top-level entry: h3 header (appears in TOC)
         local title = r.text:match("^([^\031]+)") or ""
         title = trim(title)
-        if #title > 70 then title = title:sub(1, 67) .. "..." end
+        if #title > 88 then title = title:sub(1, 85) .. "..." end
         w(fmt('### <a id="%s"></a>%s\n\n', r.anchor, title))
         w(fmt('`%s`\n\n', r.loc))
     end
