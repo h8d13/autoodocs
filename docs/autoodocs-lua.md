@@ -60,11 +60,14 @@ local gsub   = string.gsub
 local sub    = string.sub
 local fmt    = string.format
 local open   = io.open
+
+-- Set package path relative to script location
+local script_dir = arg[0]:match("^(.-)[^/]*$") or "./"
 ```
 
 ### <a id="def-3"></a>Parse CLI args with defaults
 
-`~/Desktop/autoodocs/autoodocs.lua:48`
+`~/Desktop/autoodocs/autoodocs.lua:52`
 
 strip trailing slash, resolve absolute path via `/proc/self/environ`
 
@@ -87,7 +90,7 @@ local US = "\031"
 
 ### <a id="def-4"></a>Global state for collected records and line count
 
-`~/Desktop/autoodocs/autoodocs.lua:64` *↳ [lib/parser.lua:195](parser-lua.html#chk-15)*
+`~/Desktop/autoodocs/autoodocs.lua:68` *↳ [lib/parser.lua:195](parser-lua.html#chk-15)*
 
 see  for file processing
 
@@ -100,24 +103,24 @@ local total_input = 0
 
 ### <a id="run-1"></a>Write file if content changed
 
-`~/Desktop/autoodocs/autoodocs.lua:69`
+`~/Desktop/autoodocs/autoodocs.lua:73`
 
 
 ### <a id="run-2"></a>Main function
 
-`~/Desktop/autoodocs/autoodocs.lua:85`
+`~/Desktop/autoodocs/autoodocs.lua:89`
 
 ```lua
 local function main()
 ```
 
-<a id="run-2-1"></a>**2.1 ~/Desktop/autoodocs/autoodocs.lua:87**
+<a id="run-2-1"></a>**2.1 ~/Desktop/autoodocs/autoodocs.lua:91**
 *↳ [@run 2.](#run-2)*
 
 Create output directory
 
 
-<a id="run-2-2"></a>**2.2 ~/Desktop/autoodocs/autoodocs.lua:90**
+<a id="run-2-2"></a>**2.2 ~/Desktop/autoodocs/autoodocs.lua:94**
 *↳ [@run 2.](#run-2)*
 
 Discover files containing documentation tags
@@ -133,7 +136,7 @@ Discover files containing documentation tags
     end
 
     local cmd = fmt(
-        'grep -rl -I --exclude-dir=.git --exclude-dir=%s --exclude="*.html" %s -e "@def" -e "@chk" -e "@run" -e "@err" %s 2>/dev/null',
+        'grep -rl -I --exclude-dir=".*" --exclude-dir=%s --exclude="*.html" %s -e "@def" -e "@chk" -e "@run" -e "@err" %s 2>/dev/null',
         match(OUT_DIR, "([^/]+)$") or OUT_DIR, gi, utils.shell_quote(SCAN_DIR)
     )
     local pipe = io.popen(cmd)
@@ -144,7 +147,7 @@ Discover files containing documentation tags
     pipe:close()
 ```
 
-<a id="run-2-3"></a>**2.3 ~/Desktop/autoodocs/autoodocs.lua:116**
+<a id="run-2-3"></a>**2.3 ~/Desktop/autoodocs/autoodocs.lua:120**
 *↳ [@run 2.](#run-2)*
 
 Process all discovered files into intermediate `records`
@@ -155,7 +158,7 @@ Process all discovered files into intermediate `records`
     end
 ```
 
-<a id="run-2-4"></a>**2.4 ~/Desktop/autoodocs/autoodocs.lua:127**
+<a id="run-2-4"></a>**2.4 ~/Desktop/autoodocs/autoodocs.lua:131**
 *↳ [@run 2.](#run-2)*
 
 Group and index records by file
@@ -164,31 +167,31 @@ Group and index records by file
     local by_file, file_order = render.group_records(records)
 ```
 
-<a id="run-2-5"></a>**2.5 ~/Desktop/autoodocs/autoodocs.lua:130**
+<a id="run-2-5"></a>**2.5 ~/Desktop/autoodocs/autoodocs.lua:134**
 *↳ [@run 2.](#run-2)*
 
 Write index page
 
 
-<a id="run-2-6"></a>**2.6 ~/Desktop/autoodocs/autoodocs.lua:137**
+<a id="run-2-6"></a>**2.6 ~/Desktop/autoodocs/autoodocs.lua:141**
 *↳ [@run 2.](#run-2)*
 
 Write individual file pages
 
 
-<a id="run-2-7"></a>**2.7 ~/Desktop/autoodocs/autoodocs.lua:151**
+<a id="run-2-7"></a>**2.7 ~/Desktop/autoodocs/autoodocs.lua:155**
 *↳ [@run 2.](#run-2)*
 
 Output stats if requested
 
 ```lua
     if STATS then
-        os.execute(fmt("awk -f stats.awk %s/*.md", OUT_DIR))
+        os.execute(fmt("awk -f " .. script_dir .. "stats.awk %s/*.md", OUT_DIR))
 ```
 
 ### <a id="run-3"></a>Entry point
 
-`~/Desktop/autoodocs/autoodocs.lua:157`
+`~/Desktop/autoodocs/autoodocs.lua:161`
 
 ```lua
 main()
@@ -196,7 +199,7 @@ main()
 
 ## <a id="err"></a>Errors
 
-<a id="err-1"></a>**1. ~/Desktop/autoodocs/autoodocs.lua:110**
+<a id="err-1"></a>**1. ~/Desktop/autoodocs/autoodocs.lua:114**
 *↳ [@run 2.](#run-2)*
 
 No tagged files found
@@ -208,7 +211,7 @@ No tagged files found
     end
 ```
 
-<a id="err-2"></a>**2. ~/Desktop/autoodocs/autoodocs.lua:121**
+<a id="err-2"></a>**2. ~/Desktop/autoodocs/autoodocs.lua:125**
 *↳ [@run 2.](#run-2)*
 
 No extractable documentation

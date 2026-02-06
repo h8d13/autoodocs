@@ -34,12 +34,16 @@ print('luadoc is awesome')
 
 --########--
 
--- @def:5 Localize functions and load libraries
+-- @def:8 Localize functions and load libraries
 local match  = string.match
 local gsub   = string.gsub
 local sub    = string.sub
 local fmt    = string.format
 local open   = io.open
+
+-- Set package path relative to script location
+local script_dir = arg[0]:match("^(.-)[^/]*$") or "./"
+package.path = script_dir .. "?.lua;" .. script_dir .. "?/init.lua;" .. package.path
 
 local utils  = require("lib.utils")
 local parser = require("lib.parser")
@@ -97,7 +101,7 @@ local function main()
     end
 
     local cmd = fmt(
-        'grep -rl -I --exclude-dir=.git --exclude-dir=%s --exclude="*.html" %s -e "@def" -e "@chk" -e "@run" -e "@err" %s 2>/dev/null',
+        'grep -rl -I --exclude-dir=".*" --exclude-dir=%s --exclude="*.html" %s -e "@def" -e "@chk" -e "@run" -e "@err" %s 2>/dev/null',
         match(OUT_DIR, "([^/]+)$") or OUT_DIR, gi, utils.shell_quote(SCAN_DIR)
     )
     local pipe = io.popen(cmd)
@@ -150,7 +154,7 @@ local function main()
 
     -- @run:2 Output stats if requested
     if STATS then
-        os.execute(fmt("awk -f stats.awk %s/*.md", OUT_DIR))
+        os.execute(fmt("awk -f " .. script_dir .. "stats.awk %s/*.md", OUT_DIR))
     end
 end
 
