@@ -3,7 +3,7 @@ repos:
     hooks:
       - id: autoodocs
         name: autoodocs
-        entry: bash -c '[ "$(git branch --show-current)" = "pages" ] && lua autodocs.lua . readme.md && git add readme.md || true'
+        entry: bash -c '[ "$(git branch --show-current)" = "pages" ] && lua autodocs.lua -s . readme.md && git add readme.md || true'
         language: system
         pass_filenames: false
         always_run: true

@@ -14,11 +14,9 @@ M.TAG_TITLE = {CHK="Checks", DEF="Defines", RUN="Runners", ERR="Errors"}
 
 -- @run:68 Render `records` into sectioned markdown
 -- parentless entries become headings; children use bold anchors
-function M.render_markdown(grouped, title)
+function M.render_markdown(grouped)
     local out = {}
     local function w(s) out[#out + 1] = s end
-
-    w(fmt("# %s\n\n", title))
 
     local function render_section(entries, prefix)
         if #entries == 0 then return end

@@ -42,7 +42,6 @@ local render = require("lib.render")
 -- @def:13 Parse CLI args with defaults
 -- strip trailing slash, resolve absolute path via `/proc/self/environ`
 -- `US` separates multi-line text within record fields
-local TITLE    = "Autodocs"
 local SCAN_DIR = arg[1] or "."
 local OUTPUT   = arg[2] or "readme.md"
 local STATS    = arg[3] == "-s"
@@ -87,7 +86,7 @@ local function main()
         -- @err:5 Handle missing tagged files
         -- with empty output and `stderr` warning
         local f = open(OUTPUT, "w")
-        f:write(fmt("# %s\n\nNo tagged documentation found.\n", TITLE))
+        f:write("No tagged documentation found.\n")
         f:close()
         io.stderr:write(fmt("autodocs: no tags found under %s\n", SCAN_DIR))
         return
@@ -108,7 +107,7 @@ local function main()
         -- @err:5 Handle extraction failure
         -- with empty output and `stderr` warning
         local f = open(OUTPUT, "w")
-        f:write(fmt("# %s\n\nNo tagged documentation found.\n", TITLE))
+        f:write("No tagged documentation found.\n")
         f:close()
         io.stderr:write(fmt("autodocs: tags found but no extractable docs under %s\n", SCAN_DIR))
         return
@@ -119,7 +118,7 @@ local function main()
 
     -- @chk:10 Render and compare against existing output
     -- skip write if content is unchanged
-    local markdown = render.render_markdown(grouped, TITLE)
+    local markdown = render.render_markdown(grouped)
     local ef = open(OUTPUT, "r")
     if ef then
         local existing = ef:read("*a")
