@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>autodocs.lua</title>
+    <link rel="stylesheet" type="text/css" href="default.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<div class="container">
+<nav class="sidebar">
+<h2>Contents</h2>
+<ul id="toc">
+<li><a href="#chk">Checks</a></li>
+<li><a href="#def">Defines</a></li>
+<li><a href="#run">Runners</a></li>
+</ul>
+</nav>
+<main class="content">
+
+<h1>autodocs.lua</h1>
+
+<p><code>~/Desktop/autoodocs/autodocs.lua</code></p>
+
+<h2>Contents</h2>
+
+<ul>
+    <li><a href="#chk">Checks</a></li>
+    <li><a href="#def">Defines</a></li>
+    <li><a href="#run">Runners</a></li>
+</ul>
+
+<h2><a id="chk"></a>Checks</h2>
+
+<p><a id="chk-1"></a><strong>1.</strong> <code>~/Desktop/autoodocs/autodocs.lua:2</code></p>
+
+<p><code>-s</code> outputs extra stats</p>
+
+
+<p><a id="chk-2"></a><strong>2. ~/Desktop/autoodocs/autodocs.lua:103</strong>
+<em>↳ <a href="#run-2">@run 2.</a></em></p>
+
+<p>Verify tagged files were discovered</p>
+
+<pre><code class="language-lua">    if #files == 0 then
+</code></pre>
+
+<h2><a id="def"></a>Defines</h2>
+
+<p><a id="def-1"></a><strong>1.</strong> <code>~/Desktop/autoodocs/autodocs.lua:10</code></p>
+
+<div class="callout callout-important">
+    <div class="callout-title">IMPORTANT</div>
+    <p>Defines with 9 line of subject</p>
+</div>
+
+<p>And a important callout style</p>
+
+<p>after the end of comment block</p>
+
+<p><code>!n</code> NOTE</p>
+
+<p><code>!t</code> TIP</p>
+
+<p><code>!w</code> WARN</p>
+
+<p><code>!c</code> CAUTION</p>
+
+<pre><code class="language-lua">print('luadoc is awesome')
+    -- Check  -&gt; Early checks
+    ---- guard the entry, bail early if preconditions fail
+    -- Define -&gt; Gives instructions to
+    ---- define the state/config the rest depends on
+    -- Run    -&gt; Use the instructions
+    ---- do the actual work using those definitions
+    -- Error  -&gt; Handle what went wrong
+    ---- handle errors with more definitions
+</code></pre>
+
+<p><a id="def-2"></a><strong>2.</strong> <code>~/Desktop/autoodocs/autodocs.lua:31</code></p>
+
+<p>Localize functions and load libraries</p>
+
+<pre><code class="language-lua">local match  = string.match
+local gsub   = string.gsub
+local sub    = string.sub
+local fmt    = string.format
+</code></pre>
+
+<p><a id="def-3"></a><strong>3.</strong> <code>~/Desktop/autoodocs/autodocs.lua:42</code></p>
+
+<p>Parse CLI args with defaults</p>
+
+<blockquote>
+    <p>strip trailing slash, resolve absolute path via <code>/proc/self/environ</code></p>
+    
+    <p><code>US</code> separates multi-line text within record fields</p>
+</blockquote>
+
+<pre><code class="language-lua">local SCAN_DIR = arg[1] or "."
+local OUT_DIR  = arg[2] or "docs"
+local STATS    = arg[3] == "-s"
+SCAN_DIR = gsub(SCAN_DIR, "/$", "")
+if sub(SCAN_DIR, 1, 1) ~= "/" then
+    local ef = open("/proc/self/environ", "rb")
+    local cwd = ef and match(ef:read("*a"), "PWD=([^%z]+)")
+    if ef then ef:close() end
+    SCAN_DIR = (SCAN_DIR == ".") and cwd or cwd .. "/" .. SCAN_DIR
+end
+</code></pre>
+
+<p><a id="def-4"></a><strong>4.</strong> <code>~/Desktop/autoodocs/autodocs.lua:58</code></p>
+
+<p>Global state for collected records and line count</p>
+
+<pre><code class="language-lua">local records = {}
+local total_input = 0
+</code></pre>
+
+<h2><a id="run"></a>Runners</h2>
+
+<p><a id="run-1"></a><strong>1.</strong> <code>~/Desktop/autoodocs/autodocs.lua:62</code></p>
+
+<p>Write file if content changed</p>
+
+
+<p><a id="run-2"></a><strong>2.</strong> <code>~/Desktop/autoodocs/autodocs.lua:78</code></p>
+
+<p>Main function</p>
+
+<pre><code class="language-lua">local function main()
+</code></pre>
+
+<p><a id="run-2-1"></a><strong>2.1 ~/Desktop/autoodocs/autodocs.lua:80</strong>
+<em>↳ <a href="#run-2">@run 2.</a></em></p>
+
+<p>Create output directory</p>
+
+
+<p><a id="run-2-2"></a><strong>2.2 ~/Desktop/autoodocs/autodocs.lua:83</strong>
+<em>↳ <a href="#run-2">@run 2.</a></em></p>
+
+<p>Discover files containing documentation tags</p>
+
+<blockquote>
+    <p>respect <code>.gitignore</code> patterns via <code>grep --exclude-from</code></p>
+</blockquote>
+
+<pre><code class="language-lua">    local gi = ""
+    local gf = open(SCAN_DIR .. "/.gitignore", "r")
+    if gf then
+        gf:close()
+        gi = "--exclude-from=" .. utils.shell_quote(SCAN_DIR .. "/.gitignore")
+    end
+
+    local cmd = fmt(
+        'grep -rl -I --exclude-dir=.git --exclude-dir=%s --exclude="*.html" %s -e "@def" -e "@chk" -e "@run" -e "@err" %s 2&gt;/dev/null',
+        match(OUT_DIR, "([^/]+)$") or OUT_DIR, gi, utils.shell_quote(SCAN_DIR)
+    )
+    local pipe = io.popen(cmd)
+    local files = {}
+    for line in pipe:lines() do
+        files[#files + 1] = line
+    end
+    pipe:close()
+</code></pre>
+
+<p><a id="run-2-3"></a><strong>2.3 ~/Desktop/autoodocs/autodocs.lua:109</strong>
+<em>↳ <a href="#run-2">@run 2.</a></em></p>
+
+<p>Process all discovered files into intermediate <code>records</code></p>
+
+<pre><code class="language-lua">    for _, fp in ipairs(files) do
+        total_input = total_input + parser.process_file(fp, records, HOME, US)
+    end
+
+    -- @chk:1 Verify extraction produced results
+</code></pre>
+
+<p><a id="run-2-4"></a><strong>2.4 ~/Desktop/autoodocs/autodocs.lua:120</strong>
+<em>↳ <a href="#run-2">@run 2.</a></em></p>
+
+<p>Group and index records by file</p>
+
+<pre><code class="language-lua">    local by_file, file_order = render.group_records(records)
+</code></pre>
+
+<p><a id="run-2-5"></a><strong>2.5 ~/Desktop/autoodocs/autodocs.lua:123</strong>
+<em>↳ <a href="#run-2">@run 2.</a></em></p>
+
+<p>Write index page</p>
+
+
+<p><a id="run-2-6"></a><strong>2.6 ~/Desktop/autoodocs/autodocs.lua:130</strong>
+<em>↳ <a href="#run-2">@run 2.</a></em></p>
+
+<p>Write individual file pages</p>
+
+
+<p><a id="run-3"></a><strong>3.</strong> <code>~/Desktop/autoodocs/autodocs.lua:145</code></p>
+
+<p>Entry point</p>
+
+<pre><code class="language-lua">main()
+</code></pre>
+
+
+</main>
+</div>
+<script>
+hljs.highlightAll();
+// Highlight active section on scroll
+var links = document.querySelectorAll('.sidebar a');
+var sections = document.querySelectorAll('.content h2, .content h3');
+window.addEventListener('scroll', function() {
+    var current = '';
+    sections.forEach(function(section) {
+        var anchor = section.querySelector('a');
+        if (anchor && window.scrollY >= section.offsetTop - 100) {
+            current = anchor.id;
+        }
+    });
+    links.forEach(function(link) {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + current) {
+            link.classList.add('active');
+        }
+    });
+});
+</script>
+</body></html>

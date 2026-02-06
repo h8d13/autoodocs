@@ -1323,27 +1323,37 @@ local function run_command_line(arg)
             end
             header = header:gsub("CHARSET", options.charset)
         end
+        -- Build TOC from h2/h3 headers in content
+        local toc = {}
+        for tag, id, text in s:gmatch("<(h[23])><a id=\"([^\"]+)\"></a>([^<]+)</h") do
+            local level = tonumber(tag:sub(2))
+            local class = level == 3 and ' class="toc-sub"' or ''
+            toc[#toc + 1] = string.format('<li%s><a href="#%s">%s</a></li>', class, id, text)
+        end
+        -- If no headers, extract links from list (for index page)
+        if #toc == 0 then
+            for href, text in s:gmatch('<a href="([^"]+%.html)">([^<]+)</a>') do
+                toc[#toc + 1] = string.format('<li><a href="%s">%s</a></li>', href, text)
+            end
+        end
+        local toc_html = table.concat(toc, "\n")
+
+        -- Replace TOC placeholder
+        header = header:gsub('<ul id="toc"></ul>', '<ul id="toc">\n' .. toc_html .. '\n</ul>')
+
         local footer = [[</main>
 </div>
 <script>
 hljs.highlightAll();
-// Build sidebar TOC from h2 headings
-document.querySelectorAll('.content h2').forEach(function(h2) {
-    var li = document.createElement('li');
-    var a = document.createElement('a');
-    a.href = '#' + h2.querySelector('a').id;
-    a.textContent = h2.textContent;
-    li.appendChild(a);
-    document.getElementById('toc').appendChild(li);
-});
 // Highlight active section on scroll
 var links = document.querySelectorAll('.sidebar a');
-var sections = document.querySelectorAll('.content h2');
+var sections = document.querySelectorAll('.content h2, .content h3');
 window.addEventListener('scroll', function() {
     var current = '';
     sections.forEach(function(section) {
-        if (window.scrollY >= section.offsetTop - 100) {
-            current = section.querySelector('a').id;
+        var anchor = section.querySelector('a');
+        if (anchor && window.scrollY >= section.offsetTop - 100) {
+            current = anchor.id;
         }
     });
     links.forEach(function(link) {

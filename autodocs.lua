@@ -39,11 +39,11 @@ local utils  = require("lib.utils")
 local parser = require("lib.parser")
 local render = require("lib.render")
 
--- @def:13 Parse CLI args with defaults
+-- @def:10 Parse CLI args with defaults
 -- strip trailing slash, resolve absolute path via `/proc/self/environ`
 -- `US` separates multi-line text within record fields
 local SCAN_DIR = arg[1] or "."
-local OUTPUT   = arg[2] or "readme.md"
+local OUT_DIR  = arg[2] or "docs"
 local STATS    = arg[3] == "-s"
 SCAN_DIR = gsub(SCAN_DIR, "/$", "")
 if sub(SCAN_DIR, 1, 1) ~= "/" then
@@ -59,8 +59,27 @@ local US = "\031"
 local records = {}
 local total_input = 0
 
+-- @run Write file if content changed
+local function write_if_changed(path, content)
+    local ef = open(path, "r")
+    if ef then
+        local existing = ef:read("*a")
+        ef:close()
+        if existing == content then
+            return false
+        end
+    end
+    local f = open(path, "w")
+    f:write(content)
+    f:close()
+    return true
+end
+
 -- @run:1 Main function
 local function main()
+    -- @run Create output directory
+    os.execute(fmt("mkdir -p %s", utils.shell_quote(OUT_DIR)))
+
     -- @run:17 Discover files containing documentation tags
     -- respect `.gitignore` patterns via `grep --exclude-from`
     local gi = ""
@@ -71,8 +90,8 @@ local function main()
     end
 
     local cmd = fmt(
-        'grep -rl -I --exclude-dir=.git --exclude="readme*" --exclude="index.html" %s -e "@def" -e "@chk" -e "@run" -e "@err" %s 2>/dev/null',
-        gi, utils.shell_quote(SCAN_DIR)
+        'grep -rl -I --exclude-dir=.git --exclude-dir=%s --exclude="*.html" %s -e "@def" -e "@chk" -e "@run" -e "@err" %s 2>/dev/null',
+        match(OUT_DIR, "([^/]+)$") or OUT_DIR, gi, utils.shell_quote(SCAN_DIR)
     )
     local pipe = io.popen(cmd)
     local files = {}
@@ -83,32 +102,17 @@ local function main()
 
     -- @chk:1 Verify tagged files were discovered
     if #files == 0 then
-        -- @err:5 Handle missing tagged files
-        -- with empty output and `stderr` warning
-        local f = open(OUTPUT, "w")
-        f:write("No tagged documentation found.\n")
-        f:close()
         io.stderr:write(fmt("autodocs: no tags found under %s\n", SCAN_DIR))
         return
     end
 
-    local out_base = match(OUTPUT, "([^/]+)$")
-    local out_base_escaped = gsub(out_base, "(%W)", "%%%1")
-
     -- @run:5 Process all discovered files into intermediate `records`
     for _, fp in ipairs(files) do
-        if not match(fp, "/" .. out_base_escaped .. "$") then
-            total_input = total_input + parser.process_file(fp, records, HOME, US)
-        end
+        total_input = total_input + parser.process_file(fp, records, HOME, US)
     end
 
     -- @chk:1 Verify extraction produced results
     if #records == 0 then
-        -- @err:5 Handle extraction failure
-        -- with empty output and `stderr` warning
-        local f = open(OUTPUT, "w")
-        f:write("No tagged documentation found.\n")
-        f:close()
         io.stderr:write(fmt("autodocs: tags found but no extractable docs under %s\n", SCAN_DIR))
         return
     end
@@ -116,38 +120,26 @@ local function main()
     -- @run:1 Group and index records by file
     local by_file, file_order = render.group_records(records)
 
-    -- @chk:10 Render and compare against existing output
-    -- skip write if content is unchanged
-    local markdown = render.render_markdown(by_file, file_order)
-    local ef = open(OUTPUT, "r")
-    if ef then
-        local existing = ef:read("*a")
-        ef:close()
-        if existing == markdown then
-            io.stderr:write(fmt("autodocs: %s unchanged\n", OUTPUT))
-            return
+    -- @run Write index page
+    local index_md = render.render_index(file_order)
+    local index_path = OUT_DIR .. "/index.md"
+    if write_if_changed(index_path, index_md) then
+        io.stderr:write(fmt("autodocs: wrote %s\n", index_path))
+    end
+
+    -- @run Write individual file pages
+    local pages_written = 0
+    for _, file in ipairs(file_order) do
+        local slug = render.slugify(file)
+        local page_md = render.render_file_page(file, by_file[file])
+        local page_path = fmt("%s/%s.md", OUT_DIR, slug)
+        if write_if_changed(page_path, page_md) then
+            pages_written = pages_written + 1
+            io.stderr:write(fmt("autodocs: wrote %s\n", page_path))
         end
     end
 
-    -- @run:6 Write output and report ratio
-    -- wraps across two lines so `:N` count must include the continuation
-    local f = open(OUTPUT, "w")
-    f:write(markdown)
-    f:close()
-    local ol = select(2, gsub(markdown, "\n", "")) + 1
-    io.stderr:write(fmt("autodocs: wrote %s (%d/%d = %d%%)\n",
-        OUTPUT, ol, total_input, total_input > 0 and math.floor(ol * 100 / total_input) or 0))
-
-    -- @run:9 Run `stats.awk` on the output if `-s` flag is set
-    if STATS then
-        local script_dir = match(arg[0], "^(.*/)") or "./"
-        local stats_awk = script_dir .. "stats.awk"
-        local sf = open(stats_awk, "r")
-        if sf then
-            sf:close()
-            os.execute(fmt("awk -f %s %s >&2", utils.shell_quote(stats_awk), utils.shell_quote(OUTPUT)))
-        end
-    end
+    io.stderr:write(fmt("autodocs: %d files documented\n", #file_order))
 end
 
 -- @run:1 Entry point

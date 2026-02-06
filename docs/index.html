@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Untitled</title>
+    <link rel="stylesheet" type="text/css" href="default.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<div class="container">
+<nav class="sidebar">
+<h2>Contents</h2>
+<ul id="toc">
+<li><a href="parser-lua.html">parser.lua</a></li>
+<li><a href="utils-lua.html">utils.lua</a></li>
+<li><a href="render-lua.html">render.lua</a></li>
+<li><a href="autodocs-lua.html">autodocs.lua</a></li>
+</ul>
+</nav>
+<main class="content">
+
+<ul>
+    <li><a href="parser-lua.html">parser.lua</a></li>
+    <li><a href="utils-lua.html">utils.lua</a></li>
+    <li><a href="render-lua.html">render.lua</a></li>
+    <li><a href="autodocs-lua.html">autodocs.lua</a></li>
+</ul>
+
+</main>
+</div>
+<script>
+hljs.highlightAll();
+// Highlight active section on scroll
+var links = document.querySelectorAll('.sidebar a');
+var sections = document.querySelectorAll('.content h2, .content h3');
+window.addEventListener('scroll', function() {
+    var current = '';
+    sections.forEach(function(section) {
+        var anchor = section.querySelector('a');
+        if (anchor && window.scrollY >= section.offsetTop - 100) {
+            current = anchor.id;
+        }
+    });
+    links.forEach(function(link) {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + current) {
+            link.classList.add('active');
+        }
+    });
+});
+</script>
+</body></html>
