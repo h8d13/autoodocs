@@ -6,6 +6,7 @@
 local fmt = string.format
 
 -- @run:2 Generate markdown documentation
+-- @src:autodocs.lua:82
 print("Generating markdown...")
 os.execute("lua autodocs.lua . docs -s")
 
@@ -14,6 +15,7 @@ print("Copying assets...")
 os.execute("cp default.css docs/")
 
 -- @run:6 Convert all markdown files to HTML
+-- @src:markdown.lua:1264
 print("Converting to HTML...")
 local pipe = io.popen("ls docs/*.md 2>/dev/null")
 for md in pipe:lines() do

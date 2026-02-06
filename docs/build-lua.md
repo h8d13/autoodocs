@@ -25,6 +25,8 @@ local fmt = string.format
 
 `~/Desktop/autoodocs/build.lua:8`
 
+[autodocs.lua:82](autodocs-lua.html#run-2)
+
 ```lua
 print("Generating markdown...")
 os.execute("lua autodocs.lua . docs -s")
@@ -32,7 +34,7 @@ os.execute("lua autodocs.lua . docs -s")
 
 ### <a id="run-3"></a>Copy stylesheet to output directory
 
-`~/Desktop/autoodocs/build.lua:12`
+`~/Desktop/autoodocs/build.lua:13`
 
 ```lua
 print("Copying assets...")
@@ -41,7 +43,9 @@ os.execute("cp default.css docs/")
 
 ### <a id="run-4"></a>Convert all markdown files to HTML
 
-`~/Desktop/autoodocs/build.lua:16`
+`~/Desktop/autoodocs/build.lua:17`
+
+[markdown.lua:1264](markdown-lua.html#run-10)
 
 ```lua
 print("Converting to HTML...")

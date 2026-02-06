@@ -50,13 +50,15 @@
 
 <p><code>~/Desktop/autoodocs/build.lua:8</code></p>
 
+<p><a href="autodocs-lua.html#run-2">autodocs.lua:82</a></p>
+
 <pre><code class="language-lua">print("Generating markdown...")
 os.execute("lua autodocs.lua . docs -s")
 </code></pre>
 
 <h3><a id="run-3"></a>Copy stylesheet to output directory</h3>
 
-<p><code>~/Desktop/autoodocs/build.lua:12</code></p>
+<p><code>~/Desktop/autoodocs/build.lua:13</code></p>
 
 <pre><code class="language-lua">print("Copying assets...")
 os.execute("cp default.css docs/")
@@ -64,7 +66,9 @@ os.execute("cp default.css docs/")
 
 <h3><a id="run-4"></a>Convert all markdown files to HTML</h3>
 
-<p><code>~/Desktop/autoodocs/build.lua:16</code></p>
+<p><code>~/Desktop/autoodocs/build.lua:17</code></p>
+
+<p><a href="markdown-lua.html#run-10">markdown.lua:1264</a></p>
 
 <pre><code class="language-lua">print("Converting to HTML...")
 local pipe = io.popen("ls docs/*.md 2&gt;/dev/null")
