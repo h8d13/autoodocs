@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>render.lua</title>
+    <link rel="stylesheet" type="text/css" href="default.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<div class="container">
+<nav class="sidebar">
+<h2>Contents <a href="index.html" class="sidebar-home" title="Home">⌂</a></h2>
+<ul id="toc">
+<li><a href="#def">Defines</a></li>
+<li class="toc-sub"><a href="#def-1">Localize functions for performance</a></li>
+<li class="toc-sub"><a href="#def-2">Import utils for trim</a></li>
+<li class="toc-sub"><a href="#def-3">Module table</a></li>
+<li class="toc-sub"><a href="#def-4">Map tag prefixes to anchor slugs and section titles</a></li>
+<li class="toc-sub"><a href="#def-5">Line-to-anchor mapping built during grouping</a></li>
+<li><a href="#run">Runners</a></li>
+<li class="toc-sub"><a href="#run-1">Generate a slug from a file path for anchors/filenames</a></li>
+<li class="toc-sub"><a href="#run-2">Convert line to clickable markdown links</a></li>
+<li class="toc-sub"><a href="#run-3">Render a single entry</a></li>
+<li class="toc-sub"><a href="#run-4">Render index page</a></li>
+<li class="toc-sub"><a href="#run-5">Render a single file's documentation page</a></li>
+<li class="toc-sub"><a href="#run-6">Group records by file and assign indices</a></li>
+<li class="toc-sub"><a href="#run-7">Get slug for a file path</a></li>
+</ul>
+</nav>
+<main class="content">
+
+<h1>render.lua</h1>
+
+<p><code>~/Desktop/autoodocs/lib/render.lua</code></p>
+
+<p>Markdown renderer that generates documentation pages with cross-references</p>
+
+<h2><a id="def"></a>Defines</h2>
+
+<h3><a id="def-1"></a>Localize functions for performance</h3>
+
+<p><code>~/Desktop/autoodocs/lib/render.lua:2</code></p>
+
+<pre><code class="language-lua">local fmt    = string.format
+local gmatch = string.gmatch
+local concat = table.concat
+local gsub   = string.gsub
+local match  = string.match
+local sub    = string.sub
+</code></pre>
+
+<h3><a id="def-2"></a>Import utils for trim</h3>
+
+<p><code>~/Desktop/autoodocs/lib/render.lua:10</code></p>
+
+<pre><code class="language-lua">local utils = require("lib.utils")
+local trim = utils.trim
+</code></pre>
+
+<h3><a id="def-3"></a>Module table</h3>
+
+<p><code>~/Desktop/autoodocs/lib/render.lua:14</code></p>
+
+<pre><code class="language-lua">local M = {}
+</code></pre>
+
+<h3><a id="def-4"></a>Map tag prefixes to anchor slugs and section titles</h3>
+
+<p><code>~/Desktop/autoodocs/lib/render.lua:17</code></p>
+
+<pre><code class="language-lua">M.TAG_SEC   = {GEN="gen", CHK="chk", DEF="def", RUN="run", ERR="err"}
+M.TAG_TITLE = {GEN="General", CHK="Checks", DEF="Defines", RUN="Runners", ERR="Errors"}
+M.TAG_ORDER = {"GEN", "CHK", "DEF", "RUN", "ERR"}
+</code></pre>
+
+<h3><a id="def-5"></a>Line-to-anchor mapping built during grouping</h3>
+
+<p><code>~/Desktop/autoodocs/lib/render.lua:30</code></p>
+
+<pre><code class="language-lua">M.line_map = {}
+</code></pre>
+
+<h2><a id="run"></a>Runners</h2>
+
+<h3><a id="run-1"></a>Generate a slug from a file path for anchors/filenames</h3>
+
+<p><code>~/Desktop/autoodocs/lib/render.lua:22</code></p>
+
+
+<h3><a id="run-2"></a>Convert line to clickable markdown links</h3>
+
+<p><code>~/Desktop/autoodocs/lib/render.lua:33</code> <em>↳ <a href="filepath.html">filepath</a></em></p>
+
+<pre><code class="language-lua">local function link_sources(text)
+    return gsub(text, "@src:([^%s:]+):?(%d*)", function(path, line)
+        local slug = slugify(path)
+        local anchor = ""
+        if line ~= "" and M.line_map[slug] then
+            local ln = tonumber(line)
+            for _, entry in ipairs(M.line_map[slug]) do
+                if entry.line &lt;= ln then anchor = entry.anchor
+                else break end
+            end
+        end
+        local display = line ~= "" and (path .. ":" .. line) or path
+        local href = anchor ~= "" and fmt("%s.html#%s", slug, anchor) or (slug .. ".html")
+        return fmt("*↳ [%s](%s)*", display, href)
+    end)
+end
+</code></pre>
+
+<h3><a id="run-3"></a>Render a single entry</h3>
+
+<p><code>~/Desktop/autoodocs/lib/render.lua:51</code></p>
+
+
+<h3><a id="run-4"></a>Render index page</h3>
+
+<p><code>~/Desktop/autoodocs/lib/render.lua:143</code></p>
+
+
+<h3><a id="run-5"></a>Render a single file's documentation page</h3>
+
+<p><code>~/Desktop/autoodocs/lib/render.lua:211</code></p>
+
+
+<h3><a id="run-6"></a>Group records by file and assign indices</h3>
+
+<p><code>~/Desktop/autoodocs/lib/render.lua:242</code></p>
+
+
+<h3><a id="run-7"></a>Get slug for a file path</h3>
+
+<p><code>~/Desktop/autoodocs/lib/render.lua:303</code></p>
+
+
+
+</main>
+</div>
+<script>
+hljs.highlightAll();
+// Hide home icon on index page
+if (location.pathname.endsWith('index.html') || location.pathname.endsWith('/')) {
+    var home = document.querySelector('.sidebar-home');
+    if (home) home.style.display = 'none';
+}
+// Highlight active section on scroll
+var links = document.querySelectorAll('.sidebar a');
+var sections = document.querySelectorAll('.content h2, .content h3');
+window.addEventListener('scroll', function() {
+    var current = '';
+    sections.forEach(function(section) {
+        var anchor = section.querySelector('a');
+        if (anchor && window.scrollY >= section.offsetTop - 100) {
+            current = anchor.id;
+        }
+    });
+    links.forEach(function(link) {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + current) {
+            link.classList.add('active');
+        }
+    });
+});
+</script>
+</body></html>

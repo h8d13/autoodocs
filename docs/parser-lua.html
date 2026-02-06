@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>parser.lua</title>
+    <link rel="stylesheet" type="text/css" href="default.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<div class="container">
+<nav class="sidebar">
+<h2>Contents <a href="index.html" class="sidebar-home" title="Home">⌂</a></h2>
+<ul id="toc">
+<li><a href="#chk">Checks</a></li>
+<li class="toc-sub"><a href="#chk-1">Test whether a line contains any documentation tag</a></li>
+<li class="toc-sub"><a href="#chk-5">Detect comment style via byte-level prefix check</a></li>
+<li><a href="#def">Defines</a></li>
+<li class="toc-sub"><a href="#def-1">Localize functions for hot loop perf</a></li>
+<li class="toc-sub"><a href="#def-2">Localize utils for hoot loop perf</a></li>
+<li class="toc-sub"><a href="#def-3">Localize map</a></li>
+<li><a href="#run">Runners</a></li>
+<li class="toc-sub"><a href="#run-3">Strip comment delimiters and extract inner text</a></li>
+<li class="toc-sub"><a href="#run-4">Walk one file as a line-by-line state machine</a></li>
+</ul>
+</nav>
+<main class="content">
+
+<h1>parser.lua</h1>
+
+<p><code>~/Desktop/autoodocs/lib/parser.lua</code></p>
+
+<p>Comment parser that extracts documentation tags from source files</p>
+
+<h2><a id="chk"></a>Checks</h2>
+
+<h3><a id="chk-1"></a>Test whether a line contains any documentation tag</h3>
+
+<p><code>~/Desktop/autoodocs/lib/parser.lua:27</code></p>
+
+<p>early <code>@</code> check short-circuits lines with no tags</p>
+
+<pre><code class="language-lua">function M.has_tag(line)
+    if not find(line, "@", 1, true) then return nil end
+    return find(line, "@gen", 1, true) or find(line, "@def", 1, true) or
+           find(line, "@chk", 1, true) or find(line, "@run", 1, true) or
+           find(line, "@err", 1, true)
+end
+</code></pre>
+
+<h3><a id="chk-2"></a>Classify a tagged line into <code>GEN</code>, <code>DEF</code>, <code>CHK</code>, <code>RUN</code>, or <code>ERR</code></h3>
+
+<p><code>~/Desktop/autoodocs/lib/parser.lua:36</code></p>
+
+<pre><code class="language-lua">function M.get_tag(line)
+    if     find(line, "@gen", 1, true) then return "GEN"
+    elseif find(line, "@def", 1, true) then return "DEF"
+    elseif find(line, "@chk", 1, true) then return "CHK"
+    elseif find(line, "@run", 1, true) then return "RUN"
+    elseif find(line, "@err", 1, true) then return "ERR"
+    end
+end
+</code></pre>
+
+<h3><a id="chk-3"></a>Extract the subject line count from <code>@tag:N</code> syntax</h3>
+
+<p><code>~/Desktop/autoodocs/lib/parser.lua:46</code></p>
+
+<p>using pattern capture after the colon</p>
+
+<pre><code class="language-lua">function M.get_subject_count(text)
+    local n = match(text, "@gen:(%d+)") or match(text, "@def:(%d+)") or
+              match(text, "@chk:(%d+)") or match(text, "@run:(%d+)") or
+              match(text, "@err:(%d+)")
+    return tonumber(n) or 0
+end
+</code></pre>
+
+<h3><a id="chk-4"></a>Extract <code>!x</code> admonition suffix from tag syntax</h3>
+
+<p><code>~/Desktop/autoodocs/lib/parser.lua:67</code></p>
+
+<pre><code class="language-lua">function M.get_admonition(text)
+    local code = match(text, "@%a+:?%d*!(%a)")
+    if code then return M.ADMONITIONS[code] end
+end
+</code></pre>
+
+<h3><a id="chk-5"></a>Detect comment style via byte-level prefix check</h3>
+
+<p><code>~/Desktop/autoodocs/lib/parser.lua:98</code></p>
+
+<p>skips leading whitespace without allocating a trimmed copy</p>
+
+<pre><code class="language-lua">function M.detect_style(line)
+    local i = 1
+    while byte(line, i) == 32 or byte(line, i) == 9 do i = i + 1 end
+    local b = byte(line, i)
+    if not b then return "none" end
+    if b == 60 then -- '&lt;'
+        if sub(line, i, i + 3) == "&lt;!--" then return "html" end
+    elseif b == 47 then -- '/'
+        local b2 = byte(line, i + 1)
+        if b2 == 42 then return "cblock" end
+        if b2 == 47 then return "dslash" end
+    elseif b == 35 then return "hash"
+    elseif b == 34 then -- '"'
+        if sub(line, i, i + 2) == '"""' then return "dquote" end
+    elseif b == 39 then -- "'"
+        if sub(line, i, i + 2) == "'''" then return "squote" end
+    elseif b == 45 then -- '-'
+        if byte(line, i + 1) == 45 then return "ddash" end
+    end
+    return "none"
+end
+</code></pre>
+
+<p><a id="chk-6"></a><strong>6. ~/Desktop/autoodocs/lib/parser.lua:125</strong>
+<em>↳ <a href="#run-3">@run 3.</a></em></p>
+
+<p>shell type comments</p>
+
+
+<p><a id="chk-7"></a><strong>7. ~/Desktop/autoodocs/lib/parser.lua:130</strong>
+<em>↳ <a href="#run-3">@run 3.</a></em></p>
+
+<p>double-slash comments</p>
+
+
+<p><a id="chk-8"></a><strong>8. ~/Desktop/autoodocs/lib/parser.lua:135</strong>
+<em>↳ <a href="#run-3">@run 3.</a></em></p>
+
+<p>double-dash comments</p>
+
+
+<p><a id="chk-9"></a><strong>9. ~/Desktop/autoodocs/lib/parser.lua:140</strong>
+<em>↳ <a href="#run-3">@run 3.</a></em></p>
+
+<p>C-style block opening</p>
+
+
+<p><a id="chk-10"></a><strong>10. ~/Desktop/autoodocs/lib/parser.lua:147</strong>
+<em>↳ <a href="#run-3">@run 3.</a></em></p>
+
+<p>HTML comment opening</p>
+
+
+<p><a id="chk-11"></a><strong>11. ~/Desktop/autoodocs/lib/parser.lua:154</strong>
+<em>↳ <a href="#run-3">@run 3.</a></em></p>
+
+<p>block comment continuation lines</p>
+
+
+<p><a id="chk-12"></a><strong>12. ~/Desktop/autoodocs/lib/parser.lua:165</strong>
+<em>↳ <a href="#run-3">@run 3.</a></em></p>
+
+<p>html closing</p>
+
+
+<p><a id="chk-13"></a><strong>13. ~/Desktop/autoodocs/lib/parser.lua:171</strong>
+<em>↳ <a href="#run-3">@run 3.</a></em></p>
+
+<p>triple-quote docstring styles</p>
+
+
+<p><a id="chk-14"></a><strong>14. ~/Desktop/autoodocs/lib/parser.lua:178</strong>
+<em>↳ <a href="#run-3">@run 3.</a></em></p>
+
+<p>single-quote docstring style</p>
+
+
+<p><a id="chk-15"></a><strong>15. ~/Desktop/autoodocs/lib/parser.lua:185</strong>
+<em>↳ <a href="#run-3">@run 3.</a></em></p>
+
+<p>docstring continuation lines</p>
+
+<blockquote>
+    <p>no opening delimiter to strip; checks both <code>"""</code> and <code>'''</code> closers</p>
+</blockquote>
+
+
+<p><a id="chk-16"></a><strong>16. ~/Desktop/autoodocs/lib/parser.lua:325</strong>
+<em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
+
+<p>Scan untagged block comment for tags</p>
+
+
+<p><a id="chk-17"></a><strong>17. ~/Desktop/autoodocs/lib/parser.lua:344</strong>
+<em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
+
+<p>Scan untagged HTML comment for tags</p>
+
+
+<p><a id="chk-18"></a><strong>18. ~/Desktop/autoodocs/lib/parser.lua:377</strong>
+<em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
+
+<p>Scan untagged docstring for tags</p>
+
+
+<p><a id="chk-19"></a><strong>19. ~/Desktop/autoodocs/lib/parser.lua:402</strong>
+<em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
+
+<p>Detect comment style of current line</p>
+
+<pre><code class="language-lua">        local style = M.detect_style(line)
+</code></pre>
+
+<p><a id="chk-20"></a><strong>20. ~/Desktop/autoodocs/lib/parser.lua:444</strong>
+<em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
+
+<p>Untagged block comment start - scan for tags</p>
+
+
+<p><a id="chk-21"></a><strong>21. ~/Desktop/autoodocs/lib/parser.lua:447</strong>
+<em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
+
+<p>Untagged HTML comment start</p>
+
+
+<p><a id="chk-22"></a><strong>22. ~/Desktop/autoodocs/lib/parser.lua:450</strong>
+<em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
+
+<p>Untagged double-quote docstring start</p>
+
+
+<p><a id="chk-23"></a><strong>23. ~/Desktop/autoodocs/lib/parser.lua:454</strong>
+<em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
+
+<p>Untagged single-quote docstring start</p>
+
+
+<h2><a id="def"></a>Defines</h2>
+
+<h3><a id="def-1"></a>Localize functions for hot loop perf</h3>
+
+<p><code>~/Desktop/autoodocs/lib/parser.lua:2</code></p>
+
+<pre><code class="language-lua">local find   = string.find
+local sub    = string.sub
+local byte   = string.byte
+local match  = string.match
+local gmatch = string.gmatch
+local gsub   = string.gsub
+local open   = io.open
+</code></pre>
+
+<h3><a id="def-2"></a>Localize utils for hoot loop perf</h3>
+
+<p><code>~/Desktop/autoodocs/lib/parser.lua:11</code></p>
+
+<pre><code class="language-lua">local utils = require("lib.utils")
+local trim = utils.trim
+local trim_lead = utils.trim_lead
+local trim_trail = utils.trim_trail
+local get_lang = utils.get_lang
+</code></pre>
+
+<h3><a id="def-3"></a>Localize map</h3>
+
+<p><code>~/Desktop/autoodocs/lib/parser.lua:18</code></p>
+
+<pre><code class="language-lua">local M = {}
+</code></pre>
+
+<h3><a id="def-4"></a>Hoisted <code>TAGS</code> table avoids per-call allocation in <code>strip_tags</code></h3>
+
+<p><code>~/Desktop/autoodocs/lib/parser.lua:21</code></p>
+
+<pre><code class="language-lua">local TAGS = {"@gen", "@def", "@chk", "@run", "@err"}
+</code></pre>
+
+<h3><a id="def-5"></a>Map <code>!x</code> suffixes to admonition types</h3>
+
+<p><code>~/Desktop/autoodocs/lib/parser.lua:24</code></p>
+
+<pre><code class="language-lua">M.ADMONITIONS = {n="NOTE", t="TIP", i="IMPORTANT", w="WARNING", c="CAUTION"}
+</code></pre>
+
+<p><a id="def-6"></a><strong>6. ~/Desktop/autoodocs/lib/parser.lua:202</strong>
+<em>↳ <a href="#run-4">@run 4.</a></em></p>
+
+<div class="callout callout-note">
+    <div class="callout-title">NOTE</div>
+    <p>Bulk-read file first so <code>get_lang</code> reuses the buffer</p>
+</div>
+
+<p>avoids a second <code>open</code>+<code>read</code> just for shebang detection</p>
+
+<pre><code class="language-lua">    local f = open(filepath, "r")
+    if not f then return 0 end
+    local content = f:read("*a")
+    f:close()
+</code></pre>
+
+<p><a id="def-7"></a><strong>7. ~/Desktop/autoodocs/lib/parser.lua:209</strong>
+<em>↳ <a href="#run-4">@run 4.</a></em></p>
+
+<p>Initialize per-file state machine variables</p>
+
+<blockquote>
+    <p><code>get_lang</code> receives first line to avoid reopening the file</p>
+</blockquote>
+
+<pre><code class="language-lua">    local first   = match(content, "^([^\n]*)")
+    local rel     = HOME and sub(filepath, 1, #HOME) == HOME and "~" .. sub(filepath, #HOME + 1) or filepath
+    local lang    = get_lang(filepath, first)
+    local ln      = 0
+    local state   = ""
+    local tag     = ""
+    local start   = ""
+    local text    = ""
+    local nsubj   = 0
+    local cap_want = 0
+    local capture = 0
+    local subj    = ""
+    local adm     = nil
+    local pending = nil
+    local tag_indent = 0
+</code></pre>
+
+<h2><a id="run"></a>Runners</h2>
+
+<h3><a id="run-1"></a>Strip <code>@tag:N</code> and trailing digits from text</h3>
+
+<p><code>~/Desktop/autoodocs/lib/parser.lua:55</code></p>
+
+<p>rejoining prefix with remaining content</p>
+
+<pre><code class="language-lua">local function strip_tag_num(text, tag)
+    local pos = find(text, tag .. ":", 1, true)
+    if not pos then return text end
+    local prefix = sub(text, 1, pos - 1)
+    local rest = sub(text, pos + #tag + 1)
+    rest = gsub(rest, "^%d+!?%a?", "")
+    rest = gsub(rest, "^ ", "", 1)
+    return prefix .. rest
+end
+</code></pre>
+
+<h3><a id="run-2"></a>Remove <code>@tag</code>, <code>@tag:N</code>, or <code>@tag!x</code> syntax from comment text</h3>
+
+<p><code>~/Desktop/autoodocs/lib/parser.lua:73</code></p>
+
+<p>delegates to <code>strip_tag_num</code> for <code>:N</code> and <code>:N!x</code> variants</p>
+
+<pre><code class="language-lua">function M.strip_tags(text)
+    for _, tag in ipairs(TAGS) do
+        if find(text, tag .. ":%d") then
+            return strip_tag_num(text, tag)
+        end
+        local epos = find(text, tag .. "!%a")
+        if epos then
+            local rest = sub(text, epos + #tag + 2)
+            rest = gsub(rest, "^ ", "", 1)
+            return sub(text, 1, epos - 1) .. rest
+        end
+        local spos = find(text, tag .. " ", 1, true)
+        if spos then
+            return sub(text, 1, spos - 1) .. sub(text, spos + #tag + 1)
+        end
+        local bpos = find(text, tag, 1, true)
+        if bpos then
+            return sub(text, 1, bpos - 1) .. sub(text, bpos + #tag)
+        end
+    end
+    return text
+end
+</code></pre>
+
+<h3><a id="run-3"></a>Strip comment delimiters and extract inner text</h3>
+
+<p><code>~/Desktop/autoodocs/lib/parser.lua:122</code></p>
+
+<p>for all styles including block continuations</p>
+
+
+<h3><a id="run-4"></a>Walk one file as a line-by-line state machine</h3>
+
+<p><code>~/Desktop/autoodocs/lib/parser.lua:199</code></p>
+
+<p>extracting tagged comments into <code>records</code> table</p>
+
+
+<p><a id="run-4-1"></a><strong>4.1 ~/Desktop/autoodocs/lib/parser.lua:227</strong>
+<em>↳ <a href="#run-4">@run 4.</a></em></p>
+
+<div class="callout callout-note">
+    <div class="callout-title">NOTE</div>
+    <p>Emit a documentation record or defer for subject capture</p>
+</div>
+
+<p><code>lang</code> is passed through as-is, empty string means no fence label</p>
+
+<pre><code class="language-lua">    local function emit()
+        if tag ~= "" and text ~= "" then
+            local tr = trim(text)
+            if tr ~= "" then
+                if nsubj &gt; 0 then
+                    pending = {
+                        tag  = tag,
+                        file = rel,
+                        loc  = rel .. ":" .. start,
+                        text = tr,
+                        lang = lang,
+                        adm  = adm,
+                        indent = tag_indent,
+                    }
+                    cap_want = nsubj
+                    subj = ""
+                else
+                    records[#records + 1] = {
+                        tag  = tag,
+                        file = rel,
+                        loc  = rel .. ":" .. start,
+                        text = tr,
+                        lang = lang,
+                        subj = "",
+                        adm  = adm,
+                        indent = tag_indent,
+                    }
+                end
+            end
+        end
+        state = ""
+        tag   = ""
+        start = ""
+        text  = ""
+        nsubj = 0
+        adm   = nil
+    end
+</code></pre>
+
+<p><a id="run-4-2"></a><strong>4.2 ~/Desktop/autoodocs/lib/parser.lua:267</strong>
+<em>↳ <a href="#run-4">@run 4.</a></em></p>
+
+<p>Flush deferred record with captured <code>subj</code> lines</p>
+
+<pre><code class="language-lua">    local function flush_pending()
+        if pending then
+            pending.subj = subj
+            records[#records + 1] = pending
+            pending = nil
+            subj    = ""
+            capture = 0
+        end
+    end
+</code></pre>
+
+<p><a id="run-4-2-1"></a><strong>4.2.1 ~/Desktop/autoodocs/lib/parser.lua:287</strong>
+<em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
+
+<p>Subject line capture mode</p>
+
+<pre><code class="language-lua">        if capture &gt; 0 then
+            if subj ~= "" then
+                subj = subj .. US .. line
+            else
+                subj = line
+            end
+            capture = capture - 1
+            if capture == 0 then flush_pending() end
+            goto continue
+        end
+</code></pre>
+
+<p><a id="run-4-2-2"></a><strong>4.2.2 ~/Desktop/autoodocs/lib/parser.lua:299</strong>
+<em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
+
+<p>Accumulate C-style block comment with tag</p>
+
+<pre><code class="language-lua">        if state == "cblock" then
+            if find(line, "*/", 1, true) then
+                local sc = M.strip_comment(line, "cblock_cont")
+                if sc ~= "" then text = text .. US .. sc end
+                emit()
+            else
+                local sc = M.strip_comment(line, "cblock_cont")
+                text = text .. US .. sc
+            end
+            goto continue
+        end
+</code></pre>
+
+<p><a id="run-4-2-3"></a><strong>4.2.3 ~/Desktop/autoodocs/lib/parser.lua:312</strong>
+<em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
+
+<p>Accumulate HTML comment with tag</p>
+
+<pre><code class="language-lua">        if state == "html" then
+            if find(line, "--&gt;", 1, true) then
+                local sc = M.strip_comment(line, "html_cont")
+                if sc ~= "" then text = text .. US .. sc end
+                emit()
+            else
+                local sc = M.strip_comment(line, "html_cont")
+                text = text .. US .. sc
+            end
+            goto continue
+        end
+</code></pre>
+
+<p><a id="run-4-2-4"></a><strong>4.2.4 ~/Desktop/autoodocs/lib/parser.lua:363</strong>
+<em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
+
+<p>Accumulate docstring with tag</p>
+
+<pre><code class="language-lua">        if state == "dquote" or state == "squote" then
+            local close = (state == "dquote") and '"""' or "'''"
+            if find(line, close, 1, true) then
+                local sc = M.strip_comment(line, "docstring_cont")
+                if sc ~= "" then text = text .. US .. sc end
+                emit()
+            else
+                local sc = M.strip_comment(line, "docstring_cont")
+                text = text .. US .. sc
+            end
+            goto continue
+        end
+</code></pre>
+
+<p><a id="run-4-2-5"></a><strong>4.2.5 ~/Desktop/autoodocs/lib/parser.lua:405</strong>
+<em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
+
+<p>Continue or close existing single-line comment block</p>
+
+<pre><code class="language-lua">        if state ~= "" then
+            if style == state then
+                if M.has_tag(line) then
+                    emit()
+                else
+                    local sc = M.strip_comment(line, style)
+                    text = text .. US .. sc
+                    goto continue
+                end
+            else
+                emit()
+            end
+        end
+</code></pre>
+
+<p><a id="run-4-2-6"></a><strong>4.2.6 ~/Desktop/autoodocs/lib/parser.lua:420</strong>
+<em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
+
+<p>Dispatch new tagged comment by style</p>
+
+<pre><code class="language-lua">        if M.has_tag(line) and style ~= "none" then
+            tag   = M.get_tag(line)
+            start = tostring(ln)
+            local ti = 1; while byte(line,ti) == 32 or byte(line,ti) == 9 do ti = ti+1 end; tag_indent = ti-1
+            local sc = M.strip_comment(line, style)
+            nsubj = M.get_subject_count(sc)
+            adm   = M.get_admonition(sc)
+            text  = M.strip_tags(sc)
+
+            if style == "hash" or style == "dslash" or style == "ddash" then
+                state = style
+            elseif style == "cblock" then
+                if find(line, "*/", 1, true) then emit() else state = "cblock" end
+            elseif style == "html" then
+                if find(line, "--&gt;", 1, true) then emit() else state = "html" end
+            elseif style == "dquote" then
+                local rest = match(line, '"""(.*)')
+                if rest and find(rest, '"""', 1, true) then emit() else state = "dquote" end
+            elseif style == "squote" then
+                local rest = match(line, "'''(.*)")
+                if rest and find(rest, "'''", 1, true) then emit() else state = "squote" end
+            end
+</code></pre>
+
+<p><a id="run-4-2-7"></a><strong>4.2.7 ~/Desktop/autoodocs/lib/parser.lua:460</strong>
+<em>↳ <a href="#run-4-2">@run 4.2</a></em></p>
+
+<p>Begin subject capture if waiting and hit a code line</p>
+
+<pre><code class="language-lua">        if cap_want &gt; 0 and style == "none" then
+            capture  = cap_want
+            cap_want = 0
+            subj     = line
+            capture  = capture - 1
+            if capture == 0 then flush_pending() end
+        end
+</code></pre>
+
+
+</main>
+</div>
+<script>
+hljs.highlightAll();
+// Hide home icon on index page
+if (location.pathname.endsWith('index.html') || location.pathname.endsWith('/')) {
+    var home = document.querySelector('.sidebar-home');
+    if (home) home.style.display = 'none';
+}
+// Highlight active section on scroll
+var links = document.querySelectorAll('.sidebar a');
+var sections = document.querySelectorAll('.content h2, .content h3');
+window.addEventListener('scroll', function() {
+    var current = '';
+    sections.forEach(function(section) {
+        var anchor = section.querySelector('a');
+        if (anchor && window.scrollY >= section.offsetTop - 100) {
+            current = anchor.id;
+        }
+    });
+    links.forEach(function(link) {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + current) {
+            link.classList.add('active');
+        }
+    });
+});
+</script>
+</body></html>

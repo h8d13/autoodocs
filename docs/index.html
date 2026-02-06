@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Documentation</title>
+    <link rel="stylesheet" type="text/css" href="default.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<div class="container">
+<nav class="sidebar">
+<h2>Contents <a href="index.html" class="sidebar-home" title="Home">⌂</a></h2>
+<ul id="toc">
+<li><a href="build-lua.html">build.lua</a></li>
+<li><a href="markdown-lua.html">markdown.lua</a></li>
+<li><a href="autodocs-lua.html">autodocs.lua</a></li>
+<li><a href="default-css.html">default.css</a></li>
+<li class="toc-dir"><details><summary>lib/</summary><ul>
+<li><a href="parser-lua.html">parser.lua</a></li>
+<li><a href="utils-lua.html">utils.lua</a></li>
+<li><a href="render-lua.html">render.lua</a></li>
+</ul></details></li>
+</ul>
+</nav>
+<main class="content">
+
+<h1>Documentation</h1>
+
+<h1>Autoodocs</h1>
+
+<p>A lightweight documentation generator that extracts tagged comments from source files.</p>
+
+<h2>Features</h2>
+
+<ul>
+    <li>Extracts <code>@gen</code>, <code>@def</code>, <code>@chk</code>, <code>@run</code>, <code>@err</code> tagged comments</li>
+    <li>Respects <code>.gitignore</code> and <code>.somefolder</code> ignores</li>
+    <li>Skips the whole comment block until next code line</li>
+    <li>Cross-references with <code>@src:file:line</code> auto-resolving anchors</li>
+    <li>Subject line counts with <code>:N</code> syntax</li>
+    <li>GitHub-style callouts (<code>!n</code> NOTE, <code>!t</code> TIP, <code>!w</code> WARN, <code>!c</code> CAUTION)</li>
+    <li>Generates markdown with HTML output via bundled converter</li>
+</ul>
+
+<h2>Installation</h2>
+
+<p>Copy to a hidden folder so autodocs doesn't document itself:</p>
+
+<pre><code class="language-sh">mkdir -p /myproject/.autodocs
+cp autodocs.lua markdown.lua default.css build.lua stats.awk /myproject/.autodocs/
+</code></pre>
+
+<h2>Usage</h2>
+
+<pre><code class="language-sh">lua .autodocs/autodocs.lua . docs (-s)  # generate markdown optional stats
+lua .autodocs/markdown.lua docs/*.md    # convert to HTML
+</code></pre>
+
+<p>Or create a build script / pre-commit hook:</p>
+
+<pre><code class="language-yaml"># .pre-commit-config.yaml
+repos:
+  - repo: local
+    hooks:
+      - id: autodocs
+        name: autodocs
+        entry: bash -c 'lua .autodocs/build.lua &amp;&amp; git add docs/'
+        language: system
+        pass_filenames: false
+        always_run: true
+</code></pre>
+
+<h2>GitHub Pages</h2>
+
+<p>Create a branch named <code>pages</code> or directly from <code>master | main</code>.</p>
+
+<p>Go to repo <code>Settings</code> > <code>Pages</code> > <code>Deploy from branch</code> > <code>pages</code> > <code>/docs</code></p>
+
+<p>Or directly from root <code>/</code></p>
+
+
+
+<!-- NAV
+[build.lua](build-lua.html)
+[markdown.lua](markdown-lua.html)
+[autodocs.lua](autodocs-lua.html)
+[default.css](default-css.html)
+[>lib]
+[parser.lua](parser-lua.html)
+[utils.lua](utils-lua.html)
+[render.lua](render-lua.html)
+[<]
+-->
+
+
+</main>
+</div>
+<script>
+hljs.highlightAll();
+// Hide home icon on index page
+if (location.pathname.endsWith('index.html') || location.pathname.endsWith('/')) {
+    var home = document.querySelector('.sidebar-home');
+    if (home) home.style.display = 'none';
+}
+// Highlight active section on scroll
+var links = document.querySelectorAll('.sidebar a');
+var sections = document.querySelectorAll('.content h2, .content h3');
+window.addEventListener('scroll', function() {
+    var current = '';
+    sections.forEach(function(section) {
+        var anchor = section.querySelector('a');
+        if (anchor && window.scrollY >= section.offsetTop - 100) {
+            current = anchor.id;
+        }
+    });
+    links.forEach(function(link) {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + current) {
+            link.classList.add('active');
+        }
+    });
+});
+</script>
+</body></html>

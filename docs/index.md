@@ -1,3 +1,5 @@
+# Documentation
+
 # Autoodocs
 
 A lightweight documentation generator that extracts tagged comments from source files.
@@ -50,3 +52,16 @@ Create a branch named `pages` or directly from `master | main`.
 Go to repo `Settings` > `Pages` > `Deploy from branch` > `pages` > `/docs`
 
 Or directly from root `/`
+
+
+<!-- NAV
+[build.lua](build-lua.html)
+[markdown.lua](markdown-lua.html)
+[autodocs.lua](autodocs-lua.html)
+[default.css](default-css.html)
+[>lib]
+[parser.lua](parser-lua.html)
+[utils.lua](utils-lua.html)
+[render.lua](render-lua.html)
+[<]
+-->

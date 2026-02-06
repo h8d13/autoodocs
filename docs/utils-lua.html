@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>utils.lua</title>
+    <link rel="stylesheet" type="text/css" href="default.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<div class="container">
+<nav class="sidebar">
+<h2>Contents <a href="index.html" class="sidebar-home" title="Home">⌂</a></h2>
+<ul id="toc">
+<li><a href="#chk">Checks</a></li>
+<li class="toc-sub"><a href="#chk-1">Classify file language via extension or shebang</a></li>
+<li><a href="#def">Defines</a></li>
+<li class="toc-sub"><a href="#def-3">Map file extension to fenced code block language</a></li>
+<li class="toc-sub"><a href="#def-4">Map shebang interpreters to fenced code block language</a></li>
+<li><a href="#run">Runners</a></li>
+<li class="toc-sub"><a href="#run-1">Strip leading whitespace, returns original if unchanged</a></li>
+<li class="toc-sub"><a href="#run-2">Strip trailing whitespace, returns original if unchanged</a></li>
+</ul>
+</nav>
+<main class="content">
+
+<h1>utils.lua</h1>
+
+<p><code>~/Desktop/autoodocs/lib/utils.lua</code></p>
+
+<p>String utilities, shell escaping, and language detection</p>
+
+<h2><a id="chk"></a>Checks</h2>
+
+<h3><a id="chk-1"></a>Classify file language via extension or shebang</h3>
+
+<p><code>~/Desktop/autoodocs/lib/utils.lua:60</code></p>
+
+<p>accepts <code>first_line</code> to avoid reopening the file</p>
+
+<pre><code class="language-lua">function M.get_lang(filepath, first_line)
+    local ext = match(filepath, "%.([^%.]+)$")
+    if ext and M.ext_map[ext] then return M.ext_map[ext] end
+    if first_line and sub(first_line, 1, 3) == "#!/" then
+        for _, pair in ipairs(M.shebang_map) do
+            if find(first_line, pair[1], 1, true) then
+                return pair[2]
+            end
+        end
+    end
+    return ""
+end
+</code></pre>
+
+<h2><a id="def"></a>Defines</h2>
+
+<h3><a id="def-1"></a>Localize <code>string.*</code>, <code>table.*</code>, and <code>io.*</code> functions</h3>
+
+<p><code>~/Desktop/autoodocs/lib/utils.lua:2</code></p>
+
+<p>bypasses metatable and global lookups in the hot loop</p>
+
+<pre><code class="language-lua">local find   = string.find
+local sub    = string.sub
+local byte   = string.byte
+local match  = string.match
+local gsub   = string.gsub
+local open   = io.open
+
+local M = {}
+
+</code></pre>
+
+<h3><a id="def-2"></a>Shell-escape a string for safe interpolation into <code>io.popen</code></h3>
+
+<p><code>~/Desktop/autoodocs/lib/utils.lua:13</code></p>
+
+<div class="callout callout-note">
+    <div class="callout-title">NOTE</div>
+    <p>prevents breakage from paths containing <code>"</code>, <code>$()</code>, or backticks</p>
+</div>
+
+<pre><code class="language-lua">function M.shell_quote(s)
+    return "'" .. gsub(s, "'", "'\\''") .. "'"
+end
+</code></pre>
+
+<h3><a id="def-3"></a>Map file extension to fenced code block language</h3>
+
+<p><code>~/Desktop/autoodocs/lib/utils.lua:40</code></p>
+
+<pre><code class="language-lua">M.ext_map = {
+    sh="sh", bash="sh", py="python",
+    js="javascript", mjs="javascript", cjs="javascript",
+    ts="typescript", mts="typescript", cts="typescript",
+    jsx="jsx", tsx="tsx", rb="ruby", go="go", rs="rust",
+    c="c", h="c", cpp="cpp", hpp="cpp", cc="cpp", cxx="cpp",
+    java="java", cs="csharp", swift="swift", kt="kotlin", kts="kotlin",
+    lua="lua", sql="sql", html="html", htm="html", css="css", xml="xml",
+    yaml="yaml", yml="yaml", toml="toml", json="json",
+    php="php", pl="perl", pm="perl", zig="zig",
+    hs="haskell", ex="elixir", exs="elixir", erl="erlang",
+}
+</code></pre>
+
+<h3><a id="def-4"></a>Map shebang interpreters to fenced code block language</h3>
+
+<p><code>~/Desktop/autoodocs/lib/utils.lua:54</code></p>
+
+<pre><code class="language-lua">M.shebang_map = {
+    {"python", "python"}, {"node", "javascript"}, {"ruby", "ruby"},
+    {"perl", "perl"}, {"lua", "lua"}, {"php", "php"}, {"sh", "sh"},
+}
+</code></pre>
+
+<h2><a id="run"></a>Runners</h2>
+
+<h3><a id="run-1"></a>Strip leading whitespace, returns original if unchanged</h3>
+
+<p><code>~/Desktop/autoodocs/lib/utils.lua:19</code></p>
+
+<pre><code class="language-lua">function M.trim_lead(s)
+    local i = 1
+    while byte(s, i) == 32 or byte(s, i) == 9 do i = i + 1 end
+    if i == 1 then return s end
+    return sub(s, i)
+end
+</code></pre>
+
+<h3><a id="run-2"></a>Strip trailing whitespace, returns original if unchanged</h3>
+
+<p><code>~/Desktop/autoodocs/lib/utils.lua:27</code></p>
+
+<pre><code class="language-lua">function M.trim_trail(s)
+    local i = #s
+    while i &gt; 0 and (byte(s, i) == 32 or byte(s, i) == 9) do i = i - 1 end
+    if i == #s then return s end
+    return sub(s, 1, i)
+end
+</code></pre>
+
+<h3><a id="run-3"></a>Trim both ends via <code>trim_lead</code> and <code>trim_trail</code></h3>
+
+<p><code>~/Desktop/autoodocs/lib/utils.lua:35</code></p>
+
+<pre><code class="language-lua">function M.trim(s)
+    return M.trim_trail(M.trim_lead(s))
+end
+</code></pre>
+
+
+</main>
+</div>
+<script>
+hljs.highlightAll();
+// Hide home icon on index page
+if (location.pathname.endsWith('index.html') || location.pathname.endsWith('/')) {
+    var home = document.querySelector('.sidebar-home');
+    if (home) home.style.display = 'none';
+}
+// Highlight active section on scroll
+var links = document.querySelectorAll('.sidebar a');
+var sections = document.querySelectorAll('.content h2, .content h3');
+window.addEventListener('scroll', function() {
+    var current = '';
+    sections.forEach(function(section) {
+        var anchor = section.querySelector('a');
+        if (anchor && window.scrollY >= section.offsetTop - 100) {
+            current = anchor.id;
+        }
+    });
+    links.forEach(function(link) {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + current) {
+            link.classList.add('active');
+        }
+    });
+});
+</script>
+</body></html>
