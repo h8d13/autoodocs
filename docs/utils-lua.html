@@ -20,8 +20,8 @@
 <li class="toc-sub"><a href="#def-3">Map file extension to fenced code block language</a></li>
 <li class="toc-sub"><a href="#def-4">Map shebang interpreters to fenced code block l...</a></li>
 <li><a href="#run">Runners</a></li>
-<li class="toc-sub"><a href="#run-1">Strip leading spaces and tabs via byte scan</a></li>
-<li class="toc-sub"><a href="#run-2">Strip trailing spaces and tabs via byte scan</a></li>
+<li class="toc-sub"><a href="#run-1">Strip leading whitespace, returns original if u...</a></li>
+<li class="toc-sub"><a href="#run-2">Strip trailing whitespace, returns original if ...</a></li>
 </ul>
 </nav>
 <main class="content">
@@ -34,7 +34,7 @@
 
 <h3><a id="chk-1"></a>Classify file language via extension or shebang</h3>
 
-<p><code>~/Desktop/autoodocs/lib/utils.lua:61</code></p>
+<p><code>~/Desktop/autoodocs/lib/utils.lua:59</code></p>
 
 <p>accepts <code>first_line</code> to avoid reopening the file</p>
 
@@ -66,6 +66,9 @@ local byte   = string.byte
 local match  = string.match
 local gsub   = string.gsub
 local open   = io.open
+
+local M = {}
+
 </code></pre>
 
 <h3><a id="def-2"></a>Shell-escape a string for safe interpolation in...</h3>
@@ -84,7 +87,7 @@ end
 
 <h3><a id="def-3"></a>Map file extension to fenced code block language</h3>
 
-<p><code>~/Desktop/autoodocs/lib/utils.lua:41</code></p>
+<p><code>~/Desktop/autoodocs/lib/utils.lua:39</code></p>
 
 <pre><code class="language-lua">M.ext_map = {
     sh="sh", bash="sh", py="python",
@@ -102,7 +105,7 @@ end
 
 <h3><a id="def-4"></a>Map shebang interpreters to fenced code block l...</h3>
 
-<p><code>~/Desktop/autoodocs/lib/utils.lua:55</code></p>
+<p><code>~/Desktop/autoodocs/lib/utils.lua:53</code></p>
 
 <pre><code class="language-lua">M.shebang_map = {
     {"python", "python"}, {"node", "javascript"}, {"ruby", "ruby"},
@@ -112,11 +115,9 @@ end
 
 <h2><a id="run"></a>Runners</h2>
 
-<h3><a id="run-1"></a>Strip leading spaces and tabs via byte scan</h3>
+<h3><a id="run-1"></a>Strip leading whitespace, returns original if u...</h3>
 
 <p><code>~/Desktop/autoodocs/lib/utils.lua:18</code></p>
-
-<p>returns original string when no trimming needed</p>
 
 <pre><code class="language-lua">function M.trim_lead(s)
     local i = 1
@@ -126,11 +127,9 @@ end
 end
 </code></pre>
 
-<h3><a id="run-2"></a>Strip trailing spaces and tabs via byte scan</h3>
+<h3><a id="run-2"></a>Strip trailing whitespace, returns original if ...</h3>
 
-<p><code>~/Desktop/autoodocs/lib/utils.lua:27</code></p>
-
-<p>returns original string when no trimming needed</p>
+<p><code>~/Desktop/autoodocs/lib/utils.lua:26</code></p>
 
 <pre><code class="language-lua">function M.trim_trail(s)
     local i = #s
@@ -142,7 +141,7 @@ end
 
 <h3><a id="run-3"></a>Trim both ends via <code>trim_lead</code> and <code>trim_trail</code></h3>
 
-<p><code>~/Desktop/autoodocs/lib/utils.lua:36</code></p>
+<p><code>~/Desktop/autoodocs/lib/utils.lua:34</code></p>
 
 <pre><code class="language-lua">function M.trim(s)
     return M.trim_trail(M.trim_lead(s))

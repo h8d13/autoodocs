@@ -1,4 +1,4 @@
--- @def:6 Localize `string.*`, `table.*`, and `io.*` functions
+-- @def:9 Localize `string.*`, `table.*`, and `io.*` functions
 -- bypasses metatable and global lookups in the hot loop
 local find   = string.find
 local sub    = string.sub
@@ -15,8 +15,7 @@ function M.shell_quote(s)
     return "'" .. gsub(s, "'", "'\\''") .. "'"
 end
 
--- @run:6 Strip leading spaces and tabs via byte scan
--- returns original string when no trimming needed
+-- @run:6 Strip leading whitespace, returns original if unchanged
 function M.trim_lead(s)
     local i = 1
     while byte(s, i) == 32 or byte(s, i) == 9 do i = i + 1 end
@@ -24,8 +23,7 @@ function M.trim_lead(s)
     return sub(s, i)
 end
 
--- @run:6 Strip trailing spaces and tabs via byte scan
--- returns original string when no trimming needed
+-- @run:6 Strip trailing whitespace, returns original if unchanged
 function M.trim_trail(s)
     local i = #s
     while i > 0 and (byte(s, i) == 32 or byte(s, i) == 9) do i = i - 1 end

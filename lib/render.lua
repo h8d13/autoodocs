@@ -1,9 +1,10 @@
--- @def:5 Localize functions for performance
+-- @def:6 Localize functions for performance
 local fmt    = string.format
 local gmatch = string.gmatch
 local concat = table.concat
 local gsub   = string.gsub
 local match  = string.match
+local sub    = string.sub
 
 -- @def:2 Import utils for trim
 local utils = require("lib.utils")
@@ -98,11 +99,19 @@ function M.render_index(file_order)
     w("Select a file from the sidebar to view its documentation.\n\n")
 
     -- Hidden nav data for TOC extraction
+    -- Find common path prefix across all files
+    local prefix = match(file_order[1] or "", "^(.*/)") or ""
+    for _, file in ipairs(file_order) do
+        while #prefix > 0 and sub(file, 1, #prefix) ~= prefix do
+            prefix = match(sub(prefix, 1, -2), "^(.*/)") or ""
+        end
+    end
+
     w("<!-- NAV\n")
     for _, file in ipairs(file_order) do
         local slug = slugify(file)
-        local basename = match(file, "([^/]+)$") or file
-        w(fmt("[%s](%s.html)\n", basename, slug))
+        local display = sub(file, #prefix + 1)
+        w(fmt("[%s](%s.html)\n", display, slug))
     end
     w("-->\n")
 

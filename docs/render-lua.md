@@ -14,11 +14,12 @@ local gmatch = string.gmatch
 local concat = table.concat
 local gsub   = string.gsub
 local match  = string.match
+local sub    = string.sub
 ```
 
 ### <a id="def-2"></a>Import utils for trim
 
-`~/Desktop/autoodocs/lib/render.lua:8`
+`~/Desktop/autoodocs/lib/render.lua:9`
 
 ```lua
 local utils = require("lib.utils")
@@ -27,7 +28,7 @@ local trim = utils.trim
 
 ### <a id="def-3"></a>Module table
 
-`~/Desktop/autoodocs/lib/render.lua:12`
+`~/Desktop/autoodocs/lib/render.lua:13`
 
 ```lua
 local M = {}
@@ -35,7 +36,7 @@ local M = {}
 
 ### <a id="def-4"></a>Map tag prefixes to anchor slugs and section ti...
 
-`~/Desktop/autoodocs/lib/render.lua:15`
+`~/Desktop/autoodocs/lib/render.lua:16`
 
 ```lua
 M.TAG_SEC   = {CHK="chk", DEF="def", RUN="run", ERR="err"}
@@ -47,31 +48,31 @@ M.TAG_ORDER = {"CHK", "DEF", "RUN", "ERR"}
 
 ### <a id="run-1"></a>Generate a slug from a file path for anchors/fi...
 
-`~/Desktop/autoodocs/lib/render.lua:20`
+`~/Desktop/autoodocs/lib/render.lua:21`
 
 
 ### <a id="run-2"></a>Render a single entry
 
-`~/Desktop/autoodocs/lib/render.lua:28`
+`~/Desktop/autoodocs/lib/render.lua:29`
 
 
 ### <a id="run-3"></a>Render index page
 
-`~/Desktop/autoodocs/lib/render.lua:92`
+`~/Desktop/autoodocs/lib/render.lua:93`
 
 
 ### <a id="run-4"></a>Render a single file's documentation page
 
-`~/Desktop/autoodocs/lib/render.lua:112`
+`~/Desktop/autoodocs/lib/render.lua:121`
 
 
 ### <a id="run-5"></a>Group records by file and assign indices
 
-`~/Desktop/autoodocs/lib/render.lua:141`
+`~/Desktop/autoodocs/lib/render.lua:150`
 
 
 ### <a id="run-6"></a>Get slug for a file path
 
-`~/Desktop/autoodocs/lib/render.lua:193`
+`~/Desktop/autoodocs/lib/render.lua:202`
 
 

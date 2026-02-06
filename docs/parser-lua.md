@@ -212,8 +212,6 @@ local sub    = string.sub
 local byte   = string.byte
 local match  = string.match
 local gmatch = string.gmatch
-local gsub   = string.gsub
-local open   = io.open
 ```
 
 ### <a id="def-2"></a>Hoisted `TAGS` table avoids per-call allocation...

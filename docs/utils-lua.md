@@ -6,7 +6,7 @@
 
 ### <a id="chk-1"></a>Classify file language via extension or shebang
 
-`~/Desktop/autoodocs/lib/utils.lua:61`
+`~/Desktop/autoodocs/lib/utils.lua:59`
 
 accepts `first_line` to avoid reopening the file
 
@@ -40,6 +40,9 @@ local byte   = string.byte
 local match  = string.match
 local gsub   = string.gsub
 local open   = io.open
+
+local M = {}
+
 ```
 
 ### <a id="def-2"></a>Shell-escape a string for safe interpolation in...
@@ -57,7 +60,7 @@ end
 
 ### <a id="def-3"></a>Map file extension to fenced code block language
 
-`~/Desktop/autoodocs/lib/utils.lua:41`
+`~/Desktop/autoodocs/lib/utils.lua:39`
 
 ```lua
 M.ext_map = {
@@ -76,7 +79,7 @@ M.ext_map = {
 
 ### <a id="def-4"></a>Map shebang interpreters to fenced code block l...
 
-`~/Desktop/autoodocs/lib/utils.lua:55`
+`~/Desktop/autoodocs/lib/utils.lua:53`
 
 ```lua
 M.shebang_map = {
@@ -87,11 +90,9 @@ M.shebang_map = {
 
 ## <a id="run"></a>Runners
 
-### <a id="run-1"></a>Strip leading spaces and tabs via byte scan
+### <a id="run-1"></a>Strip leading whitespace, returns original if u...
 
 `~/Desktop/autoodocs/lib/utils.lua:18`
-
-returns original string when no trimming needed
 
 ```lua
 function M.trim_lead(s)
@@ -102,11 +103,9 @@ function M.trim_lead(s)
 end
 ```
 
-### <a id="run-2"></a>Strip trailing spaces and tabs via byte scan
+### <a id="run-2"></a>Strip trailing whitespace, returns original if ...
 
-`~/Desktop/autoodocs/lib/utils.lua:27`
-
-returns original string when no trimming needed
+`~/Desktop/autoodocs/lib/utils.lua:26`
 
 ```lua
 function M.trim_trail(s)
@@ -119,7 +118,7 @@ end
 
 ### <a id="run-3"></a>Trim both ends via `trim_lead` and `trim_trail`
 
-`~/Desktop/autoodocs/lib/utils.lua:36`
+`~/Desktop/autoodocs/lib/utils.lua:34`
 
 ```lua
 function M.trim(s)
