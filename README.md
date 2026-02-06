@@ -1,5 +1,3 @@
-# Documentation
-
 A lightweight documentation generator that extracts tagged comments from source files.
 
 ## Features
@@ -17,16 +15,3 @@ lua autodocs.lua [scan_dir] [out_dir] [-s]  # generate markdown
 lua markdown.lua docs/file.md               # convert to HTML
 lua build.lua                               # run full pipeline
 ```
-
-
-<!-- NAV
-[build.lua](build-lua.html)
-[markdown.lua](markdown-lua.html)
-[autodocs.lua](autodocs-lua.html)
-[default.css](default-css.html)
-[>lib]
-[parser.lua](parser-lua.html)
-[utils.lua](utils-lua.html)
-[render.lua](render-lua.html)
-[<]
--->

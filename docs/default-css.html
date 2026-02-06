@@ -10,8 +10,7 @@
 <body>
 <div class="container">
 <nav class="sidebar">
-<a href="index.html" class="sidebar-home">← Index</a>
-<h2>Contents</h2>
+<h2>Contents <a href="index.html" class="sidebar-home" title="Home">⌂</a></h2>
 <ul id="toc">
 <li><a href="#def">Defines</a></li>
 <li class="toc-sub"><a href="#def-1">Box sizing reset</a></li>
@@ -73,19 +72,19 @@
 
 <h3><a id="def-4"></a>Main content area</h3>
 
-<p><code>~/Desktop/autoodocs/default.css:122</code></p>
+<p><code>~/Desktop/autoodocs/default.css:125</code></p>
 
 <pre><code class="language-css">.content {
     flex: 1;
     min-width: 0;
-    padding: 2em 3em;
+    padding: 0.1em 3em;
     max-width: 900px;
 }
 </code></pre>
 
 <h3><a id="def-5"></a>Heading styles</h3>
 
-<p><code>~/Desktop/autoodocs/default.css:130</code></p>
+<p><code>~/Desktop/autoodocs/default.css:133</code></p>
 
 <pre><code class="language-css">h1, h2, h3, h4, h5, h6 {
     margin-top: 0.3em;
@@ -107,7 +106,7 @@ h4 { font-size: 1em; }
 
 <h3><a id="def-6"></a>Code and pre blocks</h3>
 
-<p><code>~/Desktop/autoodocs/default.css:175</code></p>
+<p><code>~/Desktop/autoodocs/default.css:178</code></p>
 
 <pre><code class="language-css">code {
     font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
@@ -125,7 +124,7 @@ pre {
 
 <h3><a id="def-7"></a>GitHub-style callout boxes</h3>
 
-<p><code>~/Desktop/autoodocs/default.css:240</code></p>
+<p><code>~/Desktop/autoodocs/default.css:243</code></p>
 
 <pre><code class="language-css">.callout {
     border-left: 4px solid;
@@ -175,7 +174,7 @@ pre {
 
 <h3><a id="def-8"></a>Mobile responsive breakpoint</h3>
 
-<p><code>~/Desktop/autoodocs/default.css:285</code></p>
+<p><code>~/Desktop/autoodocs/default.css:288</code></p>
 
 <pre><code class="language-css">@media (max-width: 900px) {
     .container {
@@ -201,6 +200,11 @@ pre {
 </div>
 <script>
 hljs.highlightAll();
+// Hide home icon on index page
+if (location.pathname.endsWith('index.html') || location.pathname.endsWith('/')) {
+    var home = document.querySelector('.sidebar-home');
+    if (home) home.style.display = 'none';
+}
 // Highlight active section on scroll
 var links = document.querySelectorAll('.sidebar a');
 var sections = document.querySelectorAll('.content h2, .content h3');

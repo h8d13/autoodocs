@@ -141,12 +141,28 @@ local function render_entry(w, r)
 end
 
 -- @run Render index page
-function M.render_index(file_order)
+function M.render_index(file_order, scan_dir)
     local out = {}
     local function w(s) out[#out + 1] = s end
 
     w("# Documentation\n\n")
-    w("Select a file from the sidebar to view its documentation.\n\n")
+
+    -- Check for README.md or readme.md
+    local readme_content = nil
+    for _, name in ipairs({"README.md", "readme.md"}) do
+        local f = io.open((scan_dir or ".") .. "/" .. name, "r")
+        if f then
+            readme_content = f:read("*a")
+            f:close()
+            break
+        end
+    end
+
+    if readme_content then
+        w(readme_content .. "\n\n")
+    else
+        w("Select a file from the sidebar to view its documentation.\n\n")
+    end
 
     -- Find common path prefix across all files
     local prefix = match(file_order[1] or "", "^(.*/)") or ""

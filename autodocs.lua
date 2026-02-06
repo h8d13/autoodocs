@@ -128,7 +128,7 @@ local function main()
     local by_file, file_order = render.group_records(records)
 
     -- @run Write index page
-    local index_md = render.render_index(file_order)
+    local index_md = render.render_index(file_order, SCAN_DIR)
     local index_path = OUT_DIR .. "/index.md"
     if write_if_changed(index_path, index_md) then
         io.stderr:write(fmt("autodocs: wrote %s\n", index_path))

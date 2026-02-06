@@ -1293,8 +1293,7 @@ local function run_command_line(arg)
 <body>
 <div class="container">
 <nav class="sidebar">
-<a href="index.html" class="sidebar-home">← Index</a>
-<h2>Contents</h2>
+<h2>Contents <a href="index.html" class="sidebar-home" title="Home">⌂</a></h2>
 <ul id="toc"></ul>
 </nav>
 <main class="content">
@@ -1355,6 +1354,11 @@ local function run_command_line(arg)
 </div>
 <script>
 hljs.highlightAll();
+// Hide home icon on index page
+if (location.pathname.endsWith('index.html') || location.pathname.endsWith('/')) {
+    var home = document.querySelector('.sidebar-home');
+    if (home) home.style.display = 'none';
+}
 // Highlight active section on scroll
 var links = document.querySelectorAll('.sidebar a');
 var sections = document.querySelectorAll('.content h2, .content h3');

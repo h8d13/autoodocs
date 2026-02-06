@@ -10,8 +10,7 @@
 <body>
 <div class="container">
 <nav class="sidebar">
-<a href="index.html" class="sidebar-home">← Index</a>
-<h2>Contents</h2>
+<h2>Contents <a href="index.html" class="sidebar-home" title="Home">⌂</a></h2>
 <ul id="toc">
 <li><a href="build-lua.html">build.lua</a></li>
 <li><a href="markdown-lua.html">markdown.lua</a></li>
@@ -28,7 +27,25 @@
 
 <h1>Documentation</h1>
 
-<p>Select a file from the sidebar to view its documentation.</p>
+<p>A lightweight documentation generator that extracts tagged comments from source files.</p>
+
+<h2>Features</h2>
+
+<ul>
+    <li>Extracts <code>@gen</code>, <code>@def</code>, <code>@chk</code>, <code>@run</code>, <code>@err</code> tagged comments</li>
+    <li>Cross-references with <code>@src:file:line</code> auto-resolving anchors</li>
+    <li>GitHub-style callouts (<code>!n</code> NOTE, <code>!t</code> TIP, <code>!w</code> WARN, <code>!c</code> CAUTION)</li>
+    <li>Subject line counts with <code>:N</code> syntax</li>
+    <li>Generates markdown with HTML output via bundled converter</li>
+</ul>
+
+<h2>Usage</h2>
+
+<pre><code class="language-sh">lua autodocs.lua [scan_dir] [out_dir] [-s]  # generate markdown
+lua markdown.lua docs/file.md               # convert to HTML
+lua build.lua                               # run full pipeline
+</code></pre>
+
 
 
 <!-- NAV
@@ -48,6 +65,11 @@
 </div>
 <script>
 hljs.highlightAll();
+// Hide home icon on index page
+if (location.pathname.endsWith('index.html') || location.pathname.endsWith('/')) {
+    var home = document.querySelector('.sidebar-home');
+    if (home) home.style.display = 'none';
+}
 // Highlight active section on scroll
 var links = document.querySelectorAll('.sidebar a');
 var sections = document.querySelectorAll('.content h2, .content h3');

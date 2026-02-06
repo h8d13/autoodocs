@@ -48,20 +48,20 @@ Basic markdown stylesheet with GitHub-style sidebar
 
 ### <a id="def-4"></a>Main content area
 
-`~/Desktop/autoodocs/default.css:122`
+`~/Desktop/autoodocs/default.css:125`
 
 ```css
 .content {
     flex: 1;
     min-width: 0;
-    padding: 2em 3em;
+    padding: 0.1em 3em;
     max-width: 900px;
 }
 ```
 
 ### <a id="def-5"></a>Heading styles
 
-`~/Desktop/autoodocs/default.css:130`
+`~/Desktop/autoodocs/default.css:133`
 
 ```css
 h1, h2, h3, h4, h5, h6 {
@@ -84,7 +84,7 @@ h4 { font-size: 1em; }
 
 ### <a id="def-6"></a>Code and pre blocks
 
-`~/Desktop/autoodocs/default.css:175`
+`~/Desktop/autoodocs/default.css:178`
 
 ```css
 code {
@@ -103,7 +103,7 @@ pre {
 
 ### <a id="def-7"></a>GitHub-style callout boxes
 
-`~/Desktop/autoodocs/default.css:240`
+`~/Desktop/autoodocs/default.css:243`
 
 ```css
 .callout {
@@ -154,7 +154,7 @@ pre {
 
 ### <a id="def-8"></a>Mobile responsive breakpoint
 
-`~/Desktop/autoodocs/default.css:285`
+`~/Desktop/autoodocs/default.css:288`
 
 ```css
 @media (max-width: 900px) {
