@@ -35,7 +35,7 @@ local dir = arg[0]:match("^(.-)[^/]*$") or "./"
 `~/Desktop/autoodocs/build.lua:9`
 
 ```lua
-local cfg = { cmd = "lua", scan_dir = ".", out_dir = "docs", stats = true, check = true }
+local cfg = { cmd = "lua", scan_dir = ".", out_dir = "docs", stats = true, check = true, repo = "" }
 local conf_file = loadfile(dir .. "config.lua")
 if conf_file then
     for k, v in pairs(conf_file()) do cfg[k] = v end
@@ -58,14 +58,15 @@ Flags based on config
 > *↳ [autoodocs.lua:82](autoodocs-lua.html#run-1)*
 
 ```lua
-local flags = (cfg.stats and "-s " or "") .. (cfg.check and "-c" or "")
+local flags = (cfg.stats and "-s " or "") .. (cfg.check and "-c " or "")
+local repo = cfg.repo ~= "" and ("-r " .. cfg.repo) or ""
 print("Generating markdown...")
-os.execute(fmt("%s %sautoodocs.lua %s %s %s", cfg.cmd, dir, cfg.scan_dir, cfg.out_dir, flags))
+os.execute(fmt("%s %sautoodocs.lua %s %s %s%s", cfg.cmd, dir, cfg.scan_dir, cfg.out_dir, flags, repo))
 ```
 
 ### <a id="run-3"></a>Copy stylesheet to output directory
 
-`~/Desktop/autoodocs/build.lua:31`
+`~/Desktop/autoodocs/build.lua:32`
 
 *↳ [default.css](default-css.html)*
 
@@ -76,7 +77,7 @@ os.execute(fmt("cp %sdefault.css %s/", dir, cfg.out_dir))
 
 ### <a id="run-4"></a>Convert changed markdown files to HTML
 
-`~/Desktop/autoodocs/build.lua:36`
+`~/Desktop/autoodocs/build.lua:37`
 
 *↳ [markdown.lua:1264](markdown-lua.html#run-9)*
 

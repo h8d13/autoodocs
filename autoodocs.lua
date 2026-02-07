@@ -50,14 +50,19 @@ local utils  = require("lib.utils")
 local parser = require("lib.parser")
 local render = require("lib.render")
 
--- @def:13 Parse CLI args with defaults
+-- @def:21 Parse CLI args with defaults
 -- strip trailing slash, resolve absolute path via `/proc/self/environ`
 -- `US` separates multi-line text within record fields
--- `-c` enables subject count validation
+-- `-c` enables subject count validation, `-r` sets repo URL
 local SCAN_DIR = arg[1] or "."
 local OUT_DIR  = arg[2] or "docs"
-local STATS    = arg[3] == "-s" or arg[4] == "-s"
-local CHECK    = arg[3] == "-c" or arg[4] == "-c"
+local STATS, CHECK, REPO = false, false, nil
+for i = 3, #arg do
+    if arg[i] == "-s" then STATS = true
+    elseif arg[i] == "-c" then CHECK = true
+    elseif arg[i] == "-r" and arg[i+1] then REPO = arg[i+1]
+    end
+end
 SCAN_DIR = gsub(SCAN_DIR, "/$", "")
 if sub(SCAN_DIR, 1, 1) ~= "/" then
     local ef = open("/proc/self/environ", "rb")
@@ -136,7 +141,7 @@ local function main()
     local by_file, file_order = render.group_records(records)
 
     -- @run Write index page
-    local index_md = render.render_index(file_order, SCAN_DIR)
+    local index_md = render.render_index(file_order, SCAN_DIR, REPO)
     local index_path = OUT_DIR .. "/index.md"
     if write_if_changed(index_path, index_md) then
         io.stderr:write(fmt("autoodocs: wrote %s\n", index_path))

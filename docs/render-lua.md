@@ -96,16 +96,16 @@ end
 
 ### <a id="run-5"></a>Render a single file's documentation page
 
-`~/Desktop/autoodocs/lib/render.lua:207`
+`~/Desktop/autoodocs/lib/render.lua:199`
 
 
 ### <a id="run-6"></a>Group records by file and assign indices
 
-`~/Desktop/autoodocs/lib/render.lua:238`
+`~/Desktop/autoodocs/lib/render.lua:230`
 
 
 ### <a id="run-7"></a>Get slug for a file path
 
-`~/Desktop/autoodocs/lib/render.lua:299`
+`~/Desktop/autoodocs/lib/render.lua:291`
 
 

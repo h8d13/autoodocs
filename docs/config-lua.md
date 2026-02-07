@@ -19,6 +19,7 @@ return {
     out_dir  = "docs",    -- Output directory for generated docs
     stats    = true,      -- Show statistics after generation
     check    = true,      -- Validate subject line counts
+    repo     = "https://github.com/h8d13/autoodocs",
 }
 ```
 

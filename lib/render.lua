@@ -122,7 +122,7 @@ local function render_entry(w, r)
 end
 
 -- @run Render index page
-function M.render_index(file_order, scan_dir)
+function M.render_index(file_order, scan_dir, repo_url)
     local out = {}
     local function w(s) out[#out + 1] = s end
 
@@ -188,17 +188,9 @@ function M.render_index(file_order, scan_dir)
     end
     w("-->\n")
 
-    -- Detect repo URL from git remote
-    local pipe = io.popen("git remote get-url origin 2>/dev/null")
-    if pipe then
-        local url = pipe:read("*l")
-        pipe:close()
-        if url then
-            -- Convert SSH to HTTPS format
-            url = gsub(url, "^git@([^:]+):", "https://%1/")
-            url = gsub(url, "%.git$", "")
-            w(fmt("<!-- REPO:%s -->\n", url))
-        end
+    -- Add repo URL if provided
+    if repo_url then
+        w(fmt("<!-- REPO:%s -->\n", repo_url))
     end
 
     return concat(out)
