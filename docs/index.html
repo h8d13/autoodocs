@@ -83,21 +83,7 @@ lua .autoodocs/markdown.lua docs/*.md          # convert to HTML
     <p>Max comment length <code>87</code> chars, <code>-c</code> check needs a blank line at subject <code>n+1</code></p>
 </blockquote>
 
-<p>Or create a build script / pre-commit hook:</p>
-
-<pre><code class="language-yaml"># .pre-commit-config.yaml
-repos:
-  - repo: local
-    hooks:
-      - id: autoodocs
-        name: autoodocs
-        entry: bash -c 'lua .autoodocs/build.lua &amp;&amp; git add docs/'
-        language: system
-        pass_filenames: false
-        always_run: true
-</code></pre>
-
-<p>You can also adapt the <code>build.lua</code> to your structure.</p>
+<p>You can also adapt the <code>build.lua</code> to your structure. Or use pre-commit hook:</p>
 
 <h2>GitHub Pages</h2>
 
