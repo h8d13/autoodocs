@@ -16,6 +16,7 @@
 <li class="toc-sub"><a href="#chk-1">Get file modification time via stat</a></li>
 <li><a href="#def">Defines</a></li>
 <li class="toc-sub"><a href="#def-1">Resolve script directory for portable paths</a></li>
+<li class="toc-sub"><a href="#def-2">Load config from script directory</a></li>
 <li><a href="#run">Runners</a></li>
 <li class="toc-sub"><a href="#run-1">Build pipeline: generate docs and convert to HTML</a></li>
 <li class="toc-sub"><a href="#run-2">Generate markdown documentation</a></li>
@@ -35,7 +36,7 @@
 
 <h3><a id="chk-1"></a>Get file modification time via stat</h3>
 
-<p><code>~/Desktop/autoodocs/build.lua:9</code></p>
+<p><code>~/Desktop/autoodocs/build.lua:16</code></p>
 
 <pre><code class="language-lua">local function mtime(path)
     local p = io.popen(fmt("stat -c %%Y %s 2&gt;/dev/null", path))
@@ -55,6 +56,17 @@ end
 local dir = arg[0]:match("^(.-)[^/]*$") or "./"
 </code></pre>
 
+<h3><a id="def-2"></a>Load config from script directory</h3>
+
+<p><code>~/Desktop/autoodocs/build.lua:9</code></p>
+
+<pre><code class="language-lua">local cfg = { scan_dir = ".", out_dir = "docs", stats = true, check = true }
+local conf_file = loadfile(dir .. "config.lua")
+if conf_file then
+    for k, v in pairs(conf_file()) do cfg[k] = v end
+end
+</code></pre>
+
 <h2><a id="run"></a>Runners</h2>
 
 <h3><a id="run-1"></a>Build pipeline: generate docs and convert to HTML</h3>
@@ -64,36 +76,37 @@ local dir = arg[0]:match("^(.-)[^/]*$") or "./"
 
 <h3><a id="run-2"></a>Generate markdown documentation</h3>
 
-<p><code>~/Desktop/autoodocs/build.lua:17</code></p>
+<p><code>~/Desktop/autoodocs/build.lua:24</code></p>
 
-<p>With all flags enabled</p>
+<p>Flags based on config</p>
 
 <blockquote>
     <p><em>↳ <a href="autoodocs-lua.html#run-1">autoodocs.lua:82</a></em></p>
 </blockquote>
 
-<pre><code class="language-lua">print("Generating markdown...")
-os.execute(fmt("lua %sautoodocs.lua . docs -s -c", dir))
+<pre><code class="language-lua">local flags = (cfg.stats and "-s " or "") .. (cfg.check and "-c" or "")
+print("Generating markdown...")
+os.execute(fmt("lua %sautoodocs.lua %s %s %s", dir, cfg.scan_dir, cfg.out_dir, flags))
 </code></pre>
 
 <h3><a id="run-3"></a>Copy stylesheet to output directory</h3>
 
-<p><code>~/Desktop/autoodocs/build.lua:23</code></p>
+<p><code>~/Desktop/autoodocs/build.lua:31</code></p>
 
 <p><em>↳ <a href="default-css.html">default.css</a></em></p>
 
 <pre><code class="language-lua">print("Copying assets...")
-os.execute(fmt("cp %sdefault.css docs/", dir))
+os.execute(fmt("cp %sdefault.css %s/", dir, cfg.out_dir))
 </code></pre>
 
 <h3><a id="run-4"></a>Convert changed markdown files to HTML</h3>
 
-<p><code>~/Desktop/autoodocs/build.lua:28</code></p>
+<p><code>~/Desktop/autoodocs/build.lua:36</code></p>
 
 <p><em>↳ <a href="markdown-lua.html#run-9">markdown.lua:1264</a></em></p>
 
 <pre><code class="language-lua">print("Converting to HTML...")
-local pipe = io.popen("ls docs/*.md 2&gt;/dev/null")
+local pipe = io.popen(fmt("ls %s/*.md 2&gt;/dev/null", cfg.out_dir))
 for md in pipe:lines() do
     local html = md:gsub("%.md$", ".html")
     if mtime(md) &gt; mtime(html) then

@@ -15,6 +15,7 @@
 <li><a href="build-lua.html">build.lua</a></li>
 <li><a href="markdown-lua.html">markdown.lua</a></li>
 <li><a href="default-css.html">default.css</a></li>
+<li><a href="config-lua.html">config.lua</a></li>
 <li><a href="autoodocs-lua.html">autoodocs.lua</a></li>
 <li class="toc-dir"><details><summary>lib/</summary><ul>
 <li><a href="parser-lua.html">parser.lua</a></li>
@@ -49,15 +50,32 @@ Inspired by @tsoding <code>nob.h</code> autodocs.</p>
 
 <h2>Installation</h2>
 
+<p>Requires: <strong>Lua 5.x</strong> and <strong>git</strong></p>
+
 <p>Clone to a hidden folder so autoodocs doesn't document itself:</p>
 
 <pre><code class="language-sh">cd /yourprojectroot/
 git clone https://github.com/h8d13/autoodocs .autoodocs/
 </code></pre>
 
+<h2>Configuration</h2>
+
+<p>Edit <code>.autoodocs/config.lua</code> to adjust settings:</p>
+
+<pre><code class="language-lua">return {
+    scan_dir = ".",       -- Directory to scan for tagged comments
+    out_dir  = "docs",    -- Output directory for generated docs
+    stats    = true,      -- Show statistics after generation
+    check    = true,      -- Validate subject line counts
+}
+</code></pre>
+
+<p>(Optionally) Create a branch named <code>pages</code>.</p>
+
 <h2>Usage</h2>
 
-<pre><code class="language-sh">lua .autoodocs/autoodocs.lua . docs (-s) (-c)  # -s stats, -c validate counts
+<pre><code class="language-sh">mkdir -p docs
+lua .autoodocs/autoodocs.lua . docs (-s) (-c)  # -s stats, -c validate counts
 lua .autoodocs/markdown.lua docs/*.md          # convert to HTML
 </code></pre>
 
@@ -79,9 +97,9 @@ repos:
         always_run: true
 </code></pre>
 
-<h2>GitHub Pages</h2>
+<p>You can also adapt the <code>build.lua</code> to your structure.</p>
 
-<p>Create a branch named <code>pages</code> or directly from <code>master | main</code>.</p>
+<h2>GitHub Pages</h2>
 
 <p>Go to repo <code>Settings</code> > <code>Pages</code> > <code>Deploy from branch</code> > <code>pages</code> > <code>/docs</code></p>
 
@@ -96,6 +114,7 @@ repos:
 [build.lua](build-lua.html)
 [markdown.lua](markdown-lua.html)
 [default.css](default-css.html)
+[config.lua](config-lua.html)
 [autoodocs.lua](autoodocs-lua.html)
 [>lib]
 [parser.lua](parser-lua.html)

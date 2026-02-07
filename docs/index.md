@@ -20,6 +20,8 @@ Skips (and stores) the whole comment block until next code line.
 
 ## Installation
 
+Requires: **Lua 5.x** and **git**
+
 Clone to a hidden folder so autoodocs doesn't document itself:
 
 ```sh
@@ -27,9 +29,25 @@ cd /yourprojectroot/
 git clone https://github.com/h8d13/autoodocs .autoodocs/
 ```
 
+## Configuration
+
+Edit `.autoodocs/config.lua` to adjust settings:
+
+```lua
+return {
+    scan_dir = ".",       -- Directory to scan for tagged comments
+    out_dir  = "docs",    -- Output directory for generated docs
+    stats    = true,      -- Show statistics after generation
+    check    = true,      -- Validate subject line counts
+}
+```
+
+(Optionally) Create a branch named `pages`.
+
 ## Usage
 
 ```sh
+mkdir -p docs
 lua .autoodocs/autoodocs.lua . docs (-s) (-c)  # -s stats, -c validate counts
 lua .autoodocs/markdown.lua docs/*.md          # convert to HTML
 ```
@@ -51,9 +69,9 @@ repos:
         always_run: true
 ```
 
-## GitHub Pages
+You can also adapt the `build.lua` to your structure.
 
-Create a branch named `pages` or directly from `master | main`.
+## GitHub Pages
 
 Go to repo `Settings` > `Pages` > `Deploy from branch` > `pages` > `/docs`
 
@@ -67,6 +85,7 @@ Or directly from root `/` or without a specific branch.
 [build.lua](build-lua.html)
 [markdown.lua](markdown-lua.html)
 [default.css](default-css.html)
+[config.lua](config-lua.html)
 [autoodocs.lua](autoodocs-lua.html)
 [>lib]
 [parser.lua](parser-lua.html)
