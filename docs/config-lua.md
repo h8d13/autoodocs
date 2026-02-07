@@ -14,6 +14,7 @@ Autoodocs configuration
 
 ```lua
 return {
+    cmd      = "luajit",  -- Lua interpreter (lua, luajit)
     scan_dir = ".",       -- Directory to scan for tagged comments
     out_dir  = "docs",    -- Output directory for generated docs
     stats    = true,      -- Show statistics after generation

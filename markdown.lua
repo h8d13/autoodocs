@@ -118,6 +118,8 @@ THE SOFTWARE.
 // Niklas
 ]]
 
+-- @chk Lua 5.1/5.2 compatibility
+table.unpack = table.unpack or unpack
 
 -- @def:1 Forward declarations for mutually recursive functions
 local span_transform, encode_backslash_escapes, block_transform, blocks_to_html

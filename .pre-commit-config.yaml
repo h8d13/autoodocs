@@ -3,7 +3,7 @@ repos:
     hooks:
       - id: autoodocs
         name: autoodocs
-        entry: bash -c 'lua build.lua && git add docs/'
+        entry: bash -c 'luajit build.lua && git add docs/'
         language: system
         pass_filenames: false
         always_run: true

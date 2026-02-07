@@ -7,7 +7,7 @@ local fmt = string.format
 local dir = arg[0]:match("^(.-)[^/]*$") or "./"
 
 -- @def:5 Load config from script directory
-local cfg = { scan_dir = ".", out_dir = "docs", stats = true, check = true }
+local cfg = { cmd = "lua", scan_dir = ".", out_dir = "docs", stats = true, check = true }
 local conf_file = loadfile(dir .. "config.lua")
 if conf_file then
     for k, v in pairs(conf_file()) do cfg[k] = v end
@@ -26,7 +26,7 @@ end
 -- @src:autoodocs.lua:82
 local flags = (cfg.stats and "-s " or "") .. (cfg.check and "-c" or "")
 print("Generating markdown...")
-os.execute(fmt("lua %sautoodocs.lua %s %s %s", dir, cfg.scan_dir, cfg.out_dir, flags))
+os.execute(fmt("%s %sautoodocs.lua %s %s %s", cfg.cmd, dir, cfg.scan_dir, cfg.out_dir, flags))
 
 -- @run:2 Copy stylesheet to output directory
 -- @src:default.css
@@ -40,7 +40,7 @@ local pipe = io.popen(fmt("ls %s/*.md 2>/dev/null", cfg.out_dir))
 for md in pipe:lines() do
     local html = md:gsub("%.md$", ".html")
     if mtime(md) > mtime(html) then
-        os.execute(fmt("lua %smarkdown.lua %s", dir, md))
+        os.execute(fmt("%s %smarkdown.lua %s", cfg.cmd, dir, md))
     end
 end
 pipe:close()
