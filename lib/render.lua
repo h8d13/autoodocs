@@ -30,8 +30,9 @@ end
 -- @def:1 Line-to-anchor mapping built during grouping
 M.line_map = {}
 
--- @run:16 Convert @src:filepath:line to clickable markdown links
+-- @run:17 Convert @src:filepath:line to clickable markdown links
 local function link_sources(text)
+    text = gsub(text, "@ref %[(.-)%]%((.-)%)", "*↗ [%1](%2)*")
     return gsub(text, "@src:([^%s:]+):?(%d*)", function(path, line)
         local slug = slugify(path)
         local anchor = ""
@@ -189,6 +190,7 @@ function M.render_index(file_order, scan_dir, repo_url)
     w("-->\n")
 
     -- Add repo URL if provided
+    -- @ref [autoodocs]https://github.com/h8d13/autoodocs
     if repo_url then
         w(fmt("<!-- REPO:%s -->\n", repo_url))
     end

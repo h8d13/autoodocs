@@ -17,6 +17,7 @@
 <li><a href="#def">Defines</a></li>
 <li class="toc-sub"><a href="#def-2">Localize functions and load libraries</a></li>
 <li class="toc-sub"><a href="#def-3">Parse CLI args with defaults</a></li>
+<li class="toc-sub"><a href="#def-4">Global state for collected records, warnings, and line count</a></li>
 <li><a href="#run">Runners</a></li>
 <li class="toc-sub"><a href="#run-1">Write file if content changed</a></li>
 <li class="toc-sub"><a href="#run-2">Main function</a></li>
@@ -126,9 +127,17 @@ if sub(SCAN_DIR, 1, 1) ~= "/" then
 end
 local HOME = match(SCAN_DIR, "^(/[^/]+/[^/]+)")
 local US = "\031"
+</code></pre>
 
--- @def:3 Global state for collected records, warnings, and line count
--- see @src:lib/parser.lua:195 for file processing
+<h3><a id="def-4"></a>Global state for collected records, warnings, and line count</h3>
+
+<p><code>~/Desktop/autoodocs/autoodocs.lua:76</code></p>
+
+<p>see <em>↳ <a href="parser-lua.html#chk-16">lib/parser.lua:195</a></em> for file processing</p>
+
+<pre><code class="language-lua">local records = {}
+local warnings = {}
+local total_input = 0
 </code></pre>
 
 <h2><a id="run"></a>Runners</h2>

@@ -97,9 +97,18 @@ if sub(SCAN_DIR, 1, 1) ~= "/" then
 end
 local HOME = match(SCAN_DIR, "^(/[^/]+/[^/]+)")
 local US = "\031"
+```
 
--- @def:3 Global state for collected records, warnings, and line count
--- see @src:lib/parser.lua:195 for file processing
+### <a id="def-4"></a>Global state for collected records, warnings, and line count
+
+`~/Desktop/autoodocs/autoodocs.lua:76`
+
+see *↳ [lib/parser.lua:195](parser-lua.html#chk-16)* for file processing
+
+```lua
+local records = {}
+local warnings = {}
+local total_input = 0
 ```
 
 ## <a id="run"></a>Runners

@@ -67,6 +67,7 @@ M.line_map = {}
 
 ```lua
 local function link_sources(text)
+    text = gsub(text, "@ref %[(.-)%]%((.-)%)", "*↗ [%1](%2)*")
     return gsub(text, "@src:([^%s:]+):?(%d*)", function(path, line)
         local slug = slugify(path)
         local anchor = ""
@@ -86,26 +87,26 @@ end
 
 ### <a id="run-3"></a>Render a single entry
 
-`~/Desktop/autoodocs/lib/render.lua:51`
+`~/Desktop/autoodocs/lib/render.lua:52`
 
 
 ### <a id="run-4"></a>Render index page
 
-`~/Desktop/autoodocs/lib/render.lua:124`
+`~/Desktop/autoodocs/lib/render.lua:125`
 
 
 ### <a id="run-5"></a>Render a single file's documentation page
 
-`~/Desktop/autoodocs/lib/render.lua:199`
+`~/Desktop/autoodocs/lib/render.lua:201`
 
 
 ### <a id="run-6"></a>Group records by file and assign indices
 
-`~/Desktop/autoodocs/lib/render.lua:230`
+`~/Desktop/autoodocs/lib/render.lua:232`
 
 
 ### <a id="run-7"></a>Get slug for a file path
 
-`~/Desktop/autoodocs/lib/render.lua:291`
+`~/Desktop/autoodocs/lib/render.lua:293`
 
 

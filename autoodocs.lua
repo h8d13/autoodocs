@@ -50,7 +50,7 @@ local utils  = require("lib.utils")
 local parser = require("lib.parser")
 local render = require("lib.render")
 
--- @def:21 Parse CLI args with defaults
+-- @def:18 Parse CLI args with defaults
 -- strip trailing slash, resolve absolute path via `/proc/self/environ`
 -- `US` separates multi-line text within record fields
 -- `-c` enables subject count validation, `-r` sets repo URL

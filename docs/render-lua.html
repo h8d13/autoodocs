@@ -94,6 +94,7 @@ M.TAG_ORDER = {"GEN", "CHK", "DEF", "RUN", "ERR"}
 <p><code>~/Desktop/autoodocs/lib/render.lua:33</code></p>
 
 <pre><code class="language-lua">local function link_sources(text)
+    text = gsub(text, "@ref %[(.-)%]%((.-)%)", "*↗ [%1](%2)*")
     return gsub(text, "@src:([^%s:]+):?(%d*)", function(path, line)
         local slug = slugify(path)
         local anchor = ""
@@ -113,27 +114,27 @@ end
 
 <h3><a id="run-3"></a>Render a single entry</h3>
 
-<p><code>~/Desktop/autoodocs/lib/render.lua:51</code></p>
+<p><code>~/Desktop/autoodocs/lib/render.lua:52</code></p>
 
 
 <h3><a id="run-4"></a>Render index page</h3>
 
-<p><code>~/Desktop/autoodocs/lib/render.lua:124</code></p>
+<p><code>~/Desktop/autoodocs/lib/render.lua:125</code></p>
 
 
 <h3><a id="run-5"></a>Render a single file's documentation page</h3>
 
-<p><code>~/Desktop/autoodocs/lib/render.lua:199</code></p>
+<p><code>~/Desktop/autoodocs/lib/render.lua:201</code></p>
 
 
 <h3><a id="run-6"></a>Group records by file and assign indices</h3>
 
-<p><code>~/Desktop/autoodocs/lib/render.lua:230</code></p>
+<p><code>~/Desktop/autoodocs/lib/render.lua:232</code></p>
 
 
 <h3><a id="run-7"></a>Get slug for a file path</h3>
 
-<p><code>~/Desktop/autoodocs/lib/render.lua:291</code></p>
+<p><code>~/Desktop/autoodocs/lib/render.lua:293</code></p>
 
 
 

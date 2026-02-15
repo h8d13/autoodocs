@@ -13,7 +13,7 @@ Skips (and stores) the whole comment block until next code line.
 <!-- @def Feature list -->
 ## Features
 
-- Extracts `@gen`, `@def`, `@chk`, `@run`, `@err` tagged comments
+- Extracts `@gen`, `@ref`, `@def`, `@chk`, `@run`, `@err` tagged comments
 - Cross-references with `@src:file:line` auto-resolving anchors
 - Subject line counts with `:N` syntax
 - GitHub-style callouts (`!n` NOTE, `!t` TIP, `!w` WARN, `!c` CAUTION)
