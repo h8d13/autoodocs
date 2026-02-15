@@ -19,12 +19,14 @@ This creates a pleasing flow to work with for docs/ pages.
 
 ## <a id="def"></a>Defines
 
-### <a id="def-1"></a>1. 
+### <a id="def-1"></a>1. General docs
 
 `~/Desktop/autoodocs/autoodocs.lua:14`
 
 > [!IMPORTANT]
-> we define `:` then `n` the amount of subject
+> after the end of comment block
+
+we define `:` then `n` the amount of subject
 
 and optionally a callout:
 

@@ -39,7 +39,7 @@
 
 <h2><a id="chk"></a>Checks</h2>
 
-<p><a id="chk-1"></a><strong>1. ~/Desktop/autoodocs/lib/render.lua:134</strong>
+<p><a id="chk-1"></a><strong>1. ~/Desktop/autoodocs/lib/render.lua:136</strong>
 <em>↳ <a href="#run-4">@run 4.</a></em></p>
 
 <p>Detect and include README.md content</p>
@@ -108,7 +108,7 @@ M.TAG_ORDER = {"GEN", "CHK", "DEF", "RUN", "ERR"}
 <pre><code class="language-lua">M.line_map = {}
 </code></pre>
 
-<p><a id="def-6"></a><strong>6. ~/Desktop/autoodocs/lib/render.lua:212</strong>
+<p><a id="def-6"></a><strong>6. ~/Desktop/autoodocs/lib/render.lua:214</strong>
 <em>↳ <a href="#run-5">@run 5.</a></em></p>
 
 <p>Group entries by tag type</p>
@@ -185,13 +185,13 @@ end
         -- Top-level entry: h3 header (appears in TOC)
         local title = r.text:match("^([^\031]+)") or ""
         title = trim(title)
+        if title == "" then title = r.text:match("\031([^\031]+)") or "" end
+        title = trim(title)
         if #title &gt; 90 then title = title:sub(1, 87) .. "..." end
         w(fmt('### &lt;a id="%s"&gt;&lt;/a&gt;%s %s\n\n', r.anchor, r.idx, title))
-        w(fmt('`%s`\n\n', r.loc))
-    end
 </code></pre>
 
-<p><a id="run-3-3"></a><strong>3.3 ~/Desktop/autoodocs/lib/render.lua:78</strong>
+<p><a id="run-3-3"></a><strong>3.3 ~/Desktop/autoodocs/lib/render.lua:80</strong>
 <em>↳ <a href="#run-3">@run 3.</a></em></p>
 
 <p>Render text lines through link_sources with admonition support</p>
@@ -233,10 +233,10 @@ end
 
 <h3><a id="run-4"></a>4. Render index page</h3>
 
-<p><code>~/Desktop/autoodocs/lib/render.lua:127</code></p>
+<p><code>~/Desktop/autoodocs/lib/render.lua:129</code></p>
 
 
-<p><a id="run-4-1"></a><strong>4.1 ~/Desktop/autoodocs/lib/render.lua:153</strong>
+<p><a id="run-4-1"></a><strong>4.1 ~/Desktop/autoodocs/lib/render.lua:155</strong>
 <em>↳ <a href="#run-4">@run 4.</a></em></p>
 
 <p>Find common path prefix and group files by directory</p>
@@ -263,7 +263,7 @@ end
     end
 </code></pre>
 
-<p><a id="run-4-2"></a><strong>4.2 ~/Desktop/autoodocs/lib/render.lua:175</strong>
+<p><a id="run-4-2"></a><strong>4.2 ~/Desktop/autoodocs/lib/render.lua:177</strong>
 <em>↳ <a href="#run-4">@run 4.</a></em></p>
 
 <p>Write hidden NAV comment for TOC extraction</p>
@@ -287,7 +287,7 @@ end
     w("--&gt;\n")
 </code></pre>
 
-<p><a id="run-4-3"></a><strong>4.3 ~/Desktop/autoodocs/lib/render.lua:194</strong>
+<p><a id="run-4-3"></a><strong>4.3 ~/Desktop/autoodocs/lib/render.lua:196</strong>
 <em>↳ <a href="#run-4">@run 4.</a></em></p>
 
 <p>Embed repo URL as HTML comment for sidebar link</p>
@@ -303,10 +303,10 @@ end
 
 <h3><a id="run-5"></a>5. Render a single file's documentation page</h3>
 
-<p><code>~/Desktop/autoodocs/lib/render.lua:203</code></p>
+<p><code>~/Desktop/autoodocs/lib/render.lua:205</code></p>
 
 
-<p><a id="run-5-1"></a><strong>5.1 ~/Desktop/autoodocs/lib/render.lua:218</strong>
+<p><a id="run-5-1"></a><strong>5.1 ~/Desktop/autoodocs/lib/render.lua:220</strong>
 <em>↳ <a href="#run-5">@run 5.</a></em></p>
 
 <p>Render each tag section, GEN has no header</p>
@@ -326,16 +326,16 @@ end
 
 <h3><a id="run-6"></a>6. Group records by file and assign indices</h3>
 
-<p><code>~/Desktop/autoodocs/lib/render.lua:234</code></p>
+<p><code>~/Desktop/autoodocs/lib/render.lua:236</code></p>
 
 
 <h3><a id="run-7"></a>7. Get slug for a file path</h3>
 
-<p><code>~/Desktop/autoodocs/lib/render.lua:295</code></p>
+<p><code>~/Desktop/autoodocs/lib/render.lua:297</code></p>
 
 
 
-<div class="build-timestamp">Generated: 2026-02-15 23:06</div>
+<div class="build-timestamp">Generated: 2026-02-15 23:08</div>
 </main>
 </div>
 <script>

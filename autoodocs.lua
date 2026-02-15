@@ -11,7 +11,7 @@
 
 -- @chk `-s` outputs extra stats
 
--- @def:17!i
+-- @def:17!i General docs
 -- after the end of comment block
 -- we define `:` then `n` the amount of subject
 -- and optionally a callout:

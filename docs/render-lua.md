@@ -6,7 +6,7 @@ Markdown renderer that generates documentation pages with cross-references
 
 ## <a id="chk"></a>Checks
 
-<a id="chk-1"></a>**1. ~/Desktop/autoodocs/lib/render.lua:134**
+<a id="chk-1"></a>**1. ~/Desktop/autoodocs/lib/render.lua:136**
 *↳ [@run 4.](#run-4)*
 
 Detect and include README.md content
@@ -81,7 +81,7 @@ M.TAG_ORDER = {"GEN", "CHK", "DEF", "RUN", "ERR"}
 M.line_map = {}
 ```
 
-<a id="def-6"></a>**6. ~/Desktop/autoodocs/lib/render.lua:212**
+<a id="def-6"></a>**6. ~/Desktop/autoodocs/lib/render.lua:214**
 *↳ [@run 5.](#run-5)*
 
 Group entries by tag type
@@ -160,13 +160,13 @@ Build entry header with anchor and index
         -- Top-level entry: h3 header (appears in TOC)
         local title = r.text:match("^([^\031]+)") or ""
         title = trim(title)
+        if title == "" then title = r.text:match("\031([^\031]+)") or "" end
+        title = trim(title)
         if #title > 90 then title = title:sub(1, 87) .. "..." end
         w(fmt('### <a id="%s"></a>%s %s\n\n', r.anchor, r.idx, title))
-        w(fmt('`%s`\n\n', r.loc))
-    end
 ```
 
-<a id="run-3-3"></a>**3.3 ~/Desktop/autoodocs/lib/render.lua:78**
+<a id="run-3-3"></a>**3.3 ~/Desktop/autoodocs/lib/render.lua:80**
 *↳ [@run 3.](#run-3)*
 
 Render text lines through link_sources with admonition support
@@ -209,10 +209,10 @@ Render text lines through link_sources with admonition support
 
 ### <a id="run-4"></a>4. Render index page
 
-`~/Desktop/autoodocs/lib/render.lua:127`
+`~/Desktop/autoodocs/lib/render.lua:129`
 
 
-<a id="run-4-1"></a>**4.1 ~/Desktop/autoodocs/lib/render.lua:153**
+<a id="run-4-1"></a>**4.1 ~/Desktop/autoodocs/lib/render.lua:155**
 *↳ [@run 4.](#run-4)*
 
 Find common path prefix and group files by directory
@@ -240,7 +240,7 @@ Find common path prefix and group files by directory
     end
 ```
 
-<a id="run-4-2"></a>**4.2 ~/Desktop/autoodocs/lib/render.lua:175**
+<a id="run-4-2"></a>**4.2 ~/Desktop/autoodocs/lib/render.lua:177**
 *↳ [@run 4.](#run-4)*
 
 Write hidden NAV comment for TOC extraction
@@ -265,7 +265,7 @@ Write hidden NAV comment for TOC extraction
     w("-->\n")
 ```
 
-<a id="run-4-3"></a>**4.3 ~/Desktop/autoodocs/lib/render.lua:194**
+<a id="run-4-3"></a>**4.3 ~/Desktop/autoodocs/lib/render.lua:196**
 *↳ [@run 4.](#run-4)*
 
 Embed repo URL as HTML comment for sidebar link
@@ -280,10 +280,10 @@ Embed repo URL as HTML comment for sidebar link
 
 ### <a id="run-5"></a>5. Render a single file's documentation page
 
-`~/Desktop/autoodocs/lib/render.lua:203`
+`~/Desktop/autoodocs/lib/render.lua:205`
 
 
-<a id="run-5-1"></a>**5.1 ~/Desktop/autoodocs/lib/render.lua:218**
+<a id="run-5-1"></a>**5.1 ~/Desktop/autoodocs/lib/render.lua:220**
 *↳ [@run 5.](#run-5)*
 
 Render each tag section, GEN has no header
@@ -304,11 +304,11 @@ Render each tag section, GEN has no header
 
 ### <a id="run-6"></a>6. Group records by file and assign indices
 
-`~/Desktop/autoodocs/lib/render.lua:234`
+`~/Desktop/autoodocs/lib/render.lua:236`
 
 
 ### <a id="run-7"></a>7. Get slug for a file path
 
-`~/Desktop/autoodocs/lib/render.lua:295`
+`~/Desktop/autoodocs/lib/render.lua:297`
 
 
