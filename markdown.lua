@@ -919,6 +919,12 @@ local function images(text)
     return text
 end
 
+-- @chk:4 Returns target="_blank" attribute for external URLs
+local function external(url)
+    if url:match("^https?://") or url:match("^ftp:") then return ' target="_blank"' end
+    return ""
+end
+
 -- Handle anchor references
 local function anchors(text)
     local function reference_link(text, id)
@@ -931,7 +937,7 @@ local function anchors(text)
         url = encode_alt(url)
         local title = encode_alt(link_database[id].title)
         if title then title = " title=\"" .. title .. "\"" else title = "" end
-        return add_escape("<a href=\"" .. url .. "\"" .. title .. ">") .. text .. add_escape("</a>")
+        return add_escape("<a href=\"" .. url .. "\"" .. title .. external(url) .. ">") .. text .. add_escape("</a>")
     end
 
     local function inline_link(text, link)
@@ -941,9 +947,9 @@ local function anchors(text)
         url  = url or  link:match("%(<?(.-)>?%)") or ""
         url = encode_alt(url)
         if title then
-            return add_escape("<a href=\"" .. url .. "\" title=\"" .. title .. "\">") .. text .. "</a>"
+            return add_escape("<a href=\"" .. url .. "\" title=\"" .. title .. "\"" .. external(url) .. ">") .. text .. "</a>"
         else
-            return add_escape("<a href=\"" .. url .. "\">") .. text .. add_escape("</a>")
+            return add_escape("<a href=\"" .. url .. "\"" .. external(url) .. ">") .. text .. add_escape("</a>")
         end
     end
 
@@ -955,7 +961,7 @@ end
 -- Handle auto links, i.e. <http://www.google.com/>.
 local function auto_links(text)
     local function link(s)
-        return add_escape("<a href=\"" .. s .. "\">") .. s .. "</a>"
+        return add_escape("<a href=\"" .. s .. "\" target=\"_blank\">") .. s .. "</a>"
     end
     -- Encode chars as a mix of dec and hex entitites to (perhaps) fool
     -- spambots.
@@ -996,7 +1002,7 @@ local function auto_links(text)
 
     -- bare URLs (not already in a link or angle brackets)
     text = text:gsub("([^\"'<>])((https?://)([%w%-%.]+[%w])([%w%-%./_%?=&#%%+:~]*))", function(prefix, url)
-        return prefix .. add_escape("<a href=\"" .. url .. "\">") .. url .. "</a>"
+        return prefix .. add_escape("<a href=\"" .. url .. "\" target=\"_blank\">") .. url .. "</a>"
     end)
     text = text:gsub("^((https?://)([%w%-%.]+[%w])([%w%-%./_%?=&#%%+:~]*))", link)
 

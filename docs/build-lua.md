@@ -4,21 +4,6 @@
 
 Build script that runs autoodocs and converts output to HTML
 
-## <a id="chk"></a>Checks
-
-### <a id="chk-1"></a>Get file modification time via stat
-
-`~/Desktop/autoodocs/build.lua:16`
-
-```lua
-local function mtime(path)
-    local p = io.popen(fmt("stat -c %%Y %s 2>/dev/null", path))
-    local t = p and tonumber(p:read("*l"))
-    if p then p:close() end
-    return t or 0
-end
-```
-
 ## <a id="def"></a>Defines
 
 ### <a id="def-1"></a>Resolve script directory for portable paths
@@ -44,7 +29,7 @@ end
 
 ### <a id="def-3"></a>Build markdown.lua flags from config
 
-`~/Desktop/autoodocs/build.lua:32`
+`~/Desktop/autoodocs/build.lua:25`
 
 ```lua
 local md_flags = ""
@@ -65,7 +50,7 @@ if cfg.timestamp then md_flags = md_flags .. fmt('--timestamp "%s" ', os.date("%
 
 ### <a id="run-2"></a>Generate markdown documentation
 
-`~/Desktop/autoodocs/build.lua:24`
+`~/Desktop/autoodocs/build.lua:17`
 
 Flags based on config
 
@@ -80,7 +65,7 @@ os.execute(fmt("%s %sautoodocs.lua %s %s %s%s", cfg.cmd, dir, cfg.scan_dir, cfg.
 
 ### <a id="run-3"></a>Copy stylesheet and assets to output directory
 
-`~/Desktop/autoodocs/build.lua:41`
+`~/Desktop/autoodocs/build.lua:34`
 
 *↳ [default.css](default-css.html)*
 
@@ -95,20 +80,17 @@ if cfg.favicon then
 end
 ```
 
-### <a id="run-4"></a>Convert changed markdown files to HTML
+### <a id="run-4"></a>Convert all markdown files to HTML
 
-`~/Desktop/autoodocs/build.lua:52`
+`~/Desktop/autoodocs/build.lua:45`
 
-*↳ [markdown.lua:1264](markdown-lua.html#err-1-1)*
+*↳ [markdown.lua](markdown-lua.html)*
 
 ```lua
 print("Converting to HTML...")
 local pipe = io.popen(fmt("ls %s/*.md 2>/dev/null", cfg.out_dir))
 for md in pipe:lines() do
-    local html = md:gsub("%.md$", ".html")
-    if mtime(md) > mtime(html) then
-        os.execute(fmt("%s %smarkdown.lua %s%s", cfg.cmd, dir, md_flags, md))
-    end
+    os.execute(fmt("%s %smarkdown.lua %s%s", cfg.cmd, dir, md_flags, md))
 end
 pipe:close()
 ```

@@ -34,6 +34,17 @@ end
 `~/Desktop/autoodocs/markdown.lua:347`
 
 
+### <a id="chk-4"></a>Returns target="_blank" attribute for external URLs
+
+`~/Desktop/autoodocs/markdown.lua:922`
+
+```lua
+local function external(url)
+    if url:match("^https?://") or url:match("^ftp:") then return ' target="_blank"' end
+    return ""
+end
+```
+
 ## <a id="def"></a>Defines
 
 ### <a id="def-1"></a>Forward declarations for mutually recursive functions
@@ -178,12 +189,12 @@ end
 
 ### <a id="run-8"></a>Normalize line endings, tabs, and whitespace
 
-`~/Desktop/autoodocs/markdown.lua:1072`
+`~/Desktop/autoodocs/markdown.lua:1078`
 
 
 ### <a id="run-9"></a>Main markdown processing pipeline
 
-`~/Desktop/autoodocs/markdown.lua:1117`
+`~/Desktop/autoodocs/markdown.lua:1123`
 
 ```lua
 local function markdown(text)
@@ -201,36 +212,36 @@ end
 
 ### <a id="run-10"></a>CLI handler with HTML wrapping and TOC generation
 
-`~/Desktop/autoodocs/markdown.lua:1220`
+`~/Desktop/autoodocs/markdown.lua:1226`
 
 
 ## <a id="err"></a>Errors
 
-<a id="err-1"></a>**1. ~/Desktop/autoodocs/markdown.lua:1227**
+<a id="err-1"></a>**1. ~/Desktop/autoodocs/markdown.lua:1233**
 *↳ [@run 10.](#run-10)*
 
 Header file not found
 
 
-<a id="err-1-1"></a>**1.1 ~/Desktop/autoodocs/markdown.lua:1254**
+<a id="err-1-1"></a>**1.1 ~/Desktop/autoodocs/markdown.lua:1260**
 *↳ [@err 1.](#err-1)*
 
 Stylesheet file not found for inline inclusion
 
 
-<a id="err-2"></a>**2. ~/Desktop/autoodocs/markdown.lua:1345**
+<a id="err-2"></a>**2. ~/Desktop/autoodocs/markdown.lua:1351**
 *↳ [@run 10.](#run-10)*
 
 Footer file not found
 
 
-<a id="err-3"></a>**3. ~/Desktop/autoodocs/markdown.lua:1418**
+<a id="err-3"></a>**3. ~/Desktop/autoodocs/markdown.lua:1424**
 *↳ [@run 10.](#run-10)*
 
 Test file not found
 
 
-<a id="err-4"></a>**4. ~/Desktop/autoodocs/markdown.lua:1428**
+<a id="err-4"></a>**4. ~/Desktop/autoodocs/markdown.lua:1434**
 *↳ [@run 10.](#run-10)*
 
 Input or output file cannot be opened

@@ -13,13 +13,6 @@ if conf_file then
     for k, v in pairs(conf_file()) do cfg[k] = v end
 end
 
--- @chk:6 Get file modification time via stat
-local function mtime(path)
-    local p = io.popen(fmt("stat -c %%Y %s 2>/dev/null", path))
-    local t = p and tonumber(p:read("*l"))
-    if p then p:close() end
-    return t or 0
-end
 
 -- @run:4 Generate markdown documentation
 -- Flags based on config
@@ -49,15 +42,12 @@ if cfg.favicon then
     os.execute(fmt("cp %s %s/", cfg.favicon, cfg.out_dir))
 end
 
--- @run:9 Convert changed markdown files to HTML
--- @src:markdown.lua:1264
+-- @run:6 Convert all markdown files to HTML
+-- @src:markdown.lua
 print("Converting to HTML...")
 local pipe = io.popen(fmt("ls %s/*.md 2>/dev/null", cfg.out_dir))
 for md in pipe:lines() do
-    local html = md:gsub("%.md$", ".html")
-    if mtime(md) > mtime(html) then
-        os.execute(fmt("%s %smarkdown.lua %s%s", cfg.cmd, dir, md_flags, md))
-    end
+    os.execute(fmt("%s %smarkdown.lua %s%s", cfg.cmd, dir, md_flags, md))
 end
 pipe:close()
 
