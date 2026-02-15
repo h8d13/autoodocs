@@ -1340,30 +1340,6 @@ window.addEventListener('scroll', function() {
         }
     });
 });
-var toc = document.getElementById('toc');
-if (toc && toc.children.length > 10) {
-    var input = document.createElement('input');
-    input.type = 'text';
-    input.placeholder = 'Filter...';
-    input.className = 'toc-filter';
-    toc.parentNode.insertBefore(input, toc);
-    input.addEventListener('input', function() {
-        var q = this.value.toLowerCase();
-        toc.querySelectorAll('li:not(.toc-dir)').forEach(function(li) {
-            var a = li.querySelector('a');
-            li.style.display = (!q || (a && a.textContent.toLowerCase().indexOf(q) !== -1)) ? '' : 'none';
-        });
-        toc.querySelectorAll('.toc-dir').forEach(function(dir) {
-            var ul = dir.querySelector('ul');
-            var any = ul && [].some.call(ul.querySelectorAll('li'), function(li) {
-                return li.style.display !== 'none';
-            });
-            dir.style.display = (!q || any) ? '' : 'none';
-            var d = dir.querySelector('details');
-            if (d) d.open = !!q;
-        });
-    });
-}
 </script>
 </body></html>]]
         -- @err Footer file not found

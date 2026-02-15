@@ -187,7 +187,7 @@ pre code {
 
 ### <a id="def-8"></a>Mobile responsive breakpoint
 
-`~/Desktop/autoodocs/default.css:341`
+`~/Desktop/autoodocs/default.css:329`
 
 ```css
 @media (max-width: 900px) {

@@ -218,19 +218,19 @@ Header file not found
 Stylesheet file not found for inline inclusion
 
 
-<a id="err-2"></a>**2. ~/Desktop/autoodocs/markdown.lua:1369**
+<a id="err-2"></a>**2. ~/Desktop/autoodocs/markdown.lua:1345**
 *↳ [@run 10.](#run-10)*
 
 Footer file not found
 
 
-<a id="err-3"></a>**3. ~/Desktop/autoodocs/markdown.lua:1442**
+<a id="err-3"></a>**3. ~/Desktop/autoodocs/markdown.lua:1418**
 *↳ [@run 10.](#run-10)*
 
 Test file not found
 
 
-<a id="err-4"></a>**4. ~/Desktop/autoodocs/markdown.lua:1452**
+<a id="err-4"></a>**4. ~/Desktop/autoodocs/markdown.lua:1428**
 *↳ [@run 10.](#run-10)*
 
 Input or output file cannot be opened
