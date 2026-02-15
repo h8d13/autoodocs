@@ -316,6 +316,28 @@ em { font-style: italic; }
 .callout-caution { border-color: var(--caution); background: var(--caution-bg); }
 .callout-caution .callout-title { color: var(--caution); }
 
+.build-timestamp {
+    margin-top: 3em;
+    padding-top: 1em;
+    border-top: 1px solid var(--border);
+    font-size: 0.8em;
+    color: var(--fg-subtle);
+    text-align: right;
+}
+
+.toc-filter {
+    width: 100%;
+    padding: 0.4em 0.6em;
+    margin-bottom: 0.75em;
+    border: 1px solid var(--border-strong);
+    border-radius: 4px;
+    background: var(--bg);
+    color: var(--fg);
+    font-size: 0.85em;
+    outline: none;
+}
+.toc-filter:focus { border-color: var(--link); }
+
 /* @def:17 Mobile responsive breakpoint */
 @media (max-width: 900px) {
     .container {

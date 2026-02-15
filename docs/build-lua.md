@@ -64,20 +64,27 @@ print("Generating markdown...")
 os.execute(fmt("%s %sautoodocs.lua %s %s %s%s", cfg.cmd, dir, cfg.scan_dir, cfg.out_dir, flags, repo))
 ```
 
-### <a id="run-3"></a>Copy stylesheet to output directory
+### <a id="run-3"></a>Copy stylesheet and assets to output directory
 
-`~/Desktop/autoodocs/build.lua:32`
+`~/Desktop/autoodocs/build.lua:41`
 
 *↳ [default.css](default-css.html)*
 
 ```lua
 print("Copying assets...")
 os.execute(fmt("cp %sdefault.css %s/", dir, cfg.out_dir))
+if cfg.stylesheet and cfg.stylesheet ~= "default.css" then
+    os.execute(fmt("cp %s %s/", cfg.stylesheet, cfg.out_dir))
+end
+if cfg.favicon then
+    os.execute(fmt("cp %s %s/", cfg.favicon, cfg.out_dir))
+end
+
 ```
 
 ### <a id="run-4"></a>Convert changed markdown files to HTML
 
-`~/Desktop/autoodocs/build.lua:37`
+`~/Desktop/autoodocs/build.lua:52`
 
 *↳ [markdown.lua:1264](markdown-lua.html#err-1-1)*
 
@@ -87,7 +94,7 @@ local pipe = io.popen(fmt("ls %s/*.md 2>/dev/null", cfg.out_dir))
 for md in pipe:lines() do
     local html = md:gsub("%.md$", ".html")
     if mtime(md) > mtime(html) then
-        os.execute(fmt("%s %smarkdown.lua %s", cfg.cmd, dir, md))
+        os.execute(fmt("%s %smarkdown.lua %s%s", cfg.cmd, dir, md_flags, md))
     end
 end
 pipe:close()

@@ -4,8 +4,7 @@
     <meta charset="utf-8" />
     <title>build.lua</title>
     <link rel="stylesheet" type="text/css" href="default.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" media="(prefers-color-scheme: light)" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" media="(prefers-color-scheme: dark)" />
+    <script>document.write('<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/'+(matchMedia('(prefers-color-scheme:dark)').matches?'github-dark':'github')+'.min.css"/>')</script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 </head>
 <body>
@@ -21,7 +20,7 @@
 <li><a href="#run">Runners</a></li>
 <li class="toc-sub"><a href="#run-1">Build pipeline: generate docs and convert to HTML</a></li>
 <li class="toc-sub"><a href="#run-2">Generate markdown documentation</a></li>
-<li class="toc-sub"><a href="#run-3">Copy stylesheet to output directory</a></li>
+<li class="toc-sub"><a href="#run-3">Copy stylesheet and assets to output directory</a></li>
 <li class="toc-sub"><a href="#run-4">Convert changed markdown files to HTML</a></li>
 </ul>
 </nav>
@@ -91,19 +90,26 @@ print("Generating markdown...")
 os.execute(fmt("%s %sautoodocs.lua %s %s %s%s", cfg.cmd, dir, cfg.scan_dir, cfg.out_dir, flags, repo))
 </code></pre>
 
-<h3><a id="run-3"></a>Copy stylesheet to output directory</h3>
+<h3><a id="run-3"></a>Copy stylesheet and assets to output directory</h3>
 
-<p><code>~/Desktop/autoodocs/build.lua:32</code></p>
+<p><code>~/Desktop/autoodocs/build.lua:41</code></p>
 
 <p><em>↳ <a href="default-css.html">default.css</a></em></p>
 
 <pre><code class="language-lua">print("Copying assets...")
 os.execute(fmt("cp %sdefault.css %s/", dir, cfg.out_dir))
+if cfg.stylesheet and cfg.stylesheet ~= "default.css" then
+    os.execute(fmt("cp %s %s/", cfg.stylesheet, cfg.out_dir))
+end
+if cfg.favicon then
+    os.execute(fmt("cp %s %s/", cfg.favicon, cfg.out_dir))
+end
+
 </code></pre>
 
 <h3><a id="run-4"></a>Convert changed markdown files to HTML</h3>
 
-<p><code>~/Desktop/autoodocs/build.lua:37</code></p>
+<p><code>~/Desktop/autoodocs/build.lua:52</code></p>
 
 <p><em>↳ <a href="markdown-lua.html#err-1-1">markdown.lua:1264</a></em></p>
 
@@ -112,7 +118,7 @@ local pipe = io.popen(fmt("ls %s/*.md 2&gt;/dev/null", cfg.out_dir))
 for md in pipe:lines() do
     local html = md:gsub("%.md$", ".html")
     if mtime(md) &gt; mtime(html) then
-        os.execute(fmt("%s %smarkdown.lua %s", cfg.cmd, dir, md))
+        os.execute(fmt("%s %smarkdown.lua %s%s", cfg.cmd, dir, md_flags, md))
     end
 end
 pipe:close()
@@ -146,5 +152,29 @@ window.addEventListener('scroll', function() {
         }
     });
 });
+var toc = document.getElementById('toc');
+if (toc && toc.children.length > 10) {
+    var input = document.createElement('input');
+    input.type = 'text';
+    input.placeholder = 'Filter...';
+    input.className = 'toc-filter';
+    toc.parentNode.insertBefore(input, toc);
+    input.addEventListener('input', function() {
+        var q = this.value.toLowerCase();
+        toc.querySelectorAll('li:not(.toc-dir)').forEach(function(li) {
+            var a = li.querySelector('a');
+            li.style.display = (!q || (a && a.textContent.toLowerCase().indexOf(q) !== -1)) ? '' : 'none';
+        });
+        toc.querySelectorAll('.toc-dir').forEach(function(dir) {
+            var ul = dir.querySelector('ul');
+            var any = ul && [].some.call(ul.querySelectorAll('li'), function(li) {
+                return li.style.display !== 'none';
+            });
+            dir.style.display = (!q || any) ? '' : 'none';
+            var d = dir.querySelector('details');
+            if (d) d.open = !!q;
+        });
+    });
+}
 </script>
 </body></html>

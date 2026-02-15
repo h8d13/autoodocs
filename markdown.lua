@@ -1266,6 +1266,10 @@ local function run_command_line(arg)
                 header = header:gsub("STYLESHEET", options.stylesheet)
             end
             header = header:gsub("CHARSET", options.charset)
+            if options.favicon then
+                header = header:gsub("(</head>)",
+                    '    <link rel="icon" href="' .. options.favicon .. '" />\n%1')
+            end
         end
         -- Build TOC from h2/h3 headers in content
         local toc = {}
@@ -1336,6 +1340,30 @@ window.addEventListener('scroll', function() {
         }
     });
 });
+var toc = document.getElementById('toc');
+if (toc && toc.children.length > 10) {
+    var input = document.createElement('input');
+    input.type = 'text';
+    input.placeholder = 'Filter...';
+    input.className = 'toc-filter';
+    toc.parentNode.insertBefore(input, toc);
+    input.addEventListener('input', function() {
+        var q = this.value.toLowerCase();
+        toc.querySelectorAll('li:not(.toc-dir)').forEach(function(li) {
+            var a = li.querySelector('a');
+            li.style.display = (!q || (a && a.textContent.toLowerCase().indexOf(q) !== -1)) ? '' : 'none';
+        });
+        toc.querySelectorAll('.toc-dir').forEach(function(dir) {
+            var ul = dir.querySelector('ul');
+            var any = ul && [].some.call(ul.querySelectorAll('li'), function(li) {
+                return li.style.display !== 'none';
+            });
+            dir.style.display = (!q || any) ? '' : 'none';
+            var d = dir.querySelector('details');
+            if (d) d.open = !!q;
+        });
+    });
+}
 </script>
 </body></html>]]
         -- @err Footer file not found
@@ -1343,6 +1371,9 @@ window.addEventListener('scroll', function() {
             local f = io.open(options.footer) or error("Could not open file: " .. options.footer)
             footer = f:read("*a")
             f:close()
+        end
+        if options.timestamp then
+            footer = string.format('<div class="build-timestamp">Generated: %s</div>\n', options.timestamp) .. footer
         end
         return header .. s .. footer
     end
@@ -1365,7 +1396,9 @@ window.addEventListener('scroll', function() {
         charset = "utf-8",
         title = nil,
         stylesheet = "default.css",
-        inline_style = false
+        inline_style = false,
+        favicon = nil,
+        timestamp = nil
     }
     local help = [[
 Usage: markdown.lua [OPTION] [FILE]
@@ -1384,6 +1417,9 @@ Generated header:
     -l, --inline-style   Include the style sheet file inline in the header.
 Generated files:
     -a, --append         Append .html extension (instead of replacing).
+Build features:
+    -v, --favicon FILE   Add <link rel="icon"> pointing to FILE.
+    -d, --timestamp TEXT  Add build timestamp TEXT to footer.
 Other options:
     -h, --help           Print this help text.
     -t, --test           Run the unit tests.
@@ -1399,6 +1435,8 @@ Other options:
     op:param("s", "style", function(x) options.stylesheet = x end)
     op:flag("l", "inline-style", function(x) options.inline_style = true end)
     op:flag("a", "append", function() options.append = true end)
+    op:param("v", "favicon", function(x) options.favicon = x end)
+    op:param("d", "timestamp", function(x) options.timestamp = x end)
     op:flag("t", "test", function()
         local n = arg[0]:gsub("markdown.lua", "markdown-tests.lua")
         -- @err Test file not found

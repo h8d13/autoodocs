@@ -29,10 +29,25 @@ local repo = cfg.repo ~= "" and ("-r " .. cfg.repo) or ""
 print("Generating markdown...")
 os.execute(fmt("%s %sautoodocs.lua %s %s %s%s", cfg.cmd, dir, cfg.scan_dir, cfg.out_dir, flags, repo))
 
--- @run:2 Copy stylesheet to output directory
+-- Build markdown.lua flags from config
+local md_flags = ""
+if cfg.header then md_flags = md_flags .. fmt("-e %s ", cfg.header) end
+if cfg.footer then md_flags = md_flags .. fmt("-f %s ", cfg.footer) end
+if cfg.stylesheet then md_flags = md_flags .. fmt("-s %s ", cfg.stylesheet) end
+if cfg.inline_style then md_flags = md_flags .. "-l " end
+if cfg.favicon then md_flags = md_flags .. fmt("--favicon %s ", cfg.favicon) end
+if cfg.timestamp then md_flags = md_flags .. fmt('--timestamp "%s" ', os.date("%Y-%m-%d %H:%M")) end
+
+-- @run:9 Copy stylesheet and assets to output directory
 -- @src:default.css
 print("Copying assets...")
 os.execute(fmt("cp %sdefault.css %s/", dir, cfg.out_dir))
+if cfg.stylesheet and cfg.stylesheet ~= "default.css" then
+    os.execute(fmt("cp %s %s/", cfg.stylesheet, cfg.out_dir))
+end
+if cfg.favicon then
+    os.execute(fmt("cp %s %s/", cfg.favicon, cfg.out_dir))
+end
 
 -- @run:9 Convert changed markdown files to HTML
 -- @src:markdown.lua:1264
@@ -41,7 +56,7 @@ local pipe = io.popen(fmt("ls %s/*.md 2>/dev/null", cfg.out_dir))
 for md in pipe:lines() do
     local html = md:gsub("%.md$", ".html")
     if mtime(md) > mtime(html) then
-        os.execute(fmt("%s %smarkdown.lua %s", cfg.cmd, dir, md))
+        os.execute(fmt("%s %smarkdown.lua %s%s", cfg.cmd, dir, md_flags, md))
     end
 end
 pipe:close()
