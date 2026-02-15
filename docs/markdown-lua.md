@@ -4,7 +4,7 @@
 
 Markdown to HTML converter with GitHub-style callouts and TOC generation
 
-Mostly stolen from https://github.com/speedata/luamarkdown with minor modifications for our parsers.
+Mostly stolen from *↗ [speedata](https://github.com/speedata/luamarkdown)* with minor modifications for parsers/build.
 
 ## <a id="chk"></a>Checks
 

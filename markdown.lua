@@ -1,6 +1,6 @@
 #!/usr/bin/env lua
 -- @gen Markdown to HTML converter with GitHub-style callouts and TOC generation
--- Mostly stolen from https://github.com/speedata/luamarkdown with minor modifications for our parsers.
+-- Mostly stolen from @ref [speedata](https://github.com/speedata/luamarkdown) with minor modifications for parsers/build.
 
 --[[
 # markdown.lua -- version 0.40
