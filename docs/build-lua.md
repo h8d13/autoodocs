@@ -55,7 +55,7 @@ end
 
 Flags based on config
 
-> *↳ [autoodocs.lua:82](autoodocs-lua.html#run-1)*
+> *↳ [autoodocs.lua:82](autoodocs-lua.html#def-4)*
 
 ```lua
 local flags = (cfg.stats and "-s " or "") .. (cfg.check and "-c " or "")

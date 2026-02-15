@@ -11,7 +11,7 @@
 
 -- @chk `-s` outputs extra stats
 
--- @def:13!i
+-- @def:17!i
 -- after the end of comment block
 -- we define `:` then `n` the amount of subject
 -- and optionally a callout:
@@ -20,18 +20,22 @@
 -- `!w` WARN
 -- `!c` CAUTION
 print('luadoc is awesome')
-    -- @chk Check  -> Early checks
-    ---- guard the entry, bail early if preconditions fail
-    -- @def Define -> Gives instructions to
-    ---- define the state/config the rest depends on
-    -- @run Run    -> Use the instructions
-    ---- do the actual work using those definitions
-    -- @err Error  -> Handle what went wrong
-    ---- handle errors with more definitions
-    -- @gen General -> File description
-    ---- plain text at top, no section header
-    -- @src Source -> reference a line nbr
-    ---- Mention line nr auto resolve anchor
+    -- STANDALONES (Place anywhere)
+        -- @gen General -> File description
+        ---- plain text at top, no section header
+        -- @chk Check  -> Early checks
+        ---- guard the entry, bail/handle early if preconditions fail
+        -- @def Define -> Gives instructions to
+        ---- define the state/config the rest depends on
+        -- @run Run    -> Use the instructions
+        ---- do the actual work using those definitions
+        -- @err Error  -> Handle what went wrong
+        ---- handle errors with more definitions
+    -- Descriptions (Used inside another of above)
+        -- @src Source -> Reference a line nbr
+        ---- mention line nr auto resolve anchor
+        -- @ref Reference -> External link
+        ---- renders clickable arrow link in quote
 
 --########--
 
