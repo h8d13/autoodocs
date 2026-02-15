@@ -1257,7 +1257,7 @@ local function run_command_line(arg)
             local title = options.title or s:match("<h1>(.-)</h1>") or s:match("<h2>(.-)</h2>") or
                 s:match("<h3>(.-)</h3>") or "Untitled"
             header = header:gsub("TITLE", title)
-            -- @err:13 Stylesheet file not found for inline inclusion
+            -- @err:1 Stylesheet file not found for inline inclusion
             if options.inline_style then
                 local style = ""
                 local f = io.open(options.stylesheet)
@@ -1348,7 +1348,7 @@ window.addEventListener('scroll', function() {
 });
 </script>
 </body></html>]]
-        -- @err:4 Footer file not found
+        -- @err:1 Footer file not found
         if options.footer then
             local f = io.open(options.footer) or error("Could not open file: " .. options.footer)
             footer = f:read("*a")
@@ -1421,7 +1421,7 @@ Other options:
     op:param("d", "timestamp", function(x) options.timestamp = x end)
     op:flag("t", "test", function()
         local n = arg[0]:gsub("markdown.lua", "markdown-tests.lua")
-        -- @err:7 Test file not found
+        -- @err:1 Test file not found
         local f = io.open(n)
         if f then
             f:close() dofile(n)
@@ -1431,7 +1431,7 @@ Other options:
         run_stdin = false
     end)
     op:flag("h", "help", function() print(help) run_stdin = false end)
-    -- @err:11 Input or output file cannot be opened
+    -- @err:1 Input or output file cannot be opened
     op:arg(function(path)
             local file = io.open(path) or error("Could not open file: " .. path)
             local s = file:read("*a")

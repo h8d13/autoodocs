@@ -585,18 +585,6 @@ Stylesheet file not found for inline inclusion
 
 ```lua
             if options.inline_style then
-                local style = ""
-                local f = io.open(options.stylesheet)
-                if f then
-                    style = f:read("*a") f:close()
-                else
-                    error("Could not include style sheet " .. options.stylesheet .. ": File not found")
-                end
-                header = header:gsub('<link rel="stylesheet" type="text/css" href="STYLESHEET" />',
-                    "<style type=\"text/css\"><!--\n" .. style .. "\n--></style>")
-            else
-                header = header:gsub("STYLESHEET", options.stylesheet)
-            end
 ```
 
 <a id="err-2"></a>**2. ~/Desktop/autoodocs/markdown.lua:1351**
@@ -606,9 +594,6 @@ Footer file not found
 
 ```lua
         if options.footer then
-            local f = io.open(options.footer) or error("Could not open file: " .. options.footer)
-            footer = f:read("*a")
-            f:close()
 ```
 
 <a id="err-3"></a>**3. ~/Desktop/autoodocs/markdown.lua:1424**
@@ -618,12 +603,6 @@ Test file not found
 
 ```lua
         local f = io.open(n)
-        if f then
-            f:close() dofile(n)
-        else
-            error("Cannot find markdown-tests.lua")
-        end
-        run_stdin = false
 ```
 
 <a id="err-4"></a>**4. ~/Desktop/autoodocs/markdown.lua:1434**
@@ -633,15 +612,5 @@ Input or output file cannot be opened
 
 ```lua
     op:arg(function(path)
-            local file = io.open(path) or error("Could not open file: " .. path)
-            local s = file:read("*a")
-            file:close()
-            s = run(s, options)
-            file = io.open(outpath(path, options), "w") or error("Could not open output file: " .. outpath(path, options))
-            file:write(s)
-            file:close()
-            run_stdin = false
-        end
-    )
 ```
 

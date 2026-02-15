@@ -613,18 +613,6 @@ end
 <p>Stylesheet file not found for inline inclusion</p>
 
 <pre><code class="language-lua">            if options.inline_style then
-                local style = ""
-                local f = io.open(options.stylesheet)
-                if f then
-                    style = f:read("*a") f:close()
-                else
-                    error("Could not include style sheet " .. options.stylesheet .. ": File not found")
-                end
-                header = header:gsub('&lt;link rel="stylesheet" type="text/css" href="STYLESHEET" /&gt;',
-                    "&lt;style type=\"text/css\"&gt;&lt;!--\n" .. style .. "\n--&gt;&lt;/style&gt;")
-            else
-                header = header:gsub("STYLESHEET", options.stylesheet)
-            end
 </code></pre>
 
 <p><a id="err-2"></a><strong>2. ~/Desktop/autoodocs/markdown.lua:1351</strong>
@@ -633,9 +621,6 @@ end
 <p>Footer file not found</p>
 
 <pre><code class="language-lua">        if options.footer then
-            local f = io.open(options.footer) or error("Could not open file: " .. options.footer)
-            footer = f:read("*a")
-            f:close()
 </code></pre>
 
 <p><a id="err-3"></a><strong>3. ~/Desktop/autoodocs/markdown.lua:1424</strong>
@@ -644,12 +629,6 @@ end
 <p>Test file not found</p>
 
 <pre><code class="language-lua">        local f = io.open(n)
-        if f then
-            f:close() dofile(n)
-        else
-            error("Cannot find markdown-tests.lua")
-        end
-        run_stdin = false
 </code></pre>
 
 <p><a id="err-4"></a><strong>4. ~/Desktop/autoodocs/markdown.lua:1434</strong>
@@ -658,20 +637,10 @@ end
 <p>Input or output file cannot be opened</p>
 
 <pre><code class="language-lua">    op:arg(function(path)
-            local file = io.open(path) or error("Could not open file: " .. path)
-            local s = file:read("*a")
-            file:close()
-            s = run(s, options)
-            file = io.open(outpath(path, options), "w") or error("Could not open output file: " .. outpath(path, options))
-            file:write(s)
-            file:close()
-            run_stdin = false
-        end
-    )
 </code></pre>
 
 
-<div class="build-timestamp">Generated: 2026-02-15 23:03</div>
+<div class="build-timestamp">Generated: 2026-02-15 23:05</div>
 </main>
 </div>
 <script>
