@@ -94,6 +94,7 @@ for i = 3, #arg do
     elseif arg[i] == "-r" and arg[i+1] then REPO = arg[i+1]
     end
 end
+render.check = CHECK
 SCAN_DIR = gsub(SCAN_DIR, "/$", "")
 if sub(SCAN_DIR, 1, 1) ~= "/" then
     local ef = open("/proc/self/environ", "rb")
@@ -107,7 +108,7 @@ local US = "\031"
 
 ### <a id="def-4"></a>4. Global state for collected records, warnings, and line count
 
-`~/Desktop/autoodocs/autoodocs.lua:80`
+`~/Desktop/autoodocs/autoodocs.lua:81`
 
 see *↳ [lib/parser.lua:195](parser-lua.html#chk-16)* for file processing
 
@@ -121,24 +122,24 @@ local total_input = 0
 
 ### <a id="run-1"></a>1. Write file if content changed
 
-`~/Desktop/autoodocs/autoodocs.lua:86`
+`~/Desktop/autoodocs/autoodocs.lua:87`
 
 
 ### <a id="run-2"></a>2. Main function
 
-`~/Desktop/autoodocs/autoodocs.lua:102`
+`~/Desktop/autoodocs/autoodocs.lua:103`
 
 ```lua
 local function main()
 ```
 
-<a id="run-2-1"></a>**2.1 ~/Desktop/autoodocs/autoodocs.lua:104**
+<a id="run-2-1"></a>**2.1 ~/Desktop/autoodocs/autoodocs.lua:105**
 *↳ [@run 2.](#run-2)*
 
 Create output directory
 
 
-<a id="run-2-2"></a>**2.2 ~/Desktop/autoodocs/autoodocs.lua:107**
+<a id="run-2-2"></a>**2.2 ~/Desktop/autoodocs/autoodocs.lua:108**
 *↳ [@run 2.](#run-2)*
 
 Discover files containing documentation tags
@@ -165,7 +166,7 @@ Discover files containing documentation tags
     pipe:close()
 ```
 
-<a id="run-2-3"></a>**2.3 ~/Desktop/autoodocs/autoodocs.lua:133**
+<a id="run-2-3"></a>**2.3 ~/Desktop/autoodocs/autoodocs.lua:134**
 *↳ [@run 2.](#run-2)*
 
 Process all discovered files into intermediate `records`
@@ -176,7 +177,7 @@ Process all discovered files into intermediate `records`
     end
 ```
 
-<a id="run-2-4"></a>**2.4 ~/Desktop/autoodocs/autoodocs.lua:144**
+<a id="run-2-4"></a>**2.4 ~/Desktop/autoodocs/autoodocs.lua:145**
 *↳ [@run 2.](#run-2)*
 
 Group and index records by file
@@ -185,19 +186,19 @@ Group and index records by file
     local by_file, file_order = render.group_records(records)
 ```
 
-<a id="run-2-5"></a>**2.5 ~/Desktop/autoodocs/autoodocs.lua:147**
+<a id="run-2-5"></a>**2.5 ~/Desktop/autoodocs/autoodocs.lua:148**
 *↳ [@run 2.](#run-2)*
 
 Write index page
 
 
-<a id="run-2-6"></a>**2.6 ~/Desktop/autoodocs/autoodocs.lua:154**
+<a id="run-2-6"></a>**2.6 ~/Desktop/autoodocs/autoodocs.lua:155**
 *↳ [@run 2.](#run-2)*
 
 Write individual file pages
 
 
-<a id="run-2-7"></a>**2.7 ~/Desktop/autoodocs/autoodocs.lua:168**
+<a id="run-2-7"></a>**2.7 ~/Desktop/autoodocs/autoodocs.lua:169**
 *↳ [@run 2.](#run-2)*
 
 Output subject count warnings if check mode enabled
@@ -211,7 +212,7 @@ Output subject count warnings if check mode enabled
     end
 ```
 
-<a id="run-2-8"></a>**2.8 ~/Desktop/autoodocs/autoodocs.lua:176**
+<a id="run-2-8"></a>**2.8 ~/Desktop/autoodocs/autoodocs.lua:177**
 *↳ [@run 2.](#run-2)*
 
 Output stats if requested
@@ -225,7 +226,7 @@ end
 
 ### <a id="run-3"></a>3. Entry point
 
-`~/Desktop/autoodocs/autoodocs.lua:182`
+`~/Desktop/autoodocs/autoodocs.lua:183`
 
 ```lua
 main()
@@ -233,7 +234,7 @@ main()
 
 ## <a id="err"></a>Errors
 
-<a id="err-1"></a>**1. ~/Desktop/autoodocs/autoodocs.lua:127**
+<a id="err-1"></a>**1. ~/Desktop/autoodocs/autoodocs.lua:128**
 *↳ [@run 2.](#run-2)*
 
 No tagged files found
@@ -245,7 +246,7 @@ No tagged files found
     end
 ```
 
-<a id="err-2"></a>**2. ~/Desktop/autoodocs/autoodocs.lua:138**
+<a id="err-2"></a>**2. ~/Desktop/autoodocs/autoodocs.lua:139**
 *↳ [@run 2.](#run-2)*
 
 No extractable documentation

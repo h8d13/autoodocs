@@ -11,8 +11,9 @@ local sub    = string.sub
 local utils = require("lib.utils")
 local trim = utils.trim
 
--- @def:1 Module table
+-- @def:2 Module table
 local M = {}
+M.check = false
 
 -- @def:3 Map tag prefixes to anchor slugs and section titles
 M.TAG_SEC   = {GEN="gen", CHK="chk", DEF="def", RUN="run", ERR="err"}
@@ -60,7 +61,7 @@ local function render_entry(w, r)
         return
     end
 
-    -- @run:12 Build entry header with anchor and index
+    -- @run:8 Build entry header with anchor and index
     -- child entries show parent backlink, top-level entries use h3
     if r.parent then
         -- Child entry: bold text
@@ -70,8 +71,12 @@ local function render_entry(w, r)
         -- Top-level entry: h3 header (appears in TOC)
         local title = r.text:match("^([^\031]+)") or ""
         title = trim(title)
-        if title == "" then title = r.text:match("\031([^\031]+)") or "" end
-        title = trim(title)
+
+        -- @chk:3 Make sure we got titles, if we dont output errors on -c
+        if title == "" and M.check then
+            io.stderr:write(fmt("autoodocs: %s empty descriptor\n", r.loc))
+        end
+
         if #title > 90 then title = title:sub(1, 87) .. "..." end
         w(fmt('### <a id="%s"></a>%s %s\n\n', r.anchor, r.idx, title))
         w(fmt('`%s`\n\n', r.loc))

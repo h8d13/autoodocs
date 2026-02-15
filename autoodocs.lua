@@ -54,7 +54,7 @@ local utils  = require("lib.utils")
 local parser = require("lib.parser")
 local render = require("lib.render")
 
--- @def:18 Parse CLI args with defaults
+-- @def:19 Parse CLI args with defaults
 -- strip trailing slash, resolve absolute path via `/proc/self/environ`
 -- `US` separates multi-line text within record fields
 -- `-c` enables subject count validation, `-r` sets repo URL
@@ -67,6 +67,7 @@ for i = 3, #arg do
     elseif arg[i] == "-r" and arg[i+1] then REPO = arg[i+1]
     end
 end
+render.check = CHECK
 SCAN_DIR = gsub(SCAN_DIR, "/$", "")
 if sub(SCAN_DIR, 1, 1) ~= "/" then
     local ef = open("/proc/self/environ", "rb")

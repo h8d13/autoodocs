@@ -39,7 +39,17 @@
 
 <h2><a id="chk"></a>Checks</h2>
 
-<p><a id="chk-1"></a><strong>1. ~/Desktop/autoodocs/lib/render.lua:136</strong>
+<p><a id="chk-1"></a><strong>1. ~/Desktop/autoodocs/lib/render.lua:75</strong>
+<em>↳ <a href="#run-3-2">@run 3.2</a></em></p>
+
+<p>Make sure we got titles, if we dont output errors on -c</p>
+
+<pre><code class="language-lua">        if title == "" and M.check then
+            io.stderr:write(fmt("autoodocs: %s empty descriptor\n", r.loc))
+        end
+</code></pre>
+
+<p><a id="chk-2"></a><strong>2. ~/Desktop/autoodocs/lib/render.lua:141</strong>
 <em>↳ <a href="#run-4">@run 4.</a></em></p>
 
 <p>Detect and include README.md content</p>
@@ -90,11 +100,12 @@ local trim = utils.trim
 <p><code>~/Desktop/autoodocs/lib/render.lua:14</code></p>
 
 <pre><code class="language-lua">local M = {}
+M.check = false
 </code></pre>
 
 <h3><a id="def-4"></a>4. Map tag prefixes to anchor slugs and section titles</h3>
 
-<p><code>~/Desktop/autoodocs/lib/render.lua:17</code></p>
+<p><code>~/Desktop/autoodocs/lib/render.lua:18</code></p>
 
 <pre><code class="language-lua">M.TAG_SEC   = {GEN="gen", CHK="chk", DEF="def", RUN="run", ERR="err"}
 M.TAG_TITLE = {GEN="General", CHK="Checks", DEF="Defines", RUN="Runners", ERR="Errors"}
@@ -103,12 +114,12 @@ M.TAG_ORDER = {"GEN", "CHK", "DEF", "RUN", "ERR"}
 
 <h3><a id="def-5"></a>5. Line-to-anchor mapping built during grouping</h3>
 
-<p><code>~/Desktop/autoodocs/lib/render.lua:30</code></p>
+<p><code>~/Desktop/autoodocs/lib/render.lua:31</code></p>
 
 <pre><code class="language-lua">M.line_map = {}
 </code></pre>
 
-<p><a id="def-6"></a><strong>6. ~/Desktop/autoodocs/lib/render.lua:214</strong>
+<p><a id="def-6"></a><strong>6. ~/Desktop/autoodocs/lib/render.lua:219</strong>
 <em>↳ <a href="#run-5">@run 5.</a></em></p>
 
 <p>Group entries by tag type</p>
@@ -123,12 +134,12 @@ M.TAG_ORDER = {"GEN", "CHK", "DEF", "RUN", "ERR"}
 
 <h3><a id="run-1"></a>1. Generate a slug from a file path for anchors/filenames</h3>
 
-<p><code>~/Desktop/autoodocs/lib/render.lua:22</code></p>
+<p><code>~/Desktop/autoodocs/lib/render.lua:23</code></p>
 
 
 <h3><a id="run-2"></a>2. Convert @src:filepath:line to clickable markdown links</h3>
 
-<p><code>~/Desktop/autoodocs/lib/render.lua:33</code></p>
+<p><code>~/Desktop/autoodocs/lib/render.lua:34</code></p>
 
 <pre><code class="language-lua">local function link_sources(text)
     text = gsub(text, "@ref %[(.-)%]%((.-)%)", "*↗ [%1](%2)*")
@@ -151,10 +162,10 @@ end
 
 <h3><a id="run-3"></a>3. Render a single entry</h3>
 
-<p><code>~/Desktop/autoodocs/lib/render.lua:52</code></p>
+<p><code>~/Desktop/autoodocs/lib/render.lua:53</code></p>
 
 
-<p><a id="run-3-1"></a><strong>3.1 ~/Desktop/autoodocs/lib/render.lua:54</strong>
+<p><a id="run-3-1"></a><strong>3.1 ~/Desktop/autoodocs/lib/render.lua:55</strong>
 <em>↳ <a href="#run-3">@run 3.</a></em></p>
 
 <p>GEN entries render as plain text, no header</p>
@@ -168,7 +179,7 @@ end
     end
 </code></pre>
 
-<p><a id="run-3-2"></a><strong>3.2 ~/Desktop/autoodocs/lib/render.lua:63</strong>
+<p><a id="run-3-2"></a><strong>3.2 ~/Desktop/autoodocs/lib/render.lua:64</strong>
 <em>↳ <a href="#run-3">@run 3.</a></em></p>
 
 <p>Build entry header with anchor and index</p>
@@ -185,13 +196,9 @@ end
         -- Top-level entry: h3 header (appears in TOC)
         local title = r.text:match("^([^\031]+)") or ""
         title = trim(title)
-        if title == "" then title = r.text:match("\031([^\031]+)") or "" end
-        title = trim(title)
-        if #title &gt; 90 then title = title:sub(1, 87) .. "..." end
-        w(fmt('### &lt;a id="%s"&gt;&lt;/a&gt;%s %s\n\n', r.anchor, r.idx, title))
 </code></pre>
 
-<p><a id="run-3-3"></a><strong>3.3 ~/Desktop/autoodocs/lib/render.lua:80</strong>
+<p><a id="run-3-3"></a><strong>3.3 ~/Desktop/autoodocs/lib/render.lua:85</strong>
 <em>↳ <a href="#run-3">@run 3.</a></em></p>
 
 <p>Render text lines through link_sources with admonition support</p>
@@ -233,10 +240,10 @@ end
 
 <h3><a id="run-4"></a>4. Render index page</h3>
 
-<p><code>~/Desktop/autoodocs/lib/render.lua:129</code></p>
+<p><code>~/Desktop/autoodocs/lib/render.lua:134</code></p>
 
 
-<p><a id="run-4-1"></a><strong>4.1 ~/Desktop/autoodocs/lib/render.lua:155</strong>
+<p><a id="run-4-1"></a><strong>4.1 ~/Desktop/autoodocs/lib/render.lua:160</strong>
 <em>↳ <a href="#run-4">@run 4.</a></em></p>
 
 <p>Find common path prefix and group files by directory</p>
@@ -263,7 +270,7 @@ end
     end
 </code></pre>
 
-<p><a id="run-4-2"></a><strong>4.2 ~/Desktop/autoodocs/lib/render.lua:177</strong>
+<p><a id="run-4-2"></a><strong>4.2 ~/Desktop/autoodocs/lib/render.lua:182</strong>
 <em>↳ <a href="#run-4">@run 4.</a></em></p>
 
 <p>Write hidden NAV comment for TOC extraction</p>
@@ -287,7 +294,7 @@ end
     w("--&gt;\n")
 </code></pre>
 
-<p><a id="run-4-3"></a><strong>4.3 ~/Desktop/autoodocs/lib/render.lua:196</strong>
+<p><a id="run-4-3"></a><strong>4.3 ~/Desktop/autoodocs/lib/render.lua:201</strong>
 <em>↳ <a href="#run-4">@run 4.</a></em></p>
 
 <p>Embed repo URL as HTML comment for sidebar link</p>
@@ -303,10 +310,10 @@ end
 
 <h3><a id="run-5"></a>5. Render a single file's documentation page</h3>
 
-<p><code>~/Desktop/autoodocs/lib/render.lua:205</code></p>
+<p><code>~/Desktop/autoodocs/lib/render.lua:210</code></p>
 
 
-<p><a id="run-5-1"></a><strong>5.1 ~/Desktop/autoodocs/lib/render.lua:220</strong>
+<p><a id="run-5-1"></a><strong>5.1 ~/Desktop/autoodocs/lib/render.lua:225</strong>
 <em>↳ <a href="#run-5">@run 5.</a></em></p>
 
 <p>Render each tag section, GEN has no header</p>
@@ -326,16 +333,16 @@ end
 
 <h3><a id="run-6"></a>6. Group records by file and assign indices</h3>
 
-<p><code>~/Desktop/autoodocs/lib/render.lua:236</code></p>
+<p><code>~/Desktop/autoodocs/lib/render.lua:241</code></p>
 
 
 <h3><a id="run-7"></a>7. Get slug for a file path</h3>
 
-<p><code>~/Desktop/autoodocs/lib/render.lua:297</code></p>
+<p><code>~/Desktop/autoodocs/lib/render.lua:302</code></p>
 
 
 
-<div class="build-timestamp">Generated: 2026-02-15 23:10</div>
+<div class="build-timestamp">Generated: 2026-02-15 23:18</div>
 </main>
 </div>
 <script>
