@@ -21,20 +21,20 @@
 -- `!c` CAUTION
 print('luadoc is awesome')
     -- STANDALONES (Place anywhere)
-        -- @gen General -> File description
+        -- @gen General     -> File description
         ---- plain text at top, no section header
-        -- @chk Check  -> Early checks
+        -- @chk Check       -> Early checks
         ---- guard the entry, bail/handle early if preconditions fail
-        -- @def Define -> Gives instructions to
+        -- @def Define      -> Gives instructions to
         ---- define the state/config the rest depends on
-        -- @run Run    -> Use the instructions
+        -- @run Run         -> Use the instructions
         ---- do the actual work using those definitions
-        -- @err Error  -> Handle what went wrong
+        -- @err Error       -> Handle what went wrong
         ---- handle errors with more definitions
     -- Descriptions (Used inside another of above)
-        -- @src Source -> Reference a line nbr
+        -- @src Source      -> Points path:line nbr
         ---- mention line nr auto resolve anchor
-        -- @ref Reference -> External link
+        -- @ref Receipt     -> External links
         ---- renders clickable arrow link in quote
 
 --########--
