@@ -190,7 +190,7 @@ function M.render_index(file_order, scan_dir, repo_url)
     w("-->\n")
 
     -- Add repo URL if provided
-    -- @ref [autoodocs]https://github.com/h8d13/autoodocs
+    -- @ref [autoodocs](https://github.com/h8d13/autoodocs)
     if repo_url then
         w(fmt("<!-- REPO:%s -->\n", repo_url))
     end
