@@ -12,14 +12,14 @@ This creates a pleasing flow to work with for docs/ pages.
 
 ## <a id="chk"></a>Checks
 
-### <a id="chk-1"></a>`-s` outputs extra stats
+### <a id="chk-1"></a>1. `-s` outputs extra stats
 
 `~/Desktop/autoodocs/autoodocs.lua:12`
 
 
 ## <a id="def"></a>Defines
 
-### <a id="def-1"></a>
+### <a id="def-1"></a>1. 
 
 `~/Desktop/autoodocs/autoodocs.lua:14`
 
@@ -56,7 +56,7 @@ print('luadoc is awesome')
         ---- renders clickable arrow link in quote
 ```
 
-### <a id="def-2"></a>Localize functions and load libraries
+### <a id="def-2"></a>2. Localize functions and load libraries
 
 `~/Desktop/autoodocs/autoodocs.lua:42`
 
@@ -72,7 +72,7 @@ local script_dir = arg[0]:match("^(.-)[^/]*$") or "./"
 package.path = script_dir .. "?.lua;" .. script_dir .. "?/init.lua;" .. package.path
 ```
 
-### <a id="def-3"></a>Parse CLI args with defaults
+### <a id="def-3"></a>3. Parse CLI args with defaults
 
 `~/Desktop/autoodocs/autoodocs.lua:57`
 
@@ -103,7 +103,7 @@ local HOME = match(SCAN_DIR, "^(/[^/]+/[^/]+)")
 local US = "\031"
 ```
 
-### <a id="def-4"></a>Global state for collected records, warnings, and line count
+### <a id="def-4"></a>4. Global state for collected records, warnings, and line count
 
 `~/Desktop/autoodocs/autoodocs.lua:80`
 
@@ -117,12 +117,12 @@ local total_input = 0
 
 ## <a id="run"></a>Runners
 
-### <a id="run-1"></a>Write file if content changed
+### <a id="run-1"></a>1. Write file if content changed
 
 `~/Desktop/autoodocs/autoodocs.lua:86`
 
 
-### <a id="run-2"></a>Main function
+### <a id="run-2"></a>2. Main function
 
 `~/Desktop/autoodocs/autoodocs.lua:102`
 
@@ -221,7 +221,7 @@ Output stats if requested
 end
 ```
 
-### <a id="run-3"></a>Entry point
+### <a id="run-3"></a>3. Entry point
 
 `~/Desktop/autoodocs/autoodocs.lua:182`
 

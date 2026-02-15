@@ -6,7 +6,7 @@ Basic markdown stylesheet with GitHub-style sidebar
 
 ## <a id="def"></a>Defines
 
-### <a id="def-1"></a>Color scheme variables
+### <a id="def-1"></a>1. Color scheme variables
 
 `~/Desktop/autoodocs/default.css:3`
 
@@ -57,7 +57,7 @@ Basic markdown stylesheet with GitHub-style sidebar
 }
 ```
 
-### <a id="def-2"></a>Layout container
+### <a id="def-2"></a>2. Layout container
 
 `~/Desktop/autoodocs/default.css:59`
 
@@ -69,7 +69,7 @@ Basic markdown stylesheet with GitHub-style sidebar
 }
 ```
 
-### <a id="def-3"></a>Sidebar navigation panel
+### <a id="def-3"></a>3. Sidebar navigation panel
 
 `~/Desktop/autoodocs/default.css:66`
 
@@ -87,7 +87,7 @@ Basic markdown stylesheet with GitHub-style sidebar
 }
 ```
 
-### <a id="def-4"></a>Main content area
+### <a id="def-4"></a>4. Main content area
 
 `~/Desktop/autoodocs/default.css:169`
 
@@ -100,7 +100,7 @@ Basic markdown stylesheet with GitHub-style sidebar
 }
 ```
 
-### <a id="def-5"></a>Heading styles
+### <a id="def-5"></a>5. Heading styles
 
 `~/Desktop/autoodocs/default.css:177`
 
@@ -122,7 +122,7 @@ h4 { font-size: 1em; }
 }
 ```
 
-### <a id="def-6"></a>Code and pre blocks
+### <a id="def-6"></a>6. Code and pre blocks
 
 `~/Desktop/autoodocs/default.css:222`
 
@@ -150,7 +150,7 @@ pre code {
 }
 ```
 
-### <a id="def-7"></a>GitHub-style callout boxes
+### <a id="def-7"></a>7. GitHub-style callout boxes
 
 `~/Desktop/autoodocs/default.css:289`
 
@@ -185,7 +185,7 @@ pre code {
 .callout-caution .callout-title { color: var(--caution); }
 ```
 
-### <a id="def-8"></a>Mobile responsive breakpoint
+### <a id="def-8"></a>8. Mobile responsive breakpoint
 
 `~/Desktop/autoodocs/default.css:329`
 

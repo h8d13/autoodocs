@@ -66,7 +66,7 @@ THE SOFTWARE.
 // Niklas
 ]]
 
--- @chk Lua 5.1/5.2 compatibility
+-- @chk:1 Lua 5.1/5.2 compatibility
 table.unpack = table.unpack or unpack
 
 -- @def:1 Forward declarations for mutually recursive functions
@@ -344,7 +344,7 @@ local function is_ruler_of(line, char)
     return true
 end
 
--- @chk Classify block-level formatting in a line
+-- @chk:63 Classify block-level formatting in a line
 local function classify(line)
     local info = {line = line, text = line}
 
@@ -409,7 +409,7 @@ local function classify(line)
     return info
 end
 
--- @run Convert normal + ruler lines to header entries
+-- @run:16 Convert normal + ruler lines to header entries
 local function headers(array)
     local i = 1
     while i <= #array - 1 do
@@ -427,7 +427,7 @@ local function headers(array)
     return array
 end
 
--- @run Convert list blocks to protected HTML
+-- @run:121 Convert list blocks to protected HTML
 local function lists(array, sublist)
     local function process_list(arr)
         local function any_blanks(arr)
@@ -550,7 +550,7 @@ local function lists(array, sublist)
     return array
 end
 
--- @run Convert blockquote markers with GitHub callout support
+-- @run:60 Convert blockquote markers with GitHub callout support
 local function blockquotes(lines)
     local function find_blockquote(lines)
         local start
@@ -612,7 +612,7 @@ local function blockquotes(lines)
     return lines
 end
 
--- @run Convert fenced code blocks with language hints
+-- @run:57 Convert fenced code blocks with language hints
 local function fenced_codeblocks(lines)
     local function find_fenced_codeblock(lines)
         local start, fence_char, fence_len, lang
@@ -1075,7 +1075,7 @@ end
 -- Markdown
 ----------------------------------------------------------------------
 
--- @run Normalize line endings, tabs, and whitespace
+-- @run:17 Normalize line endings, tabs, and whitespace
 local function cleanup(text)
     -- Standardize line endings
     text = text:gsub("\r\n", "\n")  -- DOS to UNIX
@@ -1223,14 +1223,14 @@ function OptionParser:run(args)
     return true
 end
 
--- @run CLI handler with HTML wrapping and TOC generation
+-- @run:1 CLI handler with HTML wrapping and TOC generation
 local function run_command_line(arg)
     -- Generate output for input s given options
     local function run(s, options)
         s = markdown(s)
         if not options.wrap_header then return s end
         local header = ""
-        -- @err Header file not found
+        -- @err:1 Header file not found
         if options.header then
             local f = io.open(options.header) or error("Could not open file: " .. options.header)
             header = f:read("*a")
@@ -1257,7 +1257,7 @@ local function run_command_line(arg)
             local title = options.title or s:match("<h1>(.-)</h1>") or s:match("<h2>(.-)</h2>") or
                 s:match("<h3>(.-)</h3>") or "Untitled"
             header = header:gsub("TITLE", title)
-            -- @err Stylesheet file not found for inline inclusion
+            -- @err:13 Stylesheet file not found for inline inclusion
             if options.inline_style then
                 local style = ""
                 local f = io.open(options.stylesheet)
@@ -1348,7 +1348,7 @@ window.addEventListener('scroll', function() {
 });
 </script>
 </body></html>]]
-        -- @err Footer file not found
+        -- @err:4 Footer file not found
         if options.footer then
             local f = io.open(options.footer) or error("Could not open file: " .. options.footer)
             footer = f:read("*a")
@@ -1421,7 +1421,7 @@ Other options:
     op:param("d", "timestamp", function(x) options.timestamp = x end)
     op:flag("t", "test", function()
         local n = arg[0]:gsub("markdown.lua", "markdown-tests.lua")
-        -- @err Test file not found
+        -- @err:7 Test file not found
         local f = io.open(n)
         if f then
             f:close() dofile(n)
@@ -1431,7 +1431,7 @@ Other options:
         run_stdin = false
     end)
     op:flag("h", "help", function() print(help) run_stdin = false end)
-    -- @err Input or output file cannot be opened
+    -- @err:11 Input or output file cannot be opened
     op:arg(function(path)
             local file = io.open(path) or error("Could not open file: " .. path)
             local s = file:read("*a")

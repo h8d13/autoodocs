@@ -6,7 +6,7 @@ Build script that runs autoodocs and converts output to HTML
 
 ## <a id="def"></a>Defines
 
-### <a id="def-1"></a>Resolve script directory for portable paths
+### <a id="def-1"></a>1. Resolve script directory for portable paths
 
 `~/Desktop/autoodocs/build.lua:5`
 
@@ -15,7 +15,7 @@ local fmt = string.format
 local dir = arg[0]:match("^(.-)[^/]*$") or "./"
 ```
 
-### <a id="def-2"></a>Load config from script directory
+### <a id="def-2"></a>2. Load config from script directory
 
 `~/Desktop/autoodocs/build.lua:9`
 
@@ -27,7 +27,7 @@ if conf_file then
 end
 ```
 
-### <a id="def-3"></a>Build markdown.lua flags from config
+### <a id="def-3"></a>3. Build markdown.lua flags from config
 
 `~/Desktop/autoodocs/build.lua:25`
 
@@ -43,12 +43,12 @@ if cfg.timestamp then md_flags = md_flags .. fmt('--timestamp "%s" ', os.date("%
 
 ## <a id="run"></a>Runners
 
-### <a id="run-1"></a>Build pipeline: generate docs and convert to HTML
+### <a id="run-1"></a>1. Build pipeline: generate docs and convert to HTML
 
 `~/Desktop/autoodocs/build.lua:3`
 
 
-### <a id="run-2"></a>Generate markdown documentation
+### <a id="run-2"></a>2. Generate markdown documentation
 
 `~/Desktop/autoodocs/build.lua:17`
 
@@ -63,7 +63,7 @@ print("Generating markdown...")
 os.execute(fmt("%s %sautoodocs.lua %s %s %s%s", cfg.cmd, dir, cfg.scan_dir, cfg.out_dir, flags, repo))
 ```
 
-### <a id="run-3"></a>Copy stylesheet and assets to output directory
+### <a id="run-3"></a>3. Copy stylesheet and assets to output directory
 
 `~/Desktop/autoodocs/build.lua:34`
 
@@ -80,7 +80,7 @@ if cfg.favicon then
 end
 ```
 
-### <a id="run-4"></a>Convert all markdown files to HTML
+### <a id="run-4"></a>4. Convert all markdown files to HTML
 
 `~/Desktop/autoodocs/build.lua:45`
 

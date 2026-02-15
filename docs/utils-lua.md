@@ -6,7 +6,7 @@ String utilities, shell escaping, and language detection
 
 ## <a id="chk"></a>Checks
 
-### <a id="chk-1"></a>Classify file language via extension or shebang
+### <a id="chk-1"></a>1. Classify file language via extension or shebang
 
 `~/Desktop/autoodocs/lib/utils.lua:60`
 
@@ -29,7 +29,7 @@ end
 
 ## <a id="def"></a>Defines
 
-### <a id="def-1"></a>Localize `string.*`, `table.*`, and `io.*` functions
+### <a id="def-1"></a>1. Localize `string.*`, `table.*`, and `io.*` functions
 
 `~/Desktop/autoodocs/lib/utils.lua:2`
 
@@ -46,7 +46,7 @@ local open   = io.open
 local M = {}
 ```
 
-### <a id="def-2"></a>Shell-escape a string for safe interpolation into `io.popen`
+### <a id="def-2"></a>2. Shell-escape a string for safe interpolation into `io.popen`
 
 `~/Desktop/autoodocs/lib/utils.lua:13`
 
@@ -59,7 +59,7 @@ function M.shell_quote(s)
 end
 ```
 
-### <a id="def-3"></a>Map file extension to fenced code block language
+### <a id="def-3"></a>3. Map file extension to fenced code block language
 
 `~/Desktop/autoodocs/lib/utils.lua:40`
 
@@ -78,7 +78,7 @@ M.ext_map = {
 }
 ```
 
-### <a id="def-4"></a>Map shebang interpreters to fenced code block language
+### <a id="def-4"></a>4. Map shebang interpreters to fenced code block language
 
 `~/Desktop/autoodocs/lib/utils.lua:54`
 
@@ -91,7 +91,7 @@ M.shebang_map = {
 
 ## <a id="run"></a>Runners
 
-### <a id="run-1"></a>Strip leading whitespace, returns original if unchanged
+### <a id="run-1"></a>1. Strip leading whitespace, returns original if unchanged
 
 `~/Desktop/autoodocs/lib/utils.lua:19`
 
@@ -104,7 +104,7 @@ function M.trim_lead(s)
 end
 ```
 
-### <a id="run-2"></a>Strip trailing whitespace, returns original if unchanged
+### <a id="run-2"></a>2. Strip trailing whitespace, returns original if unchanged
 
 `~/Desktop/autoodocs/lib/utils.lua:27`
 
@@ -117,7 +117,7 @@ function M.trim_trail(s)
 end
 ```
 
-### <a id="run-3"></a>Trim both ends via `trim_lead` and `trim_trail`
+### <a id="run-3"></a>3. Trim both ends via `trim_lead` and `trim_trail`
 
 `~/Desktop/autoodocs/lib/utils.lua:35`
 

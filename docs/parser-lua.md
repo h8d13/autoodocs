@@ -6,7 +6,7 @@ Comment parser that extracts documentation tags from source files
 
 ## <a id="chk"></a>Checks
 
-### <a id="chk-1"></a>Detect and classify tag in one pass, returns nil if no tag
+### <a id="chk-1"></a>1. Detect and classify tag in one pass, returns nil if no tag
 
 `~/Desktop/autoodocs/lib/parser.lua:28`
 
@@ -24,7 +24,7 @@ function M.get_tag(line)
 end
 ```
 
-### <a id="chk-2"></a>Extract the subject line count from `@tag:N` syntax
+### <a id="chk-2"></a>2. Extract the subject line count from `@tag:N` syntax
 
 `~/Desktop/autoodocs/lib/parser.lua:40`
 
@@ -39,7 +39,7 @@ function M.get_subject_count(text)
 end
 ```
 
-### <a id="chk-3"></a>Extract `!x` admonition suffix from tag syntax
+### <a id="chk-3"></a>3. Extract `!x` admonition suffix from tag syntax
 
 `~/Desktop/autoodocs/lib/parser.lua:61`
 
@@ -50,7 +50,7 @@ function M.get_admonition(text)
 end
 ```
 
-### <a id="chk-4"></a>Detect comment style via byte-level prefix check
+### <a id="chk-4"></a>4. Detect comment style via byte-level prefix check
 
 `~/Desktop/autoodocs/lib/parser.lua:92`
 
@@ -249,7 +249,7 @@ Untagged single-quote docstring start
 
 ## <a id="def"></a>Defines
 
-### <a id="def-1"></a>Localize functions for hot loop perf
+### <a id="def-1"></a>1. Localize functions for hot loop perf
 
 `~/Desktop/autoodocs/lib/parser.lua:2`
 
@@ -264,7 +264,7 @@ local open   = io.open
 local concat = table.concat
 ```
 
-### <a id="def-2"></a>Localize utils for hoot loop perf
+### <a id="def-2"></a>2. Localize utils for hoot loop perf
 
 `~/Desktop/autoodocs/lib/parser.lua:12`
 
@@ -276,7 +276,7 @@ local trim_trail = utils.trim_trail
 local get_lang = utils.get_lang
 ```
 
-### <a id="def-3"></a>Localize map
+### <a id="def-3"></a>3. Localize map
 
 `~/Desktop/autoodocs/lib/parser.lua:19`
 
@@ -284,7 +284,7 @@ local get_lang = utils.get_lang
 local M = {}
 ```
 
-### <a id="def-4"></a>Hoisted `TAGS` table avoids per-call allocation in `strip_tags`
+### <a id="def-4"></a>4. Hoisted `TAGS` table avoids per-call allocation in `strip_tags`
 
 `~/Desktop/autoodocs/lib/parser.lua:22`
 
@@ -292,7 +292,7 @@ local M = {}
 local TAGS = {"@gen", "@def", "@chk", "@run", "@err"}
 ```
 
-### <a id="def-5"></a>Map `!x` suffixes to admonition types
+### <a id="def-5"></a>5. Map `!x` suffixes to admonition types
 
 `~/Desktop/autoodocs/lib/parser.lua:25`
 
@@ -343,7 +343,7 @@ Initialize per-file state machine variables
 
 ## <a id="run"></a>Runners
 
-### <a id="run-1"></a>Strip `@tag:N` and trailing digits from text
+### <a id="run-1"></a>1. Strip `@tag:N` and trailing digits from text
 
 `~/Desktop/autoodocs/lib/parser.lua:49`
 
@@ -361,7 +361,7 @@ local function strip_tag_num(text, tag)
 end
 ```
 
-### <a id="run-2"></a>Remove `@tag`, `@tag:N`, or `@tag!x` syntax from comment text
+### <a id="run-2"></a>2. Remove `@tag`, `@tag:N`, or `@tag!x` syntax from comment text
 
 `~/Desktop/autoodocs/lib/parser.lua:67`
 
@@ -392,14 +392,14 @@ function M.strip_tags(text)
 end
 ```
 
-### <a id="run-3"></a>Strip comment delimiters and extract inner text
+### <a id="run-3"></a>3. Strip comment delimiters and extract inner text
 
 `~/Desktop/autoodocs/lib/parser.lua:121`
 
 for all styles including block continuations
 
 
-### <a id="run-4"></a>Walk one file as a line-by-line state machine
+### <a id="run-4"></a>4. Walk one file as a line-by-line state machine
 
 `~/Desktop/autoodocs/lib/parser.lua:233`
 

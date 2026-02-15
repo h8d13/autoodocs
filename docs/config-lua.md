@@ -6,7 +6,7 @@ Autoodocs configuration
 
 ## <a id="def"></a>Defines
 
-### <a id="def-1"></a>Configuration for build
+### <a id="def-1"></a>1. Configuration for build
 
 `~/Desktop/autoodocs/config.lua:3`
 

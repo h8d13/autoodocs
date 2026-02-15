@@ -33,7 +33,7 @@ Detect and include README.md content
 
 ## <a id="def"></a>Defines
 
-### <a id="def-1"></a>Localize functions for performance
+### <a id="def-1"></a>1. Localize functions for performance
 
 `~/Desktop/autoodocs/lib/render.lua:2`
 
@@ -46,7 +46,7 @@ local match  = string.match
 local sub    = string.sub
 ```
 
-### <a id="def-2"></a>Import utils for trim
+### <a id="def-2"></a>2. Import utils for trim
 
 `~/Desktop/autoodocs/lib/render.lua:10`
 
@@ -55,7 +55,7 @@ local utils = require("lib.utils")
 local trim = utils.trim
 ```
 
-### <a id="def-3"></a>Module table
+### <a id="def-3"></a>3. Module table
 
 `~/Desktop/autoodocs/lib/render.lua:14`
 
@@ -63,7 +63,7 @@ local trim = utils.trim
 local M = {}
 ```
 
-### <a id="def-4"></a>Map tag prefixes to anchor slugs and section titles
+### <a id="def-4"></a>4. Map tag prefixes to anchor slugs and section titles
 
 `~/Desktop/autoodocs/lib/render.lua:17`
 
@@ -73,7 +73,7 @@ M.TAG_TITLE = {GEN="General", CHK="Checks", DEF="Defines", RUN="Runners", ERR="E
 M.TAG_ORDER = {"GEN", "CHK", "DEF", "RUN", "ERR"}
 ```
 
-### <a id="def-5"></a>Line-to-anchor mapping built during grouping
+### <a id="def-5"></a>5. Line-to-anchor mapping built during grouping
 
 `~/Desktop/autoodocs/lib/render.lua:30`
 
@@ -95,12 +95,12 @@ Group entries by tag type
 
 ## <a id="run"></a>Runners
 
-### <a id="run-1"></a>Generate a slug from a file path for anchors/filenames
+### <a id="run-1"></a>1. Generate a slug from a file path for anchors/filenames
 
 `~/Desktop/autoodocs/lib/render.lua:22`
 
 
-### <a id="run-2"></a>Convert @src:filepath:line to clickable markdown links
+### <a id="run-2"></a>2. Convert @src:filepath:line to clickable markdown links
 
 `~/Desktop/autoodocs/lib/render.lua:33`
 
@@ -124,7 +124,7 @@ local function link_sources(text)
 end
 ```
 
-### <a id="run-3"></a>Render a single entry
+### <a id="run-3"></a>3. Render a single entry
 
 `~/Desktop/autoodocs/lib/render.lua:52`
 
@@ -161,7 +161,7 @@ Build entry header with anchor and index
         local title = r.text:match("^([^\031]+)") or ""
         title = trim(title)
         if #title > 90 then title = title:sub(1, 87) .. "..." end
-        w(fmt('### <a id="%s"></a>%s\n\n', r.anchor, title))
+        w(fmt('### <a id="%s"></a>%s %s\n\n', r.anchor, r.idx, title))
         w(fmt('`%s`\n\n', r.loc))
     end
 ```
@@ -207,7 +207,7 @@ Render text lines through link_sources with admonition support
     end
 ```
 
-### <a id="run-4"></a>Render index page
+### <a id="run-4"></a>4. Render index page
 
 `~/Desktop/autoodocs/lib/render.lua:127`
 
@@ -278,7 +278,7 @@ Embed repo URL as HTML comment for sidebar link
     end
 ```
 
-### <a id="run-5"></a>Render a single file's documentation page
+### <a id="run-5"></a>5. Render a single file's documentation page
 
 `~/Desktop/autoodocs/lib/render.lua:203`
 
@@ -302,12 +302,12 @@ Render each tag section, GEN has no header
     end
 ```
 
-### <a id="run-6"></a>Group records by file and assign indices
+### <a id="run-6"></a>6. Group records by file and assign indices
 
 `~/Desktop/autoodocs/lib/render.lua:234`
 
 
-### <a id="run-7"></a>Get slug for a file path
+### <a id="run-7"></a>7. Get slug for a file path
 
 `~/Desktop/autoodocs/lib/render.lua:295`
 

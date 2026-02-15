@@ -14,19 +14,19 @@
 <ul id="toc">
 <li><a href="#chk">Checks</a></li>
 <li><a href="#def">Defines</a></li>
-<li class="toc-sub"><a href="#def-1">Localize functions for performance</a></li>
-<li class="toc-sub"><a href="#def-2">Import utils for trim</a></li>
-<li class="toc-sub"><a href="#def-3">Module table</a></li>
-<li class="toc-sub"><a href="#def-4">Map tag prefixes to anchor slugs and section titles</a></li>
-<li class="toc-sub"><a href="#def-5">Line-to-anchor mapping built during grouping</a></li>
+<li class="toc-sub"><a href="#def-1">1. Localize functions for performance</a></li>
+<li class="toc-sub"><a href="#def-2">2. Import utils for trim</a></li>
+<li class="toc-sub"><a href="#def-3">3. Module table</a></li>
+<li class="toc-sub"><a href="#def-4">4. Map tag prefixes to anchor slugs and section titles</a></li>
+<li class="toc-sub"><a href="#def-5">5. Line-to-anchor mapping built during grouping</a></li>
 <li><a href="#run">Runners</a></li>
-<li class="toc-sub"><a href="#run-1">Generate a slug from a file path for anchors/filenames</a></li>
-<li class="toc-sub"><a href="#run-2">Convert @src:filepath:line to clickable markdown links</a></li>
-<li class="toc-sub"><a href="#run-3">Render a single entry</a></li>
-<li class="toc-sub"><a href="#run-4">Render index page</a></li>
-<li class="toc-sub"><a href="#run-5">Render a single file's documentation page</a></li>
-<li class="toc-sub"><a href="#run-6">Group records by file and assign indices</a></li>
-<li class="toc-sub"><a href="#run-7">Get slug for a file path</a></li>
+<li class="toc-sub"><a href="#run-1">1. Generate a slug from a file path for anchors/filenames</a></li>
+<li class="toc-sub"><a href="#run-2">2. Convert @src:filepath:line to clickable markdown links</a></li>
+<li class="toc-sub"><a href="#run-3">3. Render a single entry</a></li>
+<li class="toc-sub"><a href="#run-4">4. Render index page</a></li>
+<li class="toc-sub"><a href="#run-5">5. Render a single file's documentation page</a></li>
+<li class="toc-sub"><a href="#run-6">6. Group records by file and assign indices</a></li>
+<li class="toc-sub"><a href="#run-7">7. Get slug for a file path</a></li>
 </ul>
 </nav>
 <main class="content">
@@ -65,7 +65,7 @@
 
 <h2><a id="def"></a>Defines</h2>
 
-<h3><a id="def-1"></a>Localize functions for performance</h3>
+<h3><a id="def-1"></a>1. Localize functions for performance</h3>
 
 <p><code>~/Desktop/autoodocs/lib/render.lua:2</code></p>
 
@@ -77,7 +77,7 @@ local match  = string.match
 local sub    = string.sub
 </code></pre>
 
-<h3><a id="def-2"></a>Import utils for trim</h3>
+<h3><a id="def-2"></a>2. Import utils for trim</h3>
 
 <p><code>~/Desktop/autoodocs/lib/render.lua:10</code></p>
 
@@ -85,14 +85,14 @@ local sub    = string.sub
 local trim = utils.trim
 </code></pre>
 
-<h3><a id="def-3"></a>Module table</h3>
+<h3><a id="def-3"></a>3. Module table</h3>
 
 <p><code>~/Desktop/autoodocs/lib/render.lua:14</code></p>
 
 <pre><code class="language-lua">local M = {}
 </code></pre>
 
-<h3><a id="def-4"></a>Map tag prefixes to anchor slugs and section titles</h3>
+<h3><a id="def-4"></a>4. Map tag prefixes to anchor slugs and section titles</h3>
 
 <p><code>~/Desktop/autoodocs/lib/render.lua:17</code></p>
 
@@ -101,7 +101,7 @@ M.TAG_TITLE = {GEN="General", CHK="Checks", DEF="Defines", RUN="Runners", ERR="E
 M.TAG_ORDER = {"GEN", "CHK", "DEF", "RUN", "ERR"}
 </code></pre>
 
-<h3><a id="def-5"></a>Line-to-anchor mapping built during grouping</h3>
+<h3><a id="def-5"></a>5. Line-to-anchor mapping built during grouping</h3>
 
 <p><code>~/Desktop/autoodocs/lib/render.lua:30</code></p>
 
@@ -121,12 +121,12 @@ M.TAG_ORDER = {"GEN", "CHK", "DEF", "RUN", "ERR"}
 
 <h2><a id="run"></a>Runners</h2>
 
-<h3><a id="run-1"></a>Generate a slug from a file path for anchors/filenames</h3>
+<h3><a id="run-1"></a>1. Generate a slug from a file path for anchors/filenames</h3>
 
 <p><code>~/Desktop/autoodocs/lib/render.lua:22</code></p>
 
 
-<h3><a id="run-2"></a>Convert @src:filepath:line to clickable markdown links</h3>
+<h3><a id="run-2"></a>2. Convert @src:filepath:line to clickable markdown links</h3>
 
 <p><code>~/Desktop/autoodocs/lib/render.lua:33</code></p>
 
@@ -149,7 +149,7 @@ M.TAG_ORDER = {"GEN", "CHK", "DEF", "RUN", "ERR"}
 end
 </code></pre>
 
-<h3><a id="run-3"></a>Render a single entry</h3>
+<h3><a id="run-3"></a>3. Render a single entry</h3>
 
 <p><code>~/Desktop/autoodocs/lib/render.lua:52</code></p>
 
@@ -186,7 +186,7 @@ end
         local title = r.text:match("^([^\031]+)") or ""
         title = trim(title)
         if #title &gt; 90 then title = title:sub(1, 87) .. "..." end
-        w(fmt('### &lt;a id="%s"&gt;&lt;/a&gt;%s\n\n', r.anchor, title))
+        w(fmt('### &lt;a id="%s"&gt;&lt;/a&gt;%s %s\n\n', r.anchor, r.idx, title))
         w(fmt('`%s`\n\n', r.loc))
     end
 </code></pre>
@@ -231,7 +231,7 @@ end
     end
 </code></pre>
 
-<h3><a id="run-4"></a>Render index page</h3>
+<h3><a id="run-4"></a>4. Render index page</h3>
 
 <p><code>~/Desktop/autoodocs/lib/render.lua:127</code></p>
 
@@ -301,7 +301,7 @@ end
     end
 </code></pre>
 
-<h3><a id="run-5"></a>Render a single file's documentation page</h3>
+<h3><a id="run-5"></a>5. Render a single file's documentation page</h3>
 
 <p><code>~/Desktop/autoodocs/lib/render.lua:203</code></p>
 
@@ -324,18 +324,18 @@ end
     end
 </code></pre>
 
-<h3><a id="run-6"></a>Group records by file and assign indices</h3>
+<h3><a id="run-6"></a>6. Group records by file and assign indices</h3>
 
 <p><code>~/Desktop/autoodocs/lib/render.lua:234</code></p>
 
 
-<h3><a id="run-7"></a>Get slug for a file path</h3>
+<h3><a id="run-7"></a>7. Get slug for a file path</h3>
 
 <p><code>~/Desktop/autoodocs/lib/render.lua:295</code></p>
 
 
 
-<div class="build-timestamp">Generated: 2026-02-15 22:45</div>
+<div class="build-timestamp">Generated: 2026-02-15 23:03</div>
 </main>
 </div>
 <script>

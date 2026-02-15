@@ -13,15 +13,15 @@
 <h2>Contents <a href="index.html" class="sidebar-home" title="Home">⌂</a></h2>
 <ul id="toc">
 <li><a href="#chk">Checks</a></li>
-<li class="toc-sub"><a href="#chk-1">Detect and classify tag in one pass, returns nil if no tag</a></li>
-<li class="toc-sub"><a href="#chk-4">Detect comment style via byte-level prefix check</a></li>
+<li class="toc-sub"><a href="#chk-1">1. Detect and classify tag in one pass, returns nil if no tag</a></li>
+<li class="toc-sub"><a href="#chk-4">4. Detect comment style via byte-level prefix check</a></li>
 <li><a href="#def">Defines</a></li>
-<li class="toc-sub"><a href="#def-1">Localize functions for hot loop perf</a></li>
-<li class="toc-sub"><a href="#def-2">Localize utils for hoot loop perf</a></li>
-<li class="toc-sub"><a href="#def-3">Localize map</a></li>
+<li class="toc-sub"><a href="#def-1">1. Localize functions for hot loop perf</a></li>
+<li class="toc-sub"><a href="#def-2">2. Localize utils for hoot loop perf</a></li>
+<li class="toc-sub"><a href="#def-3">3. Localize map</a></li>
 <li><a href="#run">Runners</a></li>
-<li class="toc-sub"><a href="#run-3">Strip comment delimiters and extract inner text</a></li>
-<li class="toc-sub"><a href="#run-4">Walk one file as a line-by-line state machine</a></li>
+<li class="toc-sub"><a href="#run-3">3. Strip comment delimiters and extract inner text</a></li>
+<li class="toc-sub"><a href="#run-4">4. Walk one file as a line-by-line state machine</a></li>
 </ul>
 </nav>
 <main class="content">
@@ -34,7 +34,7 @@
 
 <h2><a id="chk"></a>Checks</h2>
 
-<h3><a id="chk-1"></a>Detect and classify tag in one pass, returns nil if no tag</h3>
+<h3><a id="chk-1"></a>1. Detect and classify tag in one pass, returns nil if no tag</h3>
 
 <p><code>~/Desktop/autoodocs/lib/parser.lua:28</code></p>
 
@@ -51,7 +51,7 @@
 end
 </code></pre>
 
-<h3><a id="chk-2"></a>Extract the subject line count from <code>@tag:N</code> syntax</h3>
+<h3><a id="chk-2"></a>2. Extract the subject line count from <code>@tag:N</code> syntax</h3>
 
 <p><code>~/Desktop/autoodocs/lib/parser.lua:40</code></p>
 
@@ -65,7 +65,7 @@ end
 end
 </code></pre>
 
-<h3><a id="chk-3"></a>Extract <code>!x</code> admonition suffix from tag syntax</h3>
+<h3><a id="chk-3"></a>3. Extract <code>!x</code> admonition suffix from tag syntax</h3>
 
 <p><code>~/Desktop/autoodocs/lib/parser.lua:61</code></p>
 
@@ -75,7 +75,7 @@ end
 end
 </code></pre>
 
-<h3><a id="chk-4"></a>Detect comment style via byte-level prefix check</h3>
+<h3><a id="chk-4"></a>4. Detect comment style via byte-level prefix check</h3>
 
 <p><code>~/Desktop/autoodocs/lib/parser.lua:92</code></p>
 
@@ -271,7 +271,7 @@ end
 
 <h2><a id="def"></a>Defines</h2>
 
-<h3><a id="def-1"></a>Localize functions for hot loop perf</h3>
+<h3><a id="def-1"></a>1. Localize functions for hot loop perf</h3>
 
 <p><code>~/Desktop/autoodocs/lib/parser.lua:2</code></p>
 
@@ -285,7 +285,7 @@ local open   = io.open
 local concat = table.concat
 </code></pre>
 
-<h3><a id="def-2"></a>Localize utils for hoot loop perf</h3>
+<h3><a id="def-2"></a>2. Localize utils for hoot loop perf</h3>
 
 <p><code>~/Desktop/autoodocs/lib/parser.lua:12</code></p>
 
@@ -296,21 +296,21 @@ local trim_trail = utils.trim_trail
 local get_lang = utils.get_lang
 </code></pre>
 
-<h3><a id="def-3"></a>Localize map</h3>
+<h3><a id="def-3"></a>3. Localize map</h3>
 
 <p><code>~/Desktop/autoodocs/lib/parser.lua:19</code></p>
 
 <pre><code class="language-lua">local M = {}
 </code></pre>
 
-<h3><a id="def-4"></a>Hoisted <code>TAGS</code> table avoids per-call allocation in <code>strip_tags</code></h3>
+<h3><a id="def-4"></a>4. Hoisted <code>TAGS</code> table avoids per-call allocation in <code>strip_tags</code></h3>
 
 <p><code>~/Desktop/autoodocs/lib/parser.lua:22</code></p>
 
 <pre><code class="language-lua">local TAGS = {"@gen", "@def", "@chk", "@run", "@err"}
 </code></pre>
 
-<h3><a id="def-5"></a>Map <code>!x</code> suffixes to admonition types</h3>
+<h3><a id="def-5"></a>5. Map <code>!x</code> suffixes to admonition types</h3>
 
 <p><code>~/Desktop/autoodocs/lib/parser.lua:25</code></p>
 
@@ -362,7 +362,7 @@ local get_lang = utils.get_lang
 
 <h2><a id="run"></a>Runners</h2>
 
-<h3><a id="run-1"></a>Strip <code>@tag:N</code> and trailing digits from text</h3>
+<h3><a id="run-1"></a>1. Strip <code>@tag:N</code> and trailing digits from text</h3>
 
 <p><code>~/Desktop/autoodocs/lib/parser.lua:49</code></p>
 
@@ -379,7 +379,7 @@ local get_lang = utils.get_lang
 end
 </code></pre>
 
-<h3><a id="run-2"></a>Remove <code>@tag</code>, <code>@tag:N</code>, or <code>@tag!x</code> syntax from comment text</h3>
+<h3><a id="run-2"></a>2. Remove <code>@tag</code>, <code>@tag:N</code>, or <code>@tag!x</code> syntax from comment text</h3>
 
 <p><code>~/Desktop/autoodocs/lib/parser.lua:67</code></p>
 
@@ -409,14 +409,14 @@ end
 end
 </code></pre>
 
-<h3><a id="run-3"></a>Strip comment delimiters and extract inner text</h3>
+<h3><a id="run-3"></a>3. Strip comment delimiters and extract inner text</h3>
 
 <p><code>~/Desktop/autoodocs/lib/parser.lua:121</code></p>
 
 <p>for all styles including block continuations</p>
 
 
-<h3><a id="run-4"></a>Walk one file as a line-by-line state machine</h3>
+<h3><a id="run-4"></a>4. Walk one file as a line-by-line state machine</h3>
 
 <p><code>~/Desktop/autoodocs/lib/parser.lua:233</code></p>
 
@@ -646,7 +646,7 @@ end
 </code></pre>
 
 
-<div class="build-timestamp">Generated: 2026-02-15 22:45</div>
+<div class="build-timestamp">Generated: 2026-02-15 23:03</div>
 </main>
 </div>
 <script>

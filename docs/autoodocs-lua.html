@@ -14,13 +14,14 @@
 <ul id="toc">
 <li><a href="#chk">Checks</a></li>
 <li><a href="#def">Defines</a></li>
-<li class="toc-sub"><a href="#def-2">Localize functions and load libraries</a></li>
-<li class="toc-sub"><a href="#def-3">Parse CLI args with defaults</a></li>
-<li class="toc-sub"><a href="#def-4">Global state for collected records, warnings, and line count</a></li>
+<li class="toc-sub"><a href="#def-1">1.</a></li>
+<li class="toc-sub"><a href="#def-2">2. Localize functions and load libraries</a></li>
+<li class="toc-sub"><a href="#def-3">3. Parse CLI args with defaults</a></li>
+<li class="toc-sub"><a href="#def-4">4. Global state for collected records, warnings, and line count</a></li>
 <li><a href="#run">Runners</a></li>
-<li class="toc-sub"><a href="#run-1">Write file if content changed</a></li>
-<li class="toc-sub"><a href="#run-2">Main function</a></li>
-<li class="toc-sub"><a href="#run-3">Entry point</a></li>
+<li class="toc-sub"><a href="#run-1">1. Write file if content changed</a></li>
+<li class="toc-sub"><a href="#run-2">2. Main function</a></li>
+<li class="toc-sub"><a href="#run-3">3. Entry point</a></li>
 <li><a href="#err">Errors</a></li>
 </ul>
 </nav>
@@ -40,14 +41,14 @@
 
 <h2><a id="chk"></a>Checks</h2>
 
-<h3><a id="chk-1"></a><code>-s</code> outputs extra stats</h3>
+<h3><a id="chk-1"></a>1. <code>-s</code> outputs extra stats</h3>
 
 <p><code>~/Desktop/autoodocs/autoodocs.lua:12</code></p>
 
 
 <h2><a id="def"></a>Defines</h2>
 
-<h3><a id="def-1"></a></h3>
+<h3><a id="def-1"></a>1.</h3>
 
 <p><code>~/Desktop/autoodocs/autoodocs.lua:14</code></p>
 
@@ -85,7 +86,7 @@
         ---- renders clickable arrow link in quote
 </code></pre>
 
-<h3><a id="def-2"></a>Localize functions and load libraries</h3>
+<h3><a id="def-2"></a>2. Localize functions and load libraries</h3>
 
 <p><code>~/Desktop/autoodocs/autoodocs.lua:42</code></p>
 
@@ -100,7 +101,7 @@ local script_dir = arg[0]:match("^(.-)[^/]*$") or "./"
 package.path = script_dir .. "?.lua;" .. script_dir .. "?/init.lua;" .. package.path
 </code></pre>
 
-<h3><a id="def-3"></a>Parse CLI args with defaults</h3>
+<h3><a id="def-3"></a>3. Parse CLI args with defaults</h3>
 
 <p><code>~/Desktop/autoodocs/autoodocs.lua:57</code></p>
 
@@ -132,7 +133,7 @@ local HOME = match(SCAN_DIR, "^(/[^/]+/[^/]+)")
 local US = "\031"
 </code></pre>
 
-<h3><a id="def-4"></a>Global state for collected records, warnings, and line count</h3>
+<h3><a id="def-4"></a>4. Global state for collected records, warnings, and line count</h3>
 
 <p><code>~/Desktop/autoodocs/autoodocs.lua:80</code></p>
 
@@ -145,12 +146,12 @@ local total_input = 0
 
 <h2><a id="run"></a>Runners</h2>
 
-<h3><a id="run-1"></a>Write file if content changed</h3>
+<h3><a id="run-1"></a>1. Write file if content changed</h3>
 
 <p><code>~/Desktop/autoodocs/autoodocs.lua:86</code></p>
 
 
-<h3><a id="run-2"></a>Main function</h3>
+<h3><a id="run-2"></a>2. Main function</h3>
 
 <p><code>~/Desktop/autoodocs/autoodocs.lua:102</code></p>
 
@@ -245,7 +246,7 @@ local total_input = 0
 end
 </code></pre>
 
-<h3><a id="run-3"></a>Entry point</h3>
+<h3><a id="run-3"></a>3. Entry point</h3>
 
 <p><code>~/Desktop/autoodocs/autoodocs.lua:182</code></p>
 
@@ -277,7 +278,7 @@ end
 </code></pre>
 
 
-<div class="build-timestamp">Generated: 2026-02-15 22:45</div>
+<div class="build-timestamp">Generated: 2026-02-15 23:03</div>
 </main>
 </div>
 <script>
