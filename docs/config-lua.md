@@ -27,7 +27,7 @@ return {
     -- stylesheet   = nil,       -- Custom CSS file (default: default.css)
     -- inline_style = false,     -- Embed CSS inline in <style> tags
     -- favicon      = nil,       -- Favicon file (copied to out_dir)
-    -- timestamp    = false,     -- Add build timestamp to footer
+   	timestamp    = true,     -- Add build timestamp to footer
 }
 ```
 

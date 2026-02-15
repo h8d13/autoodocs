@@ -29,7 +29,7 @@ local repo = cfg.repo ~= "" and ("-r " .. cfg.repo) or ""
 print("Generating markdown...")
 os.execute(fmt("%s %sautoodocs.lua %s %s %s%s", cfg.cmd, dir, cfg.scan_dir, cfg.out_dir, flags, repo))
 
--- Build markdown.lua flags from config
+-- @def:7 Build markdown.lua flags from config
 local md_flags = ""
 if cfg.header then md_flags = md_flags .. fmt("-e %s ", cfg.header) end
 if cfg.footer then md_flags = md_flags .. fmt("-f %s ", cfg.footer) end
@@ -38,7 +38,7 @@ if cfg.inline_style then md_flags = md_flags .. "-l " end
 if cfg.favicon then md_flags = md_flags .. fmt("--favicon %s ", cfg.favicon) end
 if cfg.timestamp then md_flags = md_flags .. fmt('--timestamp "%s" ', os.date("%Y-%m-%d %H:%M")) end
 
--- @run:9 Copy stylesheet and assets to output directory
+-- @run:8 Copy stylesheet and assets to output directory
 -- @src:default.css
 print("Copying assets...")
 os.execute(fmt("cp %sdefault.css %s/", dir, cfg.out_dir))

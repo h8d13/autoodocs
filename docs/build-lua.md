@@ -42,6 +42,20 @@ if conf_file then
 end
 ```
 
+### <a id="def-3"></a>Build markdown.lua flags from config
+
+`~/Desktop/autoodocs/build.lua:32`
+
+```lua
+local md_flags = ""
+if cfg.header then md_flags = md_flags .. fmt("-e %s ", cfg.header) end
+if cfg.footer then md_flags = md_flags .. fmt("-f %s ", cfg.footer) end
+if cfg.stylesheet then md_flags = md_flags .. fmt("-s %s ", cfg.stylesheet) end
+if cfg.inline_style then md_flags = md_flags .. "-l " end
+if cfg.favicon then md_flags = md_flags .. fmt("--favicon %s ", cfg.favicon) end
+if cfg.timestamp then md_flags = md_flags .. fmt('--timestamp "%s" ', os.date("%Y-%m-%d %H:%M")) end
+```
+
 ## <a id="run"></a>Runners
 
 ### <a id="run-1"></a>Build pipeline: generate docs and convert to HTML
@@ -79,7 +93,6 @@ end
 if cfg.favicon then
     os.execute(fmt("cp %s %s/", cfg.favicon, cfg.out_dir))
 end
-
 ```
 
 ### <a id="run-4"></a>Convert changed markdown files to HTML

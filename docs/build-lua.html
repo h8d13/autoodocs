@@ -17,6 +17,7 @@
 <li><a href="#def">Defines</a></li>
 <li class="toc-sub"><a href="#def-1">Resolve script directory for portable paths</a></li>
 <li class="toc-sub"><a href="#def-2">Load config from script directory</a></li>
+<li class="toc-sub"><a href="#def-3">Build markdown.lua flags from config</a></li>
 <li><a href="#run">Runners</a></li>
 <li class="toc-sub"><a href="#run-1">Build pipeline: generate docs and convert to HTML</a></li>
 <li class="toc-sub"><a href="#run-2">Generate markdown documentation</a></li>
@@ -67,6 +68,19 @@ if conf_file then
 end
 </code></pre>
 
+<h3><a id="def-3"></a>Build markdown.lua flags from config</h3>
+
+<p><code>~/Desktop/autoodocs/build.lua:32</code></p>
+
+<pre><code class="language-lua">local md_flags = ""
+if cfg.header then md_flags = md_flags .. fmt("-e %s ", cfg.header) end
+if cfg.footer then md_flags = md_flags .. fmt("-f %s ", cfg.footer) end
+if cfg.stylesheet then md_flags = md_flags .. fmt("-s %s ", cfg.stylesheet) end
+if cfg.inline_style then md_flags = md_flags .. "-l " end
+if cfg.favicon then md_flags = md_flags .. fmt("--favicon %s ", cfg.favicon) end
+if cfg.timestamp then md_flags = md_flags .. fmt('--timestamp "%s" ', os.date("%Y-%m-%d %H:%M")) end
+</code></pre>
+
 <h2><a id="run"></a>Runners</h2>
 
 <h3><a id="run-1"></a>Build pipeline: generate docs and convert to HTML</h3>
@@ -104,7 +118,6 @@ end
 if cfg.favicon then
     os.execute(fmt("cp %s %s/", cfg.favicon, cfg.out_dir))
 end
-
 </code></pre>
 
 <h3><a id="run-4"></a>Convert changed markdown files to HTML</h3>
@@ -125,6 +138,7 @@ pipe:close()
 </code></pre>
 
 
+<div class="build-timestamp">Generated: 2026-02-15 22:34</div>
 </main>
 </div>
 <script>
