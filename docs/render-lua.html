@@ -13,6 +13,7 @@
 <nav class="sidebar">
 <h2>Contents <a href="index.html" class="sidebar-home" title="Home">⌂</a></h2>
 <ul id="toc">
+<li><a href="#chk">Checks</a></li>
 <li><a href="#def">Defines</a></li>
 <li class="toc-sub"><a href="#def-1">Localize functions for performance</a></li>
 <li class="toc-sub"><a href="#def-2">Import utils for trim</a></li>
@@ -36,6 +37,32 @@
 <p><code>~/Desktop/autoodocs/lib/render.lua</code></p>
 
 <p>Markdown renderer that generates documentation pages with cross-references</p>
+
+<h2><a id="chk"></a>Checks</h2>
+
+<p><a id="chk-1"></a><strong>1. ~/Desktop/autoodocs/lib/render.lua:134</strong>
+<em>↳ <a href="#run-4">@run 4.</a></em></p>
+
+<p>Detect and include README.md content</p>
+
+<pre><code class="language-lua">    local readme_content = nil
+    for _, name in ipairs({"README.md", "readme.md"}) do
+        local f = io.open((scan_dir or ".") .. "/" .. name, "r")
+        if f then
+            readme_content = f:read("*a")
+            -- Strip autodocs HTML comments
+            readme_content = readme_content:gsub("&lt;!%-%- @%w[^&gt;]* %-%-&gt;%s*", "")
+            f:close()
+            break
+        end
+    end
+
+    if readme_content then
+        w(readme_content .. "\n\n")
+    else
+        w("Select a file from the sidebar to view its documentation.\n\n")
+    end
+</code></pre>
 
 <h2><a id="def"></a>Defines</h2>
 
@@ -82,6 +109,17 @@ M.TAG_ORDER = {"GEN", "CHK", "DEF", "RUN", "ERR"}
 <pre><code class="language-lua">M.line_map = {}
 </code></pre>
 
+<p><a id="def-6"></a><strong>6. ~/Desktop/autoodocs/lib/render.lua:212</strong>
+<em>↳ <a href="#run-5">@run 5.</a></em></p>
+
+<p>Group entries by tag type</p>
+
+<pre><code class="language-lua">    local by_tag = {GEN={}, CHK={}, DEF={}, RUN={}, ERR={}}
+    for _, r in ipairs(entries) do
+        by_tag[r.tag][#by_tag[r.tag] + 1] = r
+    end
+</code></pre>
+
 <h2><a id="run"></a>Runners</h2>
 
 <h3><a id="run-1"></a>Generate a slug from a file path for anchors/filenames</h3>
@@ -117,24 +155,184 @@ end
 <p><code>~/Desktop/autoodocs/lib/render.lua:52</code></p>
 
 
+<p><a id="run-3-1"></a><strong>3.1 ~/Desktop/autoodocs/lib/render.lua:54</strong>
+<em>↳ <a href="#run-3">@run 3.</a></em></p>
+
+<p>GEN entries render as plain text, no header</p>
+
+<pre><code class="language-lua">    if r.tag == "GEN" then
+        for tline in gmatch(r.text, "[^\031]+") do
+            local tr = link_sources(trim(tline))
+            if tr ~= "" then w(tr .. "\n\n") end
+        end
+        return
+    end
+</code></pre>
+
+<p><a id="run-3-2"></a><strong>3.2 ~/Desktop/autoodocs/lib/render.lua:63</strong>
+<em>↳ <a href="#run-3">@run 3.</a></em></p>
+
+<p>Build entry header with anchor and index</p>
+
+<blockquote>
+    <p>child entries show parent backlink, top-level entries use h3</p>
+</blockquote>
+
+<pre><code class="language-lua">    if r.parent then
+        -- Child entry: bold text
+        w(fmt('&lt;a id="%s"&gt;&lt;/a&gt;**%s %s**\n', r.anchor, r.idx, r.loc))
+        w(fmt("*↳ [@%s %s](#%s)*\n\n", M.TAG_SEC[r.parent.tag], r.parent.idx, r.parent.anchor))
+    else
+        -- Top-level entry: h3 header (appears in TOC)
+        local title = r.text:match("^([^\031]+)") or ""
+        title = trim(title)
+        if #title &gt; 90 then title = title:sub(1, 87) .. "..." end
+        w(fmt('### &lt;a id="%s"&gt;&lt;/a&gt;%s\n\n', r.anchor, title))
+        w(fmt('`%s`\n\n', r.loc))
+    end
+</code></pre>
+
+<p><a id="run-3-3"></a><strong>3.3 ~/Desktop/autoodocs/lib/render.lua:78</strong>
+<em>↳ <a href="#run-3">@run 3.</a></em></p>
+
+<p>Render text lines through link_sources with admonition support</p>
+
+<pre><code class="language-lua">    local skip_first = (not r.parent)
+
+    if r.adm then
+        local first_text = true
+        for tline in gmatch(r.text, "[^\031]+") do
+            local tr = link_sources(trim(tline))
+            if tr ~= "" then
+                if skip_first then
+                    skip_first = false
+                elseif first_text then
+                    w(fmt("&gt; [!%s]\n&gt; %s\n\n", r.adm, tr))
+                    first_text = false
+                else
+                    w(tr .. "\n\n")
+                end
+            end
+        end
+    else
+        local first_text = true
+        for tline in gmatch(r.text, "[^\031]+") do
+            local tr = link_sources(trim(tline))
+            if tr ~= "" then
+                if skip_first then
+                    skip_first = false
+                elseif first_text then
+                    w(tr .. "\n\n")
+                    first_text = false
+                else
+                    w(fmt("&gt; %s\n\n", tr))
+                end
+            end
+        end
+    end
+</code></pre>
+
 <h3><a id="run-4"></a>Render index page</h3>
 
-<p><code>~/Desktop/autoodocs/lib/render.lua:125</code></p>
+<p><code>~/Desktop/autoodocs/lib/render.lua:127</code></p>
 
+
+<p><a id="run-4-1"></a><strong>4.1 ~/Desktop/autoodocs/lib/render.lua:153</strong>
+<em>↳ <a href="#run-4">@run 4.</a></em></p>
+
+<p>Find common path prefix and group files by directory</p>
+
+<pre><code class="language-lua">    local prefix = match(file_order[1] or "", "^(.*/)") or ""
+    for _, file in ipairs(file_order) do
+        while #prefix &gt; 0 and sub(file, 1, #prefix) ~= prefix do
+            prefix = match(sub(prefix, 1, -2), "^(.*/)") or ""
+        end
+    end
+
+    -- Group files: root files first, then by subdirectory
+    local root_files = {}
+    local dir_files = {}
+    for _, file in ipairs(file_order) do
+        local rel = sub(file, #prefix + 1)
+        local dir = match(rel, "^([^/]+)/")
+        if dir then
+            dir_files[dir] = dir_files[dir] or {}
+            dir_files[dir][#dir_files[dir] + 1] = {file = file, rel = rel}
+        else
+            root_files[#root_files + 1] = {file = file, rel = rel}
+        end
+    end
+</code></pre>
+
+<p><a id="run-4-2"></a><strong>4.2 ~/Desktop/autoodocs/lib/render.lua:175</strong>
+<em>↳ <a href="#run-4">@run 4.</a></em></p>
+
+<p>Write hidden NAV comment for TOC extraction</p>
+
+<pre><code class="language-lua">    w("&lt;!-- NAV\n")
+    -- Root files first
+    for _, f in ipairs(root_files) do
+        local slug = slugify(f.file)
+        w(fmt("[%s](%s.html)\n", f.rel, slug))
+    end
+    -- Then grouped subdirectories
+    for dir, files in pairs(dir_files) do
+        w(fmt("[&gt;%s]\n", dir))
+        for _, f in ipairs(files) do
+            local slug = slugify(f.file)
+            local basename = match(f.rel, "/(.+)$") or f.rel
+            w(fmt("[%s](%s.html)\n", basename, slug))
+        end
+        w("[&lt;]\n")
+    end
+    w("--&gt;\n")
+</code></pre>
+
+<p><a id="run-4-3"></a><strong>4.3 ~/Desktop/autoodocs/lib/render.lua:194</strong>
+<em>↳ <a href="#run-4">@run 4.</a></em></p>
+
+<p>Embed repo URL as HTML comment for sidebar link</p>
+
+<blockquote>
+    <p><em>↗ <a href="https://github.com/h8d13/autoodocs">autoodocs</a></em></p>
+</blockquote>
+
+<pre><code class="language-lua">    if repo_url then
+        w(fmt("&lt;!-- REPO:%s --&gt;\n", repo_url))
+    end
+</code></pre>
 
 <h3><a id="run-5"></a>Render a single file's documentation page</h3>
 
-<p><code>~/Desktop/autoodocs/lib/render.lua:201</code></p>
+<p><code>~/Desktop/autoodocs/lib/render.lua:203</code></p>
 
+
+<p><a id="run-5-1"></a><strong>5.1 ~/Desktop/autoodocs/lib/render.lua:218</strong>
+<em>↳ <a href="#run-5">@run 5.</a></em></p>
+
+<p>Render each tag section, GEN has no header</p>
+
+<pre><code class="language-lua">    for _, tag in ipairs(M.TAG_ORDER) do
+        local tag_entries = by_tag[tag]
+        if #tag_entries &gt; 0 then
+            if tag ~= "GEN" then
+                w(fmt('## &lt;a id="%s"&gt;&lt;/a&gt;%s\n\n', M.TAG_SEC[tag], M.TAG_TITLE[tag]))
+            end
+            for _, r in ipairs(tag_entries) do
+                render_entry(w, r)
+            end
+        end
+    end
+</code></pre>
 
 <h3><a id="run-6"></a>Group records by file and assign indices</h3>
 
-<p><code>~/Desktop/autoodocs/lib/render.lua:232</code></p>
+<p><code>~/Desktop/autoodocs/lib/render.lua:234</code></p>
 
 
 <h3><a id="run-7"></a>Get slug for a file path</h3>
 
-<p><code>~/Desktop/autoodocs/lib/render.lua:293</code></p>
+<p><code>~/Desktop/autoodocs/lib/render.lua:295</code></p>
 
 
 

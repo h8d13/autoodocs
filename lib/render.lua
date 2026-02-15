@@ -51,7 +51,7 @@ end
 
 -- @run Render a single entry
 local function render_entry(w, r)
-    -- GEN entries: just plain text at top, no header
+    -- @run:7 GEN entries render as plain text, no header
     if r.tag == "GEN" then
         for tline in gmatch(r.text, "[^\031]+") do
             local tr = link_sources(trim(tline))
@@ -60,6 +60,8 @@ local function render_entry(w, r)
         return
     end
 
+    -- @run:12 Build entry header with anchor and index
+    -- child entries show parent backlink, top-level entries use h3
     if r.parent then
         -- Child entry: bold text
         w(fmt('<a id="%s"></a>**%s %s**\n', r.anchor, r.idx, r.loc))
@@ -73,7 +75,7 @@ local function render_entry(w, r)
         w(fmt('`%s`\n\n', r.loc))
     end
 
-    -- For top-level entries, skip first line (used as h3 title)
+    -- @run:33 Render text lines through link_sources with admonition support
     local skip_first = (not r.parent)
 
     if r.adm then
@@ -129,7 +131,7 @@ function M.render_index(file_order, scan_dir, repo_url)
 
     w("# Documentation\n\n")
 
-    -- Check for README.md or readme.md
+    -- @chk:17 Detect and include README.md content
     local readme_content = nil
     for _, name in ipairs({"README.md", "readme.md"}) do
         local f = io.open((scan_dir or ".") .. "/" .. name, "r")
@@ -148,7 +150,7 @@ function M.render_index(file_order, scan_dir, repo_url)
         w("Select a file from the sidebar to view its documentation.\n\n")
     end
 
-    -- Find common path prefix across all files
+    -- @run:20 Find common path prefix and group files by directory
     local prefix = match(file_order[1] or "", "^(.*/)") or ""
     for _, file in ipairs(file_order) do
         while #prefix > 0 and sub(file, 1, #prefix) ~= prefix do
@@ -170,7 +172,7 @@ function M.render_index(file_order, scan_dir, repo_url)
         end
     end
 
-    -- Hidden nav data for TOC extraction
+    -- @run:17 Write hidden NAV comment for TOC extraction
     w("<!-- NAV\n")
     -- Root files first
     for _, f in ipairs(root_files) do
@@ -189,7 +191,7 @@ function M.render_index(file_order, scan_dir, repo_url)
     end
     w("-->\n")
 
-    -- Add repo URL if provided
+    -- @run:3 Embed repo URL as HTML comment for sidebar link
     -- @ref [autoodocs](https://github.com/h8d13/autoodocs)
     if repo_url then
         w(fmt("<!-- REPO:%s -->\n", repo_url))
@@ -207,13 +209,13 @@ function M.render_file_page(file, entries)
     w(fmt("# %s\n\n", basename))
     w(fmt("`%s`\n\n", file))
 
-    -- Group entries by tag type
+    -- @def:4 Group entries by tag type
     local by_tag = {GEN={}, CHK={}, DEF={}, RUN={}, ERR={}}
     for _, r in ipairs(entries) do
         by_tag[r.tag][#by_tag[r.tag] + 1] = r
     end
 
-    -- Render each tag section (GEN has no header)
+    -- @run:11 Render each tag section, GEN has no header
     for _, tag in ipairs(M.TAG_ORDER) do
         local tag_entries = by_tag[tag]
         if #tag_entries > 0 then

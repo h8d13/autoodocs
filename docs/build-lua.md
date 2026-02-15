@@ -79,7 +79,7 @@ os.execute(fmt("cp %sdefault.css %s/", dir, cfg.out_dir))
 
 `~/Desktop/autoodocs/build.lua:37`
 
-*↳ [markdown.lua:1264](markdown-lua.html#run-9)*
+*↳ [markdown.lua:1264](markdown-lua.html#err-1-1)*
 
 ```lua
 print("Converting to HTML...")
