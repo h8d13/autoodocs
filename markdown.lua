@@ -1237,8 +1237,7 @@ local function run_command_line(arg)
     <meta charset="CHARSET" />
     <title>TITLE</title>
     <link rel="stylesheet" type="text/css" href="STYLESHEET" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" media="(prefers-color-scheme: light)" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" media="(prefers-color-scheme: dark)" />
+    <script>document.write('<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/'+(matchMedia('(prefers-color-scheme:dark)').matches?'github-dark':'github')+'.min.css"/>')</script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 </head>
 <body>
